@@ -26,7 +26,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
       viewport={{ once: true, amount: 0.2 }}
-      className="group relative bg-white rounded-2xl overflow-hidden hover-lift border-gold-glow"
+      className="group relative bg-[#FBF9F6] overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -85,14 +85,14 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
           whileHover={{ scale: 1.15 }}
           whileTap={{ scale: 0.85 }}
           onClick={() => setWishlisted(!wishlisted)}
-          className="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-sm rounded-full shadow-sm transition-all"
+          className="absolute top-3 right-3 p-2 bg-[#FBF9F6]/80 backdrop-blur-sm shadow-sm transition-all text-[#3E040E]"
           aria-label="Add to Wishlist"
         >
           <Heart
             size={16}
             className={clsx(
               "transition-colors duration-300",
-              wishlisted ? "fill-crimson-500 text-crimson-500" : "text-crimson-700"
+              wishlisted ? "fill-[#3E040E] text-[#3E040E]" : "text-[#3E040E]"
             )}
           />
         </motion.button>
@@ -108,10 +108,10 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.97 }}
             onClick={() => addToCart(product)}
-            className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-crimson-700 text-ivory-100 text-xs font-outfit font-semibold rounded-xl hover:bg-crimson-600 transition-colors btn-gold-shimmer"
+            className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-[#3E040E] text-[#FBF9F6] text-[10px] font-montserrat uppercase tracking-widest font-semibold hover:bg-[#3E040E]/90 transition-colors"
           >
             <ShoppingBag size={14} />
-            Add to Cart
+            Add to Bag
           </motion.button>
           <Link
             href={`/product/${product.id}`}
@@ -124,14 +124,14 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
       </div>
 
       {/* Product Info */}
-      <div className="p-4">
-        <p className="text-[11px] font-outfit text-gold-500 uppercase tracking-widest mb-1">{product.fabric}</p>
+      <div className="p-5 flex flex-col h-[200px]">
+        <p className="text-[10px] font-montserrat text-[#96742A] font-bold uppercase tracking-[0.2em] mb-1.5">{product.fabric}</p>
         <Link href={`/product/${product.id}`}>
-          <h3 className="font-cormorant text-lg font-semibold text-crimson-800 hover:text-crimson-600 transition-colors leading-tight mb-1">
+          <h3 className="font-cinzel text-base font-semibold text-[#3E040E] hover:text-[#96742A] transition-colors leading-tight mb-1.5 uppercase tracking-wide">
             {product.name}
           </h3>
         </Link>
-        <p className="text-xs text-crimson-700/60 font-outfit mb-2">{product.subtitle}</p>
+        <p className="text-xs text-[#382E2E]/70 font-montserrat mb-3 line-clamp-1">{product.subtitle}</p>
 
         {/* Rating */}
         <div className="flex items-center gap-1.5 mb-3">
@@ -140,23 +140,32 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
               <Star
                 key={i}
                 size={11}
-                className={i < Math.floor(product.rating) ? "fill-gold-400 text-gold-400" : "text-ivory-400"}
+                className={i < Math.floor(product.rating) ? "fill-[#96742A] text-[#96742A]" : "text-[#96742A]/20"}
               />
             ))}
           </div>
-          <span className="text-[11px] text-crimson-700/50 font-outfit">({product.reviews})</span>
+          <span className="text-[10px] text-[#382E2E]/50 font-montserrat">({product.reviews})</span>
         </div>
 
-        {/* Price */}
-        <div className="flex items-baseline gap-2">
-          <span className="font-cormorant text-xl font-bold text-crimson-700">
-            ₹{product.price.toLocaleString("en-IN")}
-          </span>
-          {product.mrp > product.price && (
-            <span className="text-sm text-crimson-700/40 line-through font-outfit">
-              ₹{product.mrp.toLocaleString("en-IN")}
+        <div className="mt-auto">
+          {/* Price */}
+          <div className="flex items-baseline gap-2 mb-4">
+            <span className="font-cormorant text-xl font-bold text-[#3E040E]">
+              ₹{product.price.toLocaleString("en-IN")}
             </span>
-          )}
+            {product.mrp > product.price && (
+              <span className="text-sm text-[#382E2E]/40 line-through font-montserrat">
+                ₹{product.mrp.toLocaleString("en-IN")}
+              </span>
+            )}
+          </div>
+
+          <Link
+            href={`/product/${product.id}`}
+            className="block w-full text-center py-2.5 border border-[#3E040E]/20 text-[#3E040E] text-xs font-montserrat font-bold uppercase tracking-widest hover:bg-[#3E040E] hover:text-[#FBF9F6] transition-colors rounded-none"
+          >
+            Open
+          </Link>
         </div>
       </div>
     </motion.div>

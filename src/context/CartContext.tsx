@@ -53,15 +53,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [wishlist]);
 
   const addToCart = (product: Product) => {
-    setItems((prev) => {
-      const exists = prev.find((i) => i.id === product.id);
-      if (exists) {
-        toast.success("Quantity updated in your bag!");
-        return prev.map((i) => (i.id === product.id ? { ...i, qty: i.qty + 1 } : i));
-      }
+    const exists = items.find((i) => i.id === product.id);
+    if (exists) {
+      toast.success("Quantity updated in your bag!");
+      setItems((prev) => prev.map((i) => (i.id === product.id ? { ...i, qty: i.qty + 1 } : i)));
+    } else {
       toast.success(`${product.name} added to your bag! ✨`);
-      return [...prev, { ...product, qty: 1 }];
-    });
+      setItems((prev) => [...prev, { ...product, qty: 1 }]);
+    }
   };
 
   const removeFromCart = (id: string) => {
@@ -79,15 +78,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   const toggleWishlist = (id: string) => {
-    setWishlist((prev) => {
-      if (prev.includes(id)) {
-        toast("Removed from your wishlist", { icon: "🤍" });
-        return prev.filter((item) => item !== id);
-      } else {
-        toast.success("Saved to your wishlist! 💛");
-        return [...prev, id];
-      }
-    });
+    const exists = wishlist.includes(id);
+    if (exists) {
+      toast("Removed from your wishlist", { icon: "🤍" });
+      setWishlist((prev) => prev.filter((item) => item !== id));
+    } else {
+      toast.success("Saved to your wishlist! 💛");
+      setWishlist((prev) => [...prev, id]);
+    }
   };
 
   const total = items.reduce((s, i) => s + i.price * i.qty, 0);

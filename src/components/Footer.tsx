@@ -27,21 +27,7 @@ const footerLinks = {
   ],
 };
 
-function LotusIcon() {
-  return (
-    <svg viewBox="0 0 40 30" fill="none" className="w-8 h-auto">
-      <path d="M2,28 V18 C2,13 6,11 10,8 C14,5 18,5 20,2 C22,5 26,5 30,8 C34,11 38,13 38,18 V28 Z" stroke="#D9B26D" strokeWidth="1.2" />
-      <g fill="#D9B26D">
-        <ellipse cx="20" cy="0" rx="1.5" ry="4" />
-        <ellipse cx="20" cy="0" rx="1.5" ry="4" transform="rotate(72 20 2)" />
-        <ellipse cx="20" cy="0" rx="1.5" ry="4" transform="rotate(144 20 2)" />
-        <ellipse cx="20" cy="0" rx="1.5" ry="4" transform="rotate(216 20 2)" />
-        <ellipse cx="20" cy="0" rx="1.5" ry="4" transform="rotate(288 20 2)" />
-        <circle cx="20" cy="2" r="1.5" fill="#3A0615" />
-      </g>
-    </svg>
-  );
-}
+
 
 export function Footer() {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
@@ -130,12 +116,8 @@ export function Footer() {
 
             {/* Brand column */}
             <div className="lg:col-span-2">
-              <div className="flex items-center gap-3 mb-5">
-                <LotusIcon />
-                <div>
-                  <div style={{ fontFamily: "var(--font-cinzel), serif", fontSize: "20px", letterSpacing: ".2em", fontWeight: 700, color: "#F4E8D4" }}>SWAVANI</div>
-                  <div style={{ fontFamily: "var(--font-montserrat), sans-serif", fontSize: "7px", letterSpacing: ".32em", textTransform: "uppercase", color: "#D9B26D", fontWeight: 600, marginTop: "2px" }}>House of Silk &amp; Heritage</div>
-                </div>
+              <div className="mb-8">
+                <img src="/swavani-logo-transparent.png" alt="Swavani Logo" className="h-16 md:h-20 lg:h-24 w-auto object-contain drop-shadow-xl" />
               </div>
               <p
                 style={{
@@ -152,9 +134,9 @@ export function Footer() {
               </p>
               <div className="space-y-2.5">
                 {[
-                  { Icon: MapPin, text: "123 Silk Bazaar Road, Kanchipuram 631502" },
-                  { Icon: Phone, text: "+91 99999 99999" },
-                  { Icon: Mail,  text: "hello@swavani.in" },
+                  { Icon: MapPin, text: "15A Shanumuga puram, Thoothukudi - 628003" },
+                  { Icon: Phone, text: "+91 6381895890" },
+                  { Icon: Mail,  text: "houseofswavani@gmail.com" },
                 ].map(({ Icon, text }) => (
                   <div key={text} className="flex items-start gap-2.5">
                     <Icon size={13} style={{ color: "#D9B26D", flexShrink: 0, marginTop: "2px" }} />
@@ -230,11 +212,11 @@ export function Footer() {
       <div className="relative py-6 border-t" style={{ borderColor: "rgba(184,146,90,.15)" }}>
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-14 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p style={{ fontFamily: "var(--font-montserrat), sans-serif", fontSize: "10px", color: "rgba(244,232,212,.4)", letterSpacing: ".1em" }}>
-            © 2024 House of Swavani. All rights reserved. Handcrafted with love in India.
+            © {new Date().getFullYear()} House of Swavani. All rights reserved. Handcrafted with love in India.
           </p>
           <div className="flex items-center gap-6">
             <a
-              href="https://wa.me/919999999999"
+              href="https://wa.me/916381895890"
               target="_blank"
               rel="noopener noreferrer"
               style={{ fontFamily: "var(--font-montserrat), sans-serif", fontSize: "9px", letterSpacing: ".18em", textTransform: "uppercase", color: "rgba(244,232,212,.5)", textDecoration: "none", transition: "color .25s" }}
@@ -244,7 +226,9 @@ export function Footer() {
               WhatsApp
             </a>
             <a
-              href="#"
+              href="https://instagram.com/house_of_swavani"
+              target="_blank"
+              rel="noopener noreferrer"
               style={{ fontFamily: "var(--font-montserrat), sans-serif", fontSize: "9px", letterSpacing: ".18em", textTransform: "uppercase", color: "rgba(244,232,212,.5)", textDecoration: "none", transition: "color .25s" }}
               onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#D9B26D")}
               onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "rgba(244,232,212,.5)")}

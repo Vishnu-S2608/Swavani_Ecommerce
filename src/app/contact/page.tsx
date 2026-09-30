@@ -20,24 +20,24 @@ export default function ContactPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-ivory-100">
+    <div className="min-h-screen bg-[#F4E8D4] pt-24 pb-16">
       {/* Header */}
-      <div className="bg-crimson-900 py-16 bg-indian-pattern text-center">
+      <div className="py-16 text-center">
         <motion.p
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-          className="font-vibes text-3xl text-gold-400 mb-2"
+          className="font-montserrat text-sm font-semibold tracking-[0.25em] text-[#96742A] uppercase mb-4"
         >
           Get In Touch
         </motion.p>
         <motion.h1
           initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
-          className="font-cormorant text-5xl font-bold text-ivory-100"
+          className="font-cinzel text-5xl md:text-6xl font-semibold text-[#3E040E]"
         >
-          Contact Us
+          Visit Us
         </motion.h1>
       </div>
 
-      <div className="max-w-6xl mx-auto px-6 py-16">
+      <div className="max-w-6xl mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-12">
           {/* Contact Info */}
           <motion.div
@@ -45,21 +45,21 @@ export default function ContactPage() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <p className="font-vibes text-2xl text-gold-500 mb-2">We&apos;d Love to Hear From You</p>
-            <h2 className="font-cormorant text-3xl font-bold text-crimson-800 mb-4">Reach Out To Us</h2>
-            <p className="font-outfit text-sm text-crimson-700/60 leading-relaxed mb-8">
-              Whether you need styling advice, have a query about your order, or simply want to know more about our sarees — we&apos;re always here for you.
+            <p className="font-cormorant italic text-2xl text-[#96742A] mb-4">We'd Love to Hear From You</p>
+            <h2 className="font-cinzel text-3xl font-semibold text-[#3E040E] mb-6">Reach Out To Us</h2>
+            <p className="font-cormorant font-medium text-lg text-[#382E2E] leading-relaxed mb-12">
+              Whether you need styling advice, have a query about your order, or simply want to know more about our sarees — we're always here for you.
             </p>
 
-            <div className="space-y-5">
+            <div className="space-y-8">
               {contactInfo.map(({ icon: Icon, label, value }) => (
-                <div key={label} className="flex gap-4">
-                  <div className="w-10 h-10 bg-crimson-700/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <Icon size={18} className="text-crimson-700" />
+                <div key={label} className="flex gap-6 items-start">
+                  <div className="w-12 h-12 bg-[#EBDCC5] border border-[#96742A]/20 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
+                    <Icon size={20} className="text-[#3E040E]" />
                   </div>
-                  <div>
-                    <p className="text-xs text-gold-500 font-outfit uppercase tracking-wider mb-0.5">{label}</p>
-                    <p className="text-sm text-crimson-700 font-outfit whitespace-pre-line">{value}</p>
+                  <div className="pt-1">
+                    <p className="text-xs text-[#96742A] font-montserrat font-bold uppercase tracking-widest mb-1.5">{label}</p>
+                    <p className="text-base text-[#382E2E] font-cormorant font-medium whitespace-pre-line">{value}</p>
                   </div>
                 </div>
               ))}
@@ -71,10 +71,10 @@ export default function ContactPage() {
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ scale: 1.03 }}
-              className="mt-8 inline-flex items-center gap-3 px-6 py-3 bg-green-500 text-white font-outfit font-semibold text-sm rounded-full hover:bg-green-400 transition-colors"
+              className="mt-12 inline-flex items-center gap-3 px-8 py-4 bg-[#3E040E] text-[#FBF9F6] font-montserrat font-semibold text-xs tracking-widest rounded-full hover:bg-black transition-colors shadow-lg"
             >
               <MessageCircle size={18} />
-              Chat on WhatsApp
+              CHAT ON WHATSAPP
             </motion.a>
           </motion.div>
 
@@ -83,7 +83,7 @@ export default function ContactPage() {
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
-            className="bg-white rounded-2xl p-8 shadow-sm border border-gold-400/10"
+            className="bg-[#FBF9F6] rounded-3xl p-8 md:p-12 shadow-2xl border border-[#96742A]/20"
           >
             {sent ? (
               <motion.div
@@ -91,22 +91,22 @@ export default function ContactPage() {
                 animate={{ opacity: 1, scale: 1 }}
                 className="h-full flex flex-col items-center justify-center text-center py-12"
               >
-                <div className="text-6xl mb-4">🙏</div>
-                <h3 className="font-cormorant text-2xl font-bold text-crimson-800 mb-2">Thank You!</h3>
-                <p className="font-outfit text-sm text-crimson-700/60">
-                  We&apos;ve received your message and will get back to you within 24 hours.
+                <div className="text-6xl mb-6">✨</div>
+                <h3 className="font-cinzel text-3xl font-semibold text-[#3E040E] mb-4">Thank You!</h3>
+                <p className="font-cormorant text-xl text-[#382E2E]">
+                  We've received your message and will get back to you shortly.
                 </p>
               </motion.div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <h3 className="font-cormorant text-2xl font-bold text-crimson-800 mb-6">Send a Message</h3>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <h3 className="font-cinzel text-3xl font-semibold text-[#3E040E] mb-8 text-center">Send a Message</h3>
                 {[
                   { id: "name",    label: "Full Name",    type: "text",  placeholder: "Your name" },
                   { id: "email",   label: "Email Address",type: "email", placeholder: "your@email.com" },
                   { id: "subject", label: "Subject",      type: "text",  placeholder: "How can we help?" },
                 ].map((f) => (
                   <div key={f.id}>
-                    <label htmlFor={f.id} className="block text-xs font-outfit font-medium text-crimson-700 mb-1.5 uppercase tracking-wider">
+                    <label htmlFor={f.id} className="block text-[10px] font-montserrat font-bold text-[#96742A] mb-2 uppercase tracking-widest">
                       {f.label}
                     </label>
                     <input
@@ -116,12 +116,12 @@ export default function ContactPage() {
                       placeholder={f.placeholder}
                       value={form[f.id as keyof typeof form]}
                       onChange={(e) => setForm({ ...form, [f.id]: e.target.value })}
-                      className="w-full px-4 py-3 border border-crimson-700/15 rounded-xl text-sm font-outfit text-crimson-700 placeholder-crimson-700/30 focus:outline-none focus:border-crimson-600 bg-ivory-100 transition-colors"
+                      className="w-full px-5 py-4 border-b border-[#96742A]/30 bg-transparent text-sm font-cormorant text-[#382E2E] placeholder-[#382E2E]/30 focus:outline-none focus:border-[#3E040E] transition-colors rounded-none"
                     />
                   </div>
                 ))}
                 <div>
-                  <label htmlFor="message" className="block text-xs font-outfit font-medium text-crimson-700 mb-1.5 uppercase tracking-wider">
+                  <label htmlFor="message" className="block text-[10px] font-montserrat font-bold text-[#96742A] mb-2 uppercase tracking-widest">
                     Message
                   </label>
                   <textarea
@@ -131,18 +131,20 @@ export default function ContactPage() {
                     placeholder="Tell us how we can help you..."
                     value={form.message}
                     onChange={(e) => setForm({ ...form, message: e.target.value })}
-                    className="w-full px-4 py-3 border border-crimson-700/15 rounded-xl text-sm font-outfit text-crimson-700 placeholder-crimson-700/30 focus:outline-none focus:border-crimson-600 bg-ivory-100 transition-colors resize-none"
+                    className="w-full px-5 py-4 border-b border-[#96742A]/30 bg-transparent text-sm font-cormorant text-[#382E2E] placeholder-[#382E2E]/30 focus:outline-none focus:border-[#3E040E] transition-colors resize-none rounded-none"
                   />
                 </div>
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.97 }}
-                  type="submit"
-                  className="w-full flex items-center justify-center gap-2 py-3.5 bg-crimson-gradient text-ivory-100 font-outfit font-bold text-sm rounded-full btn-gold-shimmer transition-all hover:shadow-crimson"
-                >
-                  <Send size={16} />
-                  Send Message
-                </motion.button>
+                <div className="pt-4">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.97 }}
+                    type="submit"
+                    className="w-full flex items-center justify-center gap-2 py-4 bg-[#EBDCC5] text-[#3E040E] border border-[#96742A]/30 font-montserrat font-bold text-xs tracking-widest uppercase rounded-full hover:bg-[#D9B26D] hover:text-[#1A050A] transition-all shadow-sm"
+                  >
+                    <Send size={16} />
+                    Submit Inquiry
+                  </motion.button>
+                </div>
               </form>
             )}
           </motion.div>
@@ -153,12 +155,12 @@ export default function ContactPage() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mt-12 h-64 rounded-2xl overflow-hidden bg-ivory-200 border border-gold-400/10 flex items-center justify-center"
+          className="mt-16 h-80 rounded-3xl overflow-hidden bg-[#EBDCC5] border border-[#96742A]/20 flex items-center justify-center shadow-inner"
         >
           <div className="text-center">
-            <MapPin size={32} className="text-crimson-700/30 mx-auto mb-2" />
-            <p className="font-outfit text-sm text-crimson-700/40">Interactive map — T. Nagar, Chennai</p>
-            <p className="text-xs text-crimson-700/30 font-outfit mt-1">123 Silk Bazaar, Tamil Nadu 600017</p>
+            <MapPin size={40} className="text-[#96742A]/60 mx-auto mb-4" />
+            <p className="font-montserrat font-semibold tracking-widest text-xs text-[#3E040E]/60 uppercase">Interactive map — T. Nagar, Chennai</p>
+            <p className="text-xl text-[#382E2E]/80 font-cormorant font-medium mt-2">123 Silk Bazaar, Tamil Nadu 600017</p>
           </div>
         </motion.div>
       </div>

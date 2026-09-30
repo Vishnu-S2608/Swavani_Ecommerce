@@ -38,16 +38,16 @@ export default function CollectionsPage() {
     <div className="space-y-8">
       {/* Category */}
       <div>
-        <h3 className="font-cormorant text-lg font-semibold text-crimson-800 mb-3">Category</h3>
+        <h3 className="font-cinzel text-lg font-semibold text-[#3E040E] mb-3">Category</h3>
         <div className="space-y-2">
           {CATEGORIES.map((c) => (
             <button
               key={c}
               onClick={() => setCategory(c)}
-              className={`block w-full text-left px-3 py-2 rounded-lg text-sm font-outfit transition-all ${
+              className={`block w-full text-left px-4 py-2.5 rounded-xl text-sm font-montserrat transition-all ${
                 category === c
-                  ? "bg-crimson-700 text-ivory-100"
-                  : "text-crimson-700/70 hover:bg-crimson-50 hover:text-crimson-700"
+                  ? "bg-[#3E040E] text-[#FBF9F6] shadow-sm"
+                  : "text-[#382E2E]/70 hover:bg-[#EBDCC5] hover:text-[#3E040E]"
               }`}
             >
               {c}
@@ -58,16 +58,16 @@ export default function CollectionsPage() {
 
       {/* Occasion */}
       <div>
-        <h3 className="font-cormorant text-lg font-semibold text-crimson-800 mb-3">Occasion</h3>
+        <h3 className="font-cinzel text-lg font-semibold text-[#3E040E] mb-3">Occasion</h3>
         <div className="space-y-2">
           {OCCASIONS.map((o) => (
             <button
               key={o}
               onClick={() => setOccasion(o)}
-              className={`block w-full text-left px-3 py-2 rounded-lg text-sm font-outfit transition-all ${
+              className={`block w-full text-left px-4 py-2.5 rounded-xl text-sm font-montserrat transition-all ${
                 occasion === o
-                  ? "bg-crimson-700 text-ivory-100"
-                  : "text-crimson-700/70 hover:bg-crimson-50 hover:text-crimson-700"
+                  ? "bg-[#3E040E] text-[#FBF9F6] shadow-sm"
+                  : "text-[#382E2E]/70 hover:bg-[#EBDCC5] hover:text-[#3E040E]"
               }`}
             >
               {o}
@@ -78,9 +78,9 @@ export default function CollectionsPage() {
 
       {/* Price Range */}
       <div>
-        <h3 className="font-cormorant text-lg font-semibold text-crimson-800 mb-3">
+        <h3 className="font-cinzel text-lg font-semibold text-[#3E040E] mb-3">
           Price Range
-          <span className="text-gold-500 ml-2 text-base">up to ₹{maxPrice.toLocaleString("en-IN")}</span>
+          <span className="text-[#96742A] ml-2 text-base font-cormorant font-medium">up to ₹{maxPrice.toLocaleString("en-IN")}</span>
         </h3>
         <input
           type="range"
@@ -89,9 +89,9 @@ export default function CollectionsPage() {
           step={500}
           value={maxPrice}
           onChange={(e) => setMaxPrice(+e.target.value)}
-          className="w-full accent-crimson-600"
+          className="w-full accent-[#3E040E]"
         />
-        <div className="flex justify-between text-xs text-crimson-700/50 font-outfit mt-1">
+        <div className="flex justify-between text-xs text-[#382E2E]/50 font-montserrat mt-1">
           <span>₹2,000</span>
           <span>₹30,000</span>
         </div>
@@ -100,7 +100,7 @@ export default function CollectionsPage() {
       {/* Reset */}
       <button
         onClick={() => { setCategory("All"); setOccasion("All"); setMaxPrice(30000); }}
-        className="w-full py-2 border border-crimson-700/20 rounded-lg text-sm font-outfit text-crimson-700/60 hover:border-crimson-700 hover:text-crimson-700 transition-all"
+        className="w-full py-3 border border-[#96742A]/30 rounded-xl text-xs font-montserrat font-bold uppercase tracking-widest text-[#3E040E] hover:bg-[#3E040E] hover:text-[#FBF9F6] transition-all"
       >
         Reset Filters
       </button>
@@ -108,23 +108,23 @@ export default function CollectionsPage() {
   );
 
   return (
-    <div className="min-h-screen bg-ivory-100 pt-6 pb-20">
+    <div className="min-h-screen bg-[#F4E8D4] pt-36 pb-20 font-montserrat">
       {/* Page header */}
-      <div className="bg-crimson-900 py-16 bg-indian-pattern">
+      <div className="py-12 border-b border-[#96742A]/20">
         <div className="max-w-7xl mx-auto px-6 text-center">
-          <p className="font-vibes text-3xl text-gold-400 mb-2">Explore</p>
-          <h1 className="font-cormorant text-5xl font-bold text-ivory-100 mb-3">Our Collections</h1>
-          <p className="font-outfit text-sm text-ivory-300/70">
+          <p className="font-montserrat text-sm font-semibold tracking-[0.25em] text-[#96742A] uppercase mb-4">Explore</p>
+          <h1 className="font-cinzel text-4xl md:text-5xl font-semibold text-[#3E040E] mb-4 uppercase tracking-wider">Our Collections</h1>
+          <p className="font-cormorant text-lg text-[#382E2E]/80">
             {filtered.length} sarees crafted with tradition
           </p>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 mt-10">
+      <div className="max-w-7xl mx-auto px-6 mt-12">
         <div className="flex gap-10">
           {/* Desktop Sidebar */}
-          <aside className="hidden lg:block w-60 flex-shrink-0">
-            <div className="sticky top-24 bg-white rounded-2xl p-6 shadow-sm border border-gold-400/10">
+          <aside className="hidden lg:block w-64 flex-shrink-0">
+            <div className="sticky top-28 bg-[#FBF9F6] rounded-2xl p-8 shadow-sm border border-[#96742A]/20">
               <FilterSidebar />
             </div>
           </aside>
@@ -132,23 +132,23 @@ export default function CollectionsPage() {
           {/* Main */}
           <div className="flex-1">
             {/* Top bar */}
-            <div className="flex items-center justify-between mb-6 gap-4 flex-wrap">
-              <p className="font-outfit text-sm text-crimson-700/60">
-                Showing <span className="font-semibold text-crimson-700">{filtered.length}</span> sarees
+            <div className="flex items-center justify-between mb-8 gap-4 flex-wrap">
+              <p className="font-montserrat text-xs font-semibold text-[#382E2E]/60 uppercase tracking-widest">
+                Showing <span className="text-[#3E040E]">{filtered.length}</span> sarees
               </p>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-4">
                 {/* Mobile filter toggle */}
                 <button
                   onClick={() => setFilterOpen(true)}
-                  className="lg:hidden flex items-center gap-2 px-4 py-2 border border-crimson-700/20 rounded-full text-sm font-outfit text-crimson-700 hover:bg-crimson-50"
+                  className="lg:hidden flex items-center gap-2 px-6 py-2.5 bg-[#FBF9F6] border border-[#96742A]/30 rounded-full text-xs font-montserrat font-bold text-[#3E040E] uppercase tracking-widest hover:bg-[#EBDCC5]"
                 >
-                  <SlidersHorizontal size={15} /> Filter
+                  <SlidersHorizontal size={14} /> Filter
                 </button>
                 {/* Sort */}
                 <select
                   value={sort}
                   onChange={(e) => setSort(e.target.value)}
-                  className="px-4 py-2 border border-crimson-700/20 rounded-full text-sm font-outfit text-crimson-700 bg-white focus:outline-none focus:border-crimson-700"
+                  className="px-5 py-2.5 bg-[#FBF9F6] border border-[#96742A]/30 rounded-full text-xs font-montserrat font-bold text-[#3E040E] uppercase tracking-widest focus:outline-none focus:border-[#3E040E] shadow-sm cursor-pointer"
                 >
                   {SORT_OPTIONS.map((o) => (
                     <option key={o.value} value={o.value}>{o.label}</option>
@@ -160,7 +160,7 @@ export default function CollectionsPage() {
             {/* Products Grid */}
             <motion.div
               layout
-              className="grid grid-cols-2 md:grid-cols-3 gap-5"
+              className="grid grid-cols-2 md:grid-cols-3 gap-6 lg:gap-8"
             >
               <AnimatePresence>
                 {filtered.map((p, i) => (
@@ -180,8 +180,8 @@ export default function CollectionsPage() {
 
             {filtered.length === 0 && (
               <div className="text-center py-20">
-                <p className="font-cormorant text-3xl text-crimson-700/40 mb-3">No sarees found</p>
-                <p className="font-outfit text-sm text-crimson-700/30">Try adjusting your filters</p>
+                <p className="font-cinzel text-xl text-[#3E040E]">No sarees found matching your filters.</p>
+                <button onClick={() => { setCategory("All"); setOccasion("All"); setMaxPrice(30000); }} className="mt-4 text-[#96742A] underline font-montserrat text-sm hover:text-[#3E040E]">Clear filters</button>
               </div>
             )}
           </div>
@@ -194,18 +194,18 @@ export default function CollectionsPage() {
           <>
             <motion.div
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-crimson-900/50 backdrop-blur-sm z-50"
+              className="fixed inset-0 bg-[#3E040E]/40 backdrop-blur-sm z-[60] lg:hidden"
               onClick={() => setFilterOpen(false)}
             />
             <motion.div
               initial={{ x: "-100%" }} animate={{ x: 0 }} exit={{ x: "-100%" }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="fixed left-0 top-0 bottom-0 w-72 bg-white z-50 p-6 overflow-y-auto"
+              className="fixed inset-y-0 left-0 w-4/5 max-w-sm bg-[#F4E8D4] shadow-2xl z-[70] p-6 overflow-y-auto lg:hidden"
             >
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="font-cormorant text-2xl font-bold text-crimson-800">Filters</h2>
-                <button onClick={() => setFilterOpen(false)} className="text-crimson-700 p-2">
-                  <X size={22} />
+              <div className="flex items-center justify-between mb-8 border-b border-[#96742A]/20 pb-4">
+                <h2 className="font-cinzel text-xl font-semibold text-[#3E040E]">Filters</h2>
+                <button onClick={() => setFilterOpen(false)} className="p-2 text-[#3E040E]/60 hover:text-[#3E040E] bg-[#EBDCC5] rounded-full">
+                  <X size={20} />
                 </button>
               </div>
               <FilterSidebar />

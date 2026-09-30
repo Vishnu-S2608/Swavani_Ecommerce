@@ -18,6 +18,9 @@ export const metadata: Metadata = {
   },
 };
 
+import { ScrollytellingNavbar } from "@/components/ScrollytellingNavbar";
+import { Footer } from "@/components/Footer";
+
 export default function RootLayout({
   children,
 }: {
@@ -29,7 +32,7 @@ export default function RootLayout({
       className={`${cinzel.variable} ${cormorant.variable} ${montserrat.variable}`}
     >
       <body
-        style={{ background: '#0A0604', color: '#F4E8D4', margin: 0, padding: 0 }}
+        style={{ background: '#20030C', color: '#F4E8D4', margin: 0, padding: 0 }}
         className="antialiased font-montserrat"
       >
         <CartProvider>
@@ -46,7 +49,9 @@ export default function RootLayout({
               },
             }}
           />
+          <ScrollytellingNavbar />
           {children}
+          <Footer />
         </CartProvider>
       </body>
     </html>
