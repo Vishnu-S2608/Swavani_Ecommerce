@@ -1,0 +1,274 @@
+"use client";
+import React from "react";
+import Link from "next/link";
+import { MapPin, Phone, Mail, ArrowUp } from "lucide-react";
+
+const footerLinks = {
+  collections: [
+    { name: "Kanjivaram Silk", href: "/collections?category=kanjivaram" },
+    { name: "Banarasi Brocade", href: "/collections?category=banarasi" },
+    { name: "Pattu Heritage", href: "/collections?category=pattu" },
+    { name: "Bridal Collection", href: "/collections?category=bridal" },
+    { name: "Cotton Handloom", href: "/collections?category=cotton" },
+  ],
+  info: [
+    { name: "Our Story", href: "/about" },
+    { name: "The Artisans", href: "/about#artisans" },
+    { name: "Lookbook", href: "/lookbook" },
+    { name: "Visit Us", href: "/contact" },
+    { name: "Wishlist", href: "/wishlist" },
+  ],
+  policies: [
+    { name: "Shipping Policy", href: "/policies/shipping" },
+    { name: "Returns & Exchanges", href: "/policies/returns" },
+    { name: "Privacy Policy", href: "/policies/privacy" },
+    { name: "Terms of Service", href: "/policies/terms" },
+    { name: "Care Instructions", href: "/policies/care" },
+  ],
+};
+
+function LotusIcon() {
+  return (
+    <svg viewBox="0 0 40 30" fill="none" className="w-8 h-auto">
+      <path d="M2,28 V18 C2,13 6,11 10,8 C14,5 18,5 20,2 C22,5 26,5 30,8 C34,11 38,13 38,18 V28 Z" stroke="#D9B26D" strokeWidth="1.2" />
+      <g fill="#D9B26D">
+        <ellipse cx="20" cy="0" rx="1.5" ry="4" />
+        <ellipse cx="20" cy="0" rx="1.5" ry="4" transform="rotate(72 20 2)" />
+        <ellipse cx="20" cy="0" rx="1.5" ry="4" transform="rotate(144 20 2)" />
+        <ellipse cx="20" cy="0" rx="1.5" ry="4" transform="rotate(216 20 2)" />
+        <ellipse cx="20" cy="0" rx="1.5" ry="4" transform="rotate(288 20 2)" />
+        <circle cx="20" cy="2" r="1.5" fill="#3A0615" />
+      </g>
+    </svg>
+  );
+}
+
+export function Footer() {
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
+
+  return (
+    <footer
+      className="relative overflow-hidden"
+      style={{
+        background: "linear-gradient(180deg, #3A0615 0%, #2a0510 100%)",
+        backgroundImage: "url('/download (2).jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundBlendMode: "multiply",
+        color: "#F4E8D4",
+      }}
+    >
+      {/* Deep silk overlay */}
+      <div className="absolute inset-0 pointer-events-none" style={{ background: "linear-gradient(180deg, rgba(58,6,21,.92) 0%, rgba(42,5,16,.97) 100%)" }} />
+
+      {/* Radial gold glow */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[700px] h-[200px] pointer-events-none" style={{ background: "radial-gradient(ellipse, rgba(217,178,109,.08), transparent 70%)" }} />
+
+      {/* Top zari vine */}
+      <div className="relative h-px" style={{ background: "linear-gradient(90deg, transparent 0%, #D9B26D 30%, #F1D9A0 50%, #D9B26D 70%, transparent 100%)" }} />
+
+      {/* Newsletter strip */}
+      <div className="relative py-14 border-b" style={{ borderColor: "rgba(184,146,90,.15)" }}>
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-14">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <span style={{ color: "#D9B26D", fontSize: "12px" }}>✦</span>
+                <span style={{ fontFamily: "var(--font-montserrat), sans-serif", fontSize: "9px", letterSpacing: ".32em", textTransform: "uppercase", color: "#D9B26D", fontWeight: 600 }}>
+                  Swavani Private Circle
+                </span>
+              </div>
+              <h3
+                style={{
+                  fontFamily: "var(--font-cinzel), Georgia, serif",
+                  fontSize: "clamp(20px, 2.8vw, 30px)",
+                  letterSpacing: ".06em",
+                  textTransform: "uppercase",
+                  color: "#F4E8D4",
+                  fontWeight: 700,
+                }}
+              >
+                Receive Private Silk Previews
+              </h3>
+              <p style={{ fontFamily: "var(--font-cormorant), serif", fontSize: "15px", fontStyle: "italic", color: "rgba(244,232,212,.65)", marginTop: "6px" }}>
+                Exclusive archive drops, bridal previews and artisan stories.
+              </p>
+            </div>
+            <div className="flex gap-0 w-full max-w-md flex-shrink-0">
+              <input
+                type="email"
+                placeholder="your@email.com"
+                style={{
+                  flex: 1,
+                  background: "rgba(58,6,21,.6)",
+                  border: "1px solid rgba(184,146,90,.35)",
+                  borderRight: "none",
+                  padding: "14px 18px",
+                  fontSize: "13px",
+                  fontFamily: "var(--font-montserrat), sans-serif",
+                  color: "#F4E8D4",
+                  outline: "none",
+                }}
+                onFocus={(e) => (e.currentTarget.style.borderColor = "#D9B26D")}
+                onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(184,146,90,.35)")}
+              />
+              <button
+                className="btn-zari"
+                style={{ borderRadius: 0, flexShrink: 0, padding: "14px 22px", fontSize: "10px" }}
+              >
+                Join →
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main footer grid */}
+      <div className="relative py-16">
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-14">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-8">
+
+            {/* Brand column */}
+            <div className="lg:col-span-2">
+              <div className="flex items-center gap-3 mb-5">
+                <LotusIcon />
+                <div>
+                  <div style={{ fontFamily: "var(--font-cinzel), serif", fontSize: "20px", letterSpacing: ".2em", fontWeight: 700, color: "#F4E8D4" }}>SWAVANI</div>
+                  <div style={{ fontFamily: "var(--font-montserrat), sans-serif", fontSize: "7px", letterSpacing: ".32em", textTransform: "uppercase", color: "#D9B26D", fontWeight: 600, marginTop: "2px" }}>House of Silk &amp; Heritage</div>
+                </div>
+              </div>
+              <p
+                style={{
+                  fontFamily: "var(--font-cormorant), serif",
+                  fontSize: "15px",
+                  fontStyle: "italic",
+                  color: "rgba(244,232,212,.65)",
+                  lineHeight: 1.7,
+                  maxWidth: "36ch",
+                  marginBottom: "20px",
+                }}
+              >
+                Custodians of India&apos;s finest handwoven silks since 2024. Every saree carries the memory of the artisan who wove it.
+              </p>
+              <div className="space-y-2.5">
+                {[
+                  { Icon: MapPin, text: "123 Silk Bazaar Road, Kanchipuram 631502" },
+                  { Icon: Phone, text: "+91 99999 99999" },
+                  { Icon: Mail,  text: "hello@swavani.in" },
+                ].map(({ Icon, text }) => (
+                  <div key={text} className="flex items-start gap-2.5">
+                    <Icon size={13} style={{ color: "#D9B26D", flexShrink: 0, marginTop: "2px" }} />
+                    <span style={{ fontFamily: "var(--font-montserrat), sans-serif", fontSize: "11px", color: "rgba(244,232,212,.65)", letterSpacing: ".04em" }}>
+                      {text}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Collections */}
+            <div>
+              <h4 style={{ fontFamily: "var(--font-cinzel), serif", fontSize: "11px", letterSpacing: ".2em", textTransform: "uppercase", color: "#D9B26D", fontWeight: 600, marginBottom: "14px" }}>Collections</h4>
+              <ul className="space-y-2.5">
+                {footerLinks.collections.map((l) => (
+                  <li key={l.name}>
+                    <Link
+                      href={l.href}
+                      style={{ fontFamily: "var(--font-montserrat), sans-serif", fontSize: "11px", color: "rgba(244,232,212,.6)", textDecoration: "none", letterSpacing: ".06em", transition: "color .25s" }}
+                      onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#D9B26D")}
+                      onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "rgba(244,232,212,.6)")}
+                    >
+                      {l.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Info */}
+            <div>
+              <h4 style={{ fontFamily: "var(--font-cinzel), serif", fontSize: "11px", letterSpacing: ".2em", textTransform: "uppercase", color: "#D9B26D", fontWeight: 600, marginBottom: "14px" }}>Boutique</h4>
+              <ul className="space-y-2.5">
+                {footerLinks.info.map((l) => (
+                  <li key={l.name}>
+                    <Link
+                      href={l.href}
+                      style={{ fontFamily: "var(--font-montserrat), sans-serif", fontSize: "11px", color: "rgba(244,232,212,.6)", textDecoration: "none", letterSpacing: ".06em", transition: "color .25s" }}
+                      onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#D9B26D")}
+                      onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "rgba(244,232,212,.6)")}
+                    >
+                      {l.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Policies */}
+            <div>
+              <h4 style={{ fontFamily: "var(--font-cinzel), serif", fontSize: "11px", letterSpacing: ".2em", textTransform: "uppercase", color: "#D9B26D", fontWeight: 600, marginBottom: "14px" }}>Policies</h4>
+              <ul className="space-y-2.5">
+                {footerLinks.policies.map((l) => (
+                  <li key={l.name}>
+                    <Link
+                      href={l.href}
+                      style={{ fontFamily: "var(--font-montserrat), sans-serif", fontSize: "11px", color: "rgba(244,232,212,.6)", textDecoration: "none", letterSpacing: ".06em", transition: "color .25s" }}
+                      onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#D9B26D")}
+                      onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "rgba(244,232,212,.6)")}
+                    >
+                      {l.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom bar */}
+      <div className="relative py-6 border-t" style={{ borderColor: "rgba(184,146,90,.15)" }}>
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-14 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p style={{ fontFamily: "var(--font-montserrat), sans-serif", fontSize: "10px", color: "rgba(244,232,212,.4)", letterSpacing: ".1em" }}>
+            © 2024 House of Swavani. All rights reserved. Handcrafted with love in India.
+          </p>
+          <div className="flex items-center gap-6">
+            <a
+              href="https://wa.me/919999999999"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ fontFamily: "var(--font-montserrat), sans-serif", fontSize: "9px", letterSpacing: ".18em", textTransform: "uppercase", color: "rgba(244,232,212,.5)", textDecoration: "none", transition: "color .25s" }}
+              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#D9B26D")}
+              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "rgba(244,232,212,.5)")}
+            >
+              WhatsApp
+            </a>
+            <a
+              href="#"
+              style={{ fontFamily: "var(--font-montserrat), sans-serif", fontSize: "9px", letterSpacing: ".18em", textTransform: "uppercase", color: "rgba(244,232,212,.5)", textDecoration: "none", transition: "color .25s" }}
+              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#D9B26D")}
+              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "rgba(244,232,212,.5)")}
+            >
+              Instagram
+            </a>
+            <button
+              onClick={scrollToTop}
+              className="w-8 h-8 flex items-center justify-center transition-all"
+              style={{
+                border: "1px solid rgba(184,146,90,.35)",
+                background: "rgba(58,6,21,.5)",
+                color: "#D9B26D",
+                cursor: "pointer",
+              }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "#D9B26D"; (e.currentTarget as HTMLElement).style.color = "#3A0615"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "rgba(58,6,21,.5)"; (e.currentTarget as HTMLElement).style.color = "#D9B26D"; }}
+              aria-label="Back to top"
+            >
+              <ArrowUp size={14} />
+            </button>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
