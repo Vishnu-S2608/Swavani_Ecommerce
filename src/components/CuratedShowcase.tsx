@@ -1,7 +1,8 @@
 "use client";
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 
 const collections = [
   {
@@ -11,7 +12,7 @@ const collections = [
     description: "Temple-border zari work, rich colour block weave — the queen of Indian silks. Each piece is a lifetime heirloom.",
     image: "/saree-1.jpg",
     href: "/collections?category=kanjivaram",
-    accent: "#0F5C63",   /* peacock */
+    accent: "#0F5C63",
     badge: "GI Certified",
   },
   {
@@ -21,7 +22,7 @@ const collections = [
     description: "Opulent brocade woven on the looms of Varanasi for centuries. Resham, kinkhab and tissue weaves.",
     image: "/saree-2.jpg",
     href: "/collections?category=banarasi",
-    accent: "#2B2F6B",   /* indigo */
+    accent: "#2B2F6B",
     badge: "Royal Heritage",
   },
   {
@@ -31,7 +32,7 @@ const collections = [
     description: "South Indian Pattu with rich geometric motifs, temple borders, and vibrant colour combinations.",
     image: "/saree-3.jpg",
     href: "/collections?category=pattu",
-    accent: "#D98324",   /* saffron */
+    accent: "#D98324",
     badge: "Handloom Mark",
   },
   {
@@ -41,50 +42,76 @@ const collections = [
     description: "Bespoke bridal silks — from grand Kanjivaram bridal sets to delicate Banarasi tissue for the mehndi ceremony.",
     image: "/saree-4.jpg",
     href: "/collections?category=bridal",
-    accent: "#C24B6B",   /* rose */
+    accent: "#C24B6B",
     badge: "Bespoke",
   },
 ];
 
-function useReveal(ref: React.RefObject<HTMLElement | null>) {
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); io.disconnect(); } }, { threshold: 0.12 });
-    io.observe(el);
-    return () => io.disconnect();
-  }, [ref]);
-  return visible;
-}
-
 export function CuratedShowcase() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] });
+
+  // Parallax bg shift
+  const bgY = useTransform(scrollYProgress, [0, 1], ["-6%", "6%"]);
+
+  const headerRef = useRef<HTMLDivElement>(null);
+  const headerInView = useInView(headerRef, { amount: 0.3, once: true });
+
   return (
     <section
+      ref={sectionRef}
       className="relative overflow-hidden"
       style={{
         background: "linear-gradient(180deg, #F4E8D4 0%, #EDDCC0 60%, #F4E8D4 100%)",
         padding: "clamp(72px, 9vw, 120px) 0",
       }}
     >
-      {/* Kolam pattern bg */}
-      <div className="absolute inset-0 bg-kolam opacity-60 pointer-events-none" />
+      {/* Parallax kolam bg */}
+      <motion.div
+        className="absolute inset-0 bg-kolam opacity-60 pointer-events-none"
+        style={{ y: bgY }}
+      />
 
-      {/* Indian arch pattern border top */}
-      <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, #B8925A, #D9B26D, #B8925A, transparent)" }} />
+      {/* Border top */}
+      <motion.div
+        className="absolute top-0 left-0 right-0 h-px"
+        style={{ background: "linear-gradient(90deg, transparent, #B8925A, #D9B26D, #B8925A, transparent)" }}
+        initial={{ scaleX: 0 }}
+        whileInView={{ scaleX: 1 }}
+        transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+        viewport={{ once: true }}
+      />
 
       <div className="relative max-w-7xl mx-auto px-5 sm:px-8 lg:px-14">
-
         {/* Section header */}
-        <div className="text-center mb-16">
-          <div className="flex items-center justify-center gap-4 mb-4">
-            <div style={{ width: "48px", height: "1px", background: "linear-gradient(90deg, transparent, #B8925A)" }} />
+        <div ref={headerRef} className="text-center mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={headerInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            className="flex items-center justify-center gap-4 mb-4"
+          >
+            <motion.div
+              initial={{ scaleX: 0 }}
+              animate={headerInView ? { scaleX: 1 } : {}}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              style={{ width: "48px", height: "1px", background: "linear-gradient(90deg, transparent, #B8925A)", transformOrigin: "left" }}
+            />
             <span style={{ fontFamily: "var(--font-montserrat)", fontSize: "10px", letterSpacing: ".3em", textTransform: "uppercase", color: "#B8925A", fontWeight: 600 }}>
               Master Loom Curations
             </span>
-            <div style={{ width: "48px", height: "1px", background: "linear-gradient(90deg, #B8925A, transparent)" }} />
-          </div>
-          <h2
+            <motion.div
+              initial={{ scaleX: 0 }}
+              animate={headerInView ? { scaleX: 1 } : {}}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              style={{ width: "48px", height: "1px", background: "linear-gradient(90deg, #B8925A, transparent)", transformOrigin: "right" }}
+            />
+          </motion.div>
+
+          <motion.h2
+            initial={{ opacity: 0, y: 36 }}
+            animate={headerInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
             style={{
               fontFamily: "var(--font-cinzel), Georgia, serif",
               fontSize: "clamp(28px, 4vw, 48px)",
@@ -96,8 +123,11 @@ export function CuratedShowcase() {
             }}
           >
             The Living Collections
-          </h2>
-          <p
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={headerInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.28 }}
             style={{
               fontFamily: "var(--font-cormorant), Georgia, serif",
               fontSize: "clamp(16px, 2vw, 20px)",
@@ -108,7 +138,7 @@ export function CuratedShowcase() {
             }}
           >
             Each weave tells a story that spans generations.
-          </p>
+          </motion.p>
         </div>
 
         {/* Collection grid */}
@@ -119,47 +149,63 @@ export function CuratedShowcase() {
         </div>
 
         {/* Browse all CTA */}
-        <div className="flex justify-center mt-14">
+        <motion.div
+          className="flex justify-center mt-14"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: "easeOut", delay: 0.3 }}
+          viewport={{ once: true }}
+        >
           <Link href="/collections" className="btn-silk">
             Browse All Collections
           </Link>
-        </div>
+        </motion.div>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, #B8925A, #D9B26D, #B8925A, transparent)" }} />
+      <motion.div
+        className="absolute bottom-0 left-0 right-0 h-px"
+        style={{ background: "linear-gradient(90deg, transparent, #B8925A, #D9B26D, #B8925A, transparent)" }}
+        initial={{ scaleX: 0 }}
+        whileInView={{ scaleX: 1 }}
+        transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+        viewport={{ once: true }}
+      />
     </section>
   );
 }
 
 function CollectionCard({ col, idx }: { col: typeof collections[0]; idx: number }) {
   const ref = useRef<HTMLDivElement>(null);
-  const visible = useReveal(ref as React.RefObject<HTMLElement | null>);
+  const inView = useInView(ref, { amount: 0.15, once: true });
+  const imgRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: imgRef, offset: ["start end", "end start"] });
+  const imgY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
 
   return (
-    <div
+    <motion.div
       ref={ref}
+      initial={{ opacity: 0, y: 60 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1], delay: idx * 0.13 }}
       className="group relative overflow-hidden cursor-pointer"
       style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(40px)",
-        transition: `opacity .7s ease ${idx * 0.12}s, transform .7s ease ${idx * 0.12}s`,
         background: "#FBF5EA",
         border: "1px solid rgba(184,146,90,.3)",
         boxShadow: "0 8px 40px rgba(58,6,21,.1)",
       }}
+      whileHover={{ y: -6, boxShadow: "0 24px 60px rgba(58,6,21,.18)" }}
     >
       {/* Image */}
-      <div className="relative overflow-hidden" style={{ height: "320px" }}>
-        <Image
-          src={col.image}
-          alt={col.name}
-          fill
-          className="object-cover"
-          style={{
-            transition: "transform .7s cubic-bezier(.76,0,.2,1)",
-            objectPosition: "center 20%",
-          }}
-        />
+      <div ref={imgRef} className="relative overflow-hidden" style={{ height: "320px" }}>
+        <motion.div style={{ y: imgY, height: "110%", position: "relative", top: "-5%" }}>
+          <Image
+            src={col.image}
+            alt={col.name}
+            fill
+            className="object-cover"
+            style={{ objectPosition: "center 20%" }}
+          />
+        </motion.div>
         {/* Arch-mask overlay on hover */}
         <div
           className="absolute inset-0 pointer-events-none transition-opacity duration-500 group-hover:opacity-100 opacity-0"
@@ -197,24 +243,28 @@ function CollectionCard({ col, idx }: { col: typeof collections[0]; idx: number 
           {col.badge}
         </div>
         {/* Hover CTA */}
-        <Link
-          href={col.href}
-          className="absolute inset-x-4 bottom-4 z-10 flex items-center justify-center gap-2 py-3 opacity-0 group-hover:opacity-100 transition-all duration-400"
-          style={{
-            background: "rgba(58,6,21,.92)",
-            border: "1px solid rgba(217,178,109,.5)",
-            fontFamily: "var(--font-montserrat), sans-serif",
-            fontSize: "10px",
-            letterSpacing: ".18em",
-            textTransform: "uppercase",
-            color: "#D9B26D",
-            textDecoration: "none",
-            transform: "translateY(8px)",
-          }}
-          onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.transform = "translateY(0)")}
+        <motion.div
+          className="absolute inset-x-4 bottom-4 z-10"
+          initial={{ opacity: 0, y: 12 }}
+          whileHover={{ opacity: 1, y: 0 }}
         >
-          Explore {col.name} →
-        </Link>
+          <Link
+            href={col.href}
+            className="flex items-center justify-center gap-2 py-3"
+            style={{
+              background: "rgba(58,6,21,.92)",
+              border: "1px solid rgba(217,178,109,.5)",
+              fontFamily: "var(--font-montserrat), sans-serif",
+              fontSize: "10px",
+              letterSpacing: ".18em",
+              textTransform: "uppercase",
+              color: "#D9B26D",
+              textDecoration: "none",
+            }}
+          >
+            Explore {col.name} →
+          </Link>
+        </motion.div>
       </div>
 
       {/* Card body */}
@@ -258,6 +308,6 @@ function CollectionCard({ col, idx }: { col: typeof collections[0]; idx: number 
           {col.description}
         </p>
       </div>
-    </div>
+    </motion.div>
   );
 }

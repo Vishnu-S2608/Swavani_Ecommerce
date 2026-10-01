@@ -2,86 +2,134 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { ShoppingBag } from 'lucide-react';
+import { useCart } from '@/context/CartContext';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export function ScrollytellingNavbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [visible, setVisible] = useState(true);
+  const [lastY, setLastY] = useState(0);
+  const { count } = useCart();
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      const y = window.scrollY;
+      setScrolled(y > 50);
+      // Auto-hide navbar when scrolling down, show when scrolling up
+      setVisible(y < lastY || y < 120);
+      setLastY(y);
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [lastY]);
 
   return (
-    <div className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none transition-all duration-500">
-      <nav
-        className="pointer-events-auto relative border border-zari/30 rounded-full px-3 py-1 flex items-center justify-between shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)] max-w-3xl w-full gap-4 transition-all duration-500"
-      >
-        {/* Background Image Layer */}
-        <div 
-          className="absolute inset-0 -z-10 rounded-full pointer-events-none opacity-100"
-          style={{ 
-            backgroundImage: "url('/download (5).jpg')", 
-            backgroundSize: "cover", 
-            backgroundPosition: "center" 
-          }}
-        />
+    <AnimatePresence>
+      {visible && (
+        <motion.div
+          className="fixed top-0 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none"
+          initial={{ y: -80, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: -80, opacity: 0 }}
+          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          style={{ paddingTop: scrolled ? '12px' : '24px', transition: 'padding-top 0.4s ease' }}
+        >
+          <motion.nav
+            className="pointer-events-auto relative border rounded-full px-3 py-1 flex items-center justify-between max-w-3xl w-full gap-4"
+            animate={{
+              borderColor: scrolled ? 'rgba(217,178,109,0.5)' : 'rgba(217,178,109,0.25)',
+              boxShadow: scrolled
+                ? '0 12px 48px -8px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.12)'
+                : '0 10px 40px -10px rgba(0,0,0,0.5)',
+            }}
+            transition={{ duration: 0.4 }}
+          >
+            {/* Background layer — transitions from image to glassy */}
+            <motion.div
+              className="absolute inset-0 -z-10 rounded-full pointer-events-none overflow-hidden"
+              animate={{ opacity: scrolled ? 0 : 1 }}
+              transition={{ duration: 0.5 }}
+              style={{
+                backgroundImage: "url('/download (5).jpg')",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+            />
+            {/* Glass blur layer that appears on scroll */}
+            <motion.div
+              className="absolute inset-0 -z-10 rounded-full pointer-events-none backdrop-blur-xl backdrop-saturate-150"
+              animate={{ opacity: scrolled ? 1 : 0, backgroundColor: scrolled ? 'rgba(26,5,10,0.75)' : 'transparent' }}
+              transition={{ duration: 0.5 }}
+            />
 
-        {/* Left: Logo */}
-        <Link href="/" className="flex items-center group pl-2">
-          <img 
-            src="/swavani-logo-transparent.png" 
-            alt="House of Swavani Logo" 
-            className="h-10 md:h-12 lg:h-14 w-auto object-contain drop-shadow-[0_2px_5px_rgba(0,0,0,0.5)] group-hover:scale-105 transition-transform duration-500 relative z-10" 
-          />
-        </Link>
+            {/* Left: Logo */}
+            <Link href="/" className="flex items-center group pl-2">
+              <motion.img
+                src="/swavani-logo-transparent.png"
+                alt="House of Swavani Logo"
+                className="h-10 md:h-12 lg:h-14 w-auto object-contain drop-shadow-[0_2px_5px_rgba(0,0,0,0.5)] relative z-10"
+                whileHover={{ scale: 1.07 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+              />
+            </Link>
 
-        {/* Center: Links (Hidden on mobile) */}
-        <div className="hidden md:flex items-center gap-4 lg:gap-6 font-montserrat text-[11px] md:text-xs tracking-widest text-[#F4E8D4] font-semibold mx-auto uppercase relative z-10">
-          <Link href="/" className="hover:text-zari transition-colors drop-shadow-md">Home</Link>
-          
-          <Link href="/collections" className="hover:text-zari transition-colors drop-shadow-md">Shop</Link>
-          
-          {/* Collections Dropdown */}
-          <div className="relative group cursor-pointer py-2">
-            <span className="hover:text-zari transition-colors flex items-center gap-1.5 drop-shadow-md">
-              Collections
-              <svg className="w-3 h-3 transition-transform duration-300 group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </span>
-            
-            {/* Dropdown Menu */}
-            <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-              <div className="border border-zari/30 rounded-2xl p-6 min-w-[240px] flex flex-col gap-4 shadow-xl relative overflow-hidden">
-                <div 
-                  className="absolute inset-0 -z-10 pointer-events-none"
-                  style={{ 
-                    backgroundImage: "url('/download (5).jpg')", 
-                    backgroundSize: "cover", 
-                    backgroundPosition: "center" 
-                  }}
-                />
-                <div className="absolute inset-0 bg-black/20 -z-10" />
-                <Link href="/collections" className="text-[#F4E8D4] hover:text-zari transition-colors flex items-center gap-2 drop-shadow-md">Ellampillai Silks</Link>
-                <Link href="/collections" className="text-[#F4E8D4] hover:text-zari transition-colors flex items-center gap-2 drop-shadow-md">Kanjivaram Silks</Link>
-                <Link href="/collections" className="text-[#F4E8D4] hover:text-zari transition-colors flex items-center gap-2 drop-shadow-md">Banarasi Brocade</Link>
-                <Link href="/collections" className="text-[#F4E8D4] hover:text-zari transition-colors flex items-center gap-2 drop-shadow-md">Bridal Collection</Link>
-              </div>
+            {/* Center: Links */}
+            <div className="hidden md:flex items-center gap-4 lg:gap-6 font-montserrat text-[11px] md:text-xs tracking-widest text-[#F4E8D4] font-semibold mx-auto uppercase relative z-10">
+              {[
+                { label: 'Home', href: '/' },
+                { label: 'Shop', href: '/collections' },
+                { label: 'Our Story', href: '/about' },
+                { label: 'Visit Us', href: '/contact' },
+              ].map((link) => (
+                <motion.div key={link.href} className="relative group">
+                  <Link href={link.href} className="hover:text-[#D9B26D] transition-colors drop-shadow-md">
+                    {link.label}
+                  </Link>
+                  {/* Animated underline */}
+                  <motion.div
+                    className="absolute -bottom-1 left-0 right-0 h-px"
+                    style={{ background: '#D9B26D', scaleX: 0, transformOrigin: 'center' }}
+                    whileHover={{ scaleX: 1 }}
+                    transition={{ duration: 0.25 }}
+                  />
+                </motion.div>
+              ))}
             </div>
-          </div>
 
-          <Link href="/about" className="hover:text-zari transition-colors drop-shadow-md">Our Story</Link>
-          <Link href="/contact" className="hover:text-zari transition-colors drop-shadow-md">Visit Us</Link>
-        </div>
-
-        {/* Right: CTA Button */}
-        <Link href="/collections" className="bg-[#F4E8D4] text-[#3A0615] hover:bg-white transition-colors rounded-full px-6 py-2 font-montserrat text-[11px] md:text-xs font-semibold tracking-widest shadow-md uppercase relative z-10">
-          Explore
-        </Link>
-      </nav>
-    </div>
+            {/* Right: Actions */}
+            <div className="flex items-center gap-3 relative z-10 pr-2">
+              <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                <Link href="/cart" className="relative p-2 text-[#F4E8D4] hover:text-[#D9B26D] transition-colors drop-shadow-md block">
+                  <ShoppingBag size={18} />
+                  <AnimatePresence>
+                    {count > 0 && (
+                      <motion.span
+                        key={count}
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0, opacity: 0 }}
+                        transition={{ type: 'spring', stiffness: 500, damping: 20 }}
+                        className="absolute top-1 right-0 flex items-center justify-center text-[9px] font-bold w-4 h-4 rounded-full bg-[#D9B26D] text-[#3A0615]"
+                      >
+                        {count}
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+                </Link>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.96 }}>
+                <Link
+                  href="/collections"
+                  className="bg-[#F4E8D4] text-[#3A0615] hover:bg-[#D9B26D] transition-colors rounded-full px-5 py-2 font-montserrat text-[11px] md:text-xs font-semibold tracking-widest shadow-md uppercase"
+                >
+                  Explore
+                </Link>
+              </motion.div>
+            </div>
+          </motion.nav>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

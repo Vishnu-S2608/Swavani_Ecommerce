@@ -5,19 +5,10 @@ import { Search, Heart, ShoppingBag, Menu, X, ChevronDown } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { motion, AnimatePresence } from "framer-motion";
 
-const navLinks = [
+type NavLink = { label: string; href: string; sub?: { name: string; href: string }[] };
+
+const navLinks: NavLink[] = [
   { label: "Home",        href: "/" },
-  {
-    label: "Collections",
-    href: "/collections",
-    sub: [
-      { name: "Kanjivaram Silk",   href: "/collections?category=kanjivaram" },
-      { name: "Banarasi Brocade",  href: "/collections?category=banarasi" },
-      { name: "Pattu Heritage",    href: "/collections?category=pattu" },
-      { name: "Cotton Handloom",   href: "/collections?category=cotton" },
-      { name: "Bridal Collection", href: "/collections?category=bridal" },
-    ],
-  },
   { label: "Shop",        href: "/collections" },
   { label: "Lookbook",    href: "/lookbook" },
   { label: "Our Story",   href: "/about" },
@@ -177,7 +168,7 @@ export function Navbar() {
                       >
                         {/* Gold top line */}
                         <div style={{ height: "1px", background: "linear-gradient(90deg, transparent, #D9B26D, transparent)", marginBottom: "6px" }} />
-                        {link.sub.map((s) => (
+                        {link.sub!.map((s) => (
                           <Link
                             key={s.name}
                             href={s.href}

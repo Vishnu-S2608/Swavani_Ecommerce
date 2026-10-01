@@ -24,30 +24,32 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
   const related = products.filter((p) => p.id !== product.id && p.category === product.category).slice(0, 4);
 
   return (
-    <div className="min-h-screen bg-[#F4E8D4] pt-36 pb-20 font-montserrat">
-      {/* Breadcrumb */}
-      <div className="max-w-7xl mx-auto px-6 py-4">
-        <div className="flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-[#382E2E]/60">
-          <Link href="/" className="hover:text-[#3E040E] transition-colors">Home</Link>
-          <span>&gt;</span>
-          <Link href="/collections" className="hover:text-[#3E040E] transition-colors">Sarees</Link>
-          <span>&gt;</span>
+    <div className="min-h-screen bg-[#FBF9F6] pt-32 pb-20 font-montserrat text-[#382E2E]">
+      {/* Breadcrumb - subtle at the top */}
+      <div className="px-6 lg:px-12 py-4">
+        <div className="flex items-center gap-2 text-[10px] font-semibold tracking-[0.2em] uppercase text-[#382E2E]/50">
+          <Link href="/" className="hover:text-[#96742A] transition-colors">Home</Link>
+          <span>/</span>
+          <Link href="/collections" className="hover:text-[#96742A] transition-colors">Sarees</Link>
+          <span>/</span>
           <span className="text-[#3E040E]">{product.name}</span>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 pt-6">
-        <div className="grid lg:grid-cols-[1.2fr_1fr] gap-12 lg:gap-20">
-          {/* Images Section */}
-          <div className="flex flex-col-reverse md:flex-row gap-4 h-full">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 pt-4">
+        <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 relative">
+          
+          {/* Left: Images Section (Thumbnails + Main) */}
+          <div className="w-full lg:w-[55%] flex flex-col-reverse md:flex-row gap-4 h-[60vh] md:h-[75vh] sticky top-24">
+            
             {/* Thumbnails */}
-            <div className="flex md:flex-col gap-3 overflow-x-auto md:overflow-visible">
+            <div className="flex md:flex-col gap-3 overflow-x-auto md:overflow-y-auto no-scrollbar md:w-20 flex-shrink-0">
               {images.map((img, i) => (
                 <button
                   key={i}
                   onClick={() => setSelectedImage(i)}
                   className={`relative w-20 aspect-[3/4] flex-shrink-0 transition-all ${
-                    selectedImage === i ? "opacity-100 ring-1 ring-[#3E040E] ring-offset-2 ring-offset-[#F4E8D4]" : "opacity-60 hover:opacity-100"
+                    selectedImage === i ? "opacity-100 ring-1 ring-[#3E040E] ring-offset-2 ring-offset-[#FBF9F6]" : "opacity-50 hover:opacity-100"
                   }`}
                 >
                   <Image src={img} alt={`View ${i + 1}`} fill className="object-cover object-top" sizes="80px" />
@@ -55,13 +57,13 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
               ))}
             </div>
 
-            {/* Main image */}
+            {/* Main Image */}
             <motion.div
               key={selectedImage}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.3 }}
-              className="flex-1 relative aspect-[3/4] bg-[#EBDCC5]"
+              className="flex-1 relative aspect-[3/4] md:aspect-auto bg-[#EBDCC5]"
             >
               <Image
                 src={images[selectedImage]}
@@ -74,142 +76,153 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
             </motion.div>
           </div>
 
-          {/* Product Info Section */}
-          <div className="lg:sticky lg:top-32 self-start py-4">
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              {/* Badge */}
-              {product.isNew && (
-                <span className="inline-block bg-[#3E040E] text-[#FBF9F6] text-[10px] font-bold px-3 py-1 mb-4 uppercase tracking-[0.2em]">
-                  Nouveau
-                </span>
-              )}
-
-              <h1 className="font-cinzel text-3xl md:text-4xl font-semibold text-[#3E040E] leading-tight mb-4 uppercase tracking-wide">
-                {product.name}
-              </h1>
-
-              {/* Decorative Divider */}
-              <div className="flex items-center justify-center lg:justify-start gap-4 mb-6 opacity-60">
-                <div className="h-[1px] w-12 bg-[#96742A]"></div>
-                <div className="text-[#96742A]">✨</div>
-                <div className="h-[1px] w-12 bg-[#96742A]"></div>
-              </div>
-
-              {/* Price */}
-              <div className="mb-6">
-                <span className="font-montserrat text-2xl font-bold text-[#3E040E]">
-                  ₹{product.price.toLocaleString("en-IN")}
-                </span>
-                <p className="text-[11px] font-medium text-[#382E2E]/60 mt-1">
-                  Taxes incluses. Livraison calculée à l'étape de paiement.
-                </p>
-              </div>
-
-              <p className="font-cormorant text-lg text-[#382E2E] leading-relaxed mb-8">
-                {product.description} Une pièce d'exception qui incarne la tradition indienne et l'élégance intemporelle.
-              </p>
-
-              {/* Bullet points */}
-              <div className="space-y-3 mb-10 border-b border-[#96742A]/20 pb-10">
-                {[
-                  { label: "Matière", value: `100% ${product.fabric}` },
-                  { label: "Couleur", value: product.color || "Bordeaux & Or" },
-                  { label: "Longueur", value: "5.5 mètres (avec blouse assortie)" },
-                  { label: "Entretien", value: "Nettoyage à sec uniquement" },
-                  { label: "Origine", value: "Tissé à la main en Inde" },
-                ].map((item, idx) => (
-                  <div key={idx} className="flex items-center gap-3 text-sm font-cormorant text-[#382E2E]">
-                    <span className="text-[#96742A] text-[10px]">❖</span>
-                    <span className="font-medium text-[#382E2E]/70">{item.label} :</span>
-                    <span>{item.value}</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Color Swatches */}
-              <div className="mb-8">
-                <p className="text-[10px] font-bold text-[#3E040E] uppercase tracking-widest mb-3">Couleur</p>
-                <div className="flex gap-3">
-                  <button className="w-8 h-8 rounded-full bg-[#5C1B1B] border-2 border-[#F4E8D4] ring-1 ring-[#3E040E] flex items-center justify-center">
-                    <span className="text-[#F4E8D4] text-xs">✓</span>
-                  </button>
-                  <button className="w-8 h-8 rounded-full bg-[#2A3B24] border-2 border-[#F4E8D4] ring-1 ring-transparent hover:ring-[#3E040E]/50"></button>
-                </div>
-              </div>
-
-              {/* Quantity & Stock */}
-              <div className="mb-8">
-                <p className="text-[10px] font-bold text-[#3E040E] uppercase tracking-widest mb-3">Quantité</p>
-                <div className="flex items-center gap-6">
-                  <div className="flex items-center border border-[#3E040E]/20 bg-transparent h-12 w-32">
-                    <button onClick={() => setQty(Math.max(1, qty - 1))} className="flex-1 flex justify-center text-[#3E040E]/60 hover:text-[#3E040E]"><Minus size={14} /></button>
-                    <span className="font-montserrat text-sm font-semibold text-[#3E040E]">{qty}</span>
-                    <button onClick={() => setQty(qty + 1)} className="flex-1 flex justify-center text-[#3E040E]/60 hover:text-[#3E040E]"><Plus size={14} /></button>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs font-semibold tracking-wide text-[#2A3B24]">
-                    <span className="w-2 h-2 rounded-full bg-[#2A3B24]"></span>
-                    En stock
-                  </div>
-                </div>
-              </div>
-
-              {/* CTA Buttons */}
-              <div className="flex flex-col gap-4 mb-6">
-                <motion.button
-                  whileHover={{ scale: 1.01 }}
-                  whileTap={{ scale: 0.99 }}
-                  onClick={() => addToCart(product)}
-                  className="w-full py-4 bg-[#3E040E] text-[#FBF9F6] font-montserrat font-bold text-xs tracking-[0.2em] uppercase transition-colors hover:bg-black"
-                >
-                  Ajouter au Panier
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.01 }}
-                  whileTap={{ scale: 0.99 }}
-                  className="w-full py-4 bg-transparent border border-[#3E040E] text-[#3E040E] font-montserrat font-bold text-xs tracking-[0.2em] uppercase transition-colors hover:bg-[#3E040E]/5"
-                >
-                  Acheter Maintenant
-                </motion.button>
-              </div>
-
-              {/* Wishlist */}
-              <button
-                onClick={() => setWishlisted(!wishlisted)}
-                className="flex items-center gap-2 text-[10px] font-bold text-[#3E040E] uppercase tracking-widest hover:text-[#96742A] transition-colors mb-12"
+          {/* Right: Product Info */}
+          <div className="w-full lg:w-[45%] py-2 lg:pr-8">
+            <div className="lg:sticky lg:top-32 self-start py-4 lg:pr-12">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
               >
-                <Heart size={14} className={wishlisted ? "fill-[#3E040E]" : ""} />
-                Ajouter à ma liste d'envies
-              </button>
+                <div className="flex items-center justify-between mb-4">
+                  {/* Badge */}
+                  {product.isNew && (
+                    <span className="inline-block text-[#96742A] border border-[#96742A] text-[9px] font-bold px-3 py-1 uppercase tracking-[0.3em]">
+                      Nouveau
+                    </span>
+                  )}
+                  {/* Wishlist Icon */}
+                  <button
+                    onClick={() => setWishlisted(!wishlisted)}
+                    className="p-2 transition-colors hover:text-[#96742A]"
+                    aria-label="Add to wishlist"
+                  >
+                    <Heart size={20} className={wishlisted ? "fill-[#3E040E] text-[#3E040E]" : "text-[#382E2E]/60"} />
+                  </button>
+                </div>
 
-              {/* Trust badges */}
-              <div className="flex justify-between items-start border-t border-[#96742A]/20 pt-8">
-                {[
-                  { icon: Truck,      title: "LIVRAISON RAPIDE", desc: "Offerte dès 80€ d'achat" },
-                  { icon: Shield,     title: "PAIEMENT SÉCURISÉ", desc: "CB, PayPal, Apple Pay" },
-                  { icon: RotateCcw,  title: "RETOURS FACILES",   desc: "Sous 14 jours" },
-                ].map(({ icon: Icon, title, desc }) => (
-                  <div key={title} className="flex flex-col gap-2 max-w-[120px]">
-                    <div className="flex items-center gap-2 text-[#96742A]">
-                      <Icon size={16} />
-                      <span className="text-[9px] font-bold text-[#382E2E] tracking-wider">{title}</span>
+                <h1 className="font-cinzel text-4xl lg:text-5xl font-semibold text-[#3E040E] leading-[1.1] mb-6 uppercase tracking-wider">
+                  {product.name}
+                </h1>
+
+                {/* Price */}
+                <div className="mb-8">
+                  <span className="font-montserrat text-2xl lg:text-3xl font-normal text-[#3E040E]">
+                    ₹{product.price.toLocaleString("en-IN")}
+                  </span>
+                  <p className="text-[10px] uppercase tracking-widest font-medium text-[#382E2E]/50 mt-2">
+                    Taxes incluses. Livraison calculée au paiement.
+                  </p>
+                </div>
+
+                {/* Decorative Divider */}
+                <div className="h-px w-full bg-gradient-to-r from-[#96742A]/40 via-[#96742A]/10 to-transparent mb-8"></div>
+
+                <p className="font-cormorant text-xl lg:text-2xl text-[#382E2E]/90 leading-relaxed mb-10 italic">
+                  {product.description}
+                </p>
+
+                {/* Bullet points (Grid layout) */}
+                <div className="grid grid-cols-2 gap-y-6 gap-x-4 mb-10">
+                  {[
+                    { label: "Material", value: `100% ${product.fabric}` },
+                    { label: "Occasion", value: product.occasion },
+                    { label: "Length", value: "5.5m (with blouse piece)" },
+                    { label: "Care", value: "Dry clean recommended" },
+                  ].map((item, idx) => (
+                    <div key={idx} className="flex flex-col gap-1">
+                      <span className="text-[9px] font-bold text-[#382E2E]/50 uppercase tracking-[0.2em]">{item.label}</span>
+                      <span className="font-cormorant text-lg text-[#3E040E]">{item.value}</span>
                     </div>
-                    <p className="text-[10px] text-[#382E2E]/60 pl-6 leading-tight">{desc}</p>
+                  ))}
+                </div>
+
+                {/* Color Swatches — from product data */}
+                <div className="mb-8">
+                  <p className="text-[9px] font-bold text-[#382E2E]/50 uppercase tracking-[0.2em] mb-3">Available Colours</p>
+                  <div className="flex gap-4">
+                    {product.colors.map((color, i) => (
+                      <button
+                        key={i}
+                        title={color}
+                        className="relative w-10 h-10 rounded-full border-2 border-[#EBDCC5] hover:scale-110 transition-transform"
+                        style={{ backgroundColor: color }}
+                      />
+                    ))}
                   </div>
-                ))}
-              </div>
-            </motion.div>
+                </div>
+
+                {/* Quantity */}
+                <div className="mb-10">
+                  <p className="text-[9px] font-bold text-[#382E2E]/50 uppercase tracking-[0.2em] mb-3">Quantity</p>
+                  <div className="flex items-center gap-6">
+                    <div className="flex items-center border border-[#96742A]/30 bg-transparent h-14 w-36 rounded-full overflow-hidden">
+                      <button onClick={() => setQty(Math.max(1, qty - 1))} className="flex-1 flex justify-center items-center text-[#3E040E]/60 hover:text-[#3E040E] hover:bg-[#96742A]/10 h-full transition-colors"><Minus size={16} /></button>
+                      <span className="font-montserrat text-sm font-semibold text-[#3E040E] w-8 text-center">{qty}</span>
+                      <button onClick={() => setQty(qty + 1)} className="flex-1 flex justify-center items-center text-[#3E040E]/60 hover:text-[#3E040E] hover:bg-[#96742A]/10 h-full transition-colors"><Plus size={16} /></button>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs font-semibold tracking-wide text-[#2A3B24]">
+                      <span className="relative flex h-2.5 w-2.5">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#2A3B24] opacity-40"></span>
+                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#2A3B24]"></span>
+                      </span>
+                      En stock
+                    </div>
+                  </div>
+                </div>
+
+                {/* CTA Buttons */}
+                <div className="flex flex-col sm:flex-row gap-4 mb-10">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => addToCart(product)}
+                    className="flex-1 py-4 px-6 bg-[#3E040E] text-[#FBF9F6] font-montserrat font-semibold text-xs tracking-[0.2em] uppercase transition-colors hover:bg-black rounded-full"
+                  >
+                    Add to Cart
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => addToCart(product)}
+                    className="flex-1 py-4 px-6 bg-transparent border border-[#3E040E] text-[#3E040E] font-montserrat font-semibold text-xs tracking-[0.2em] uppercase transition-colors hover:bg-[#3E040E]/5 rounded-full"
+                  >
+                    Buy Now
+                  </motion.button>
+                </div>
+
+                {/* Accordion / Trust Badges replacing simple text */}
+                <div className="border-t border-[#96742A]/20 pt-8 mt-8 space-y-6">
+                  {[
+                    { icon: Truck,   title: "EXPRESS DELIVERY & RETURNS", desc: "Free delivery on orders above ₹2,999. Easy returns within 7 days." },
+                    { icon: Shield,  title: "SECURE PAYMENT", desc: "All transactions are secured and encrypted. Pay via UPI, Cards or COD." },
+                    { icon: RotateCcw, title: "AUTHENTICITY GUARANTEE", desc: "Every saree comes with a Silk Mark certificate ensuring 100% genuine silk." },
+                  ].map(({ icon: Icon, title, desc }) => (
+                    <div key={title} className="group cursor-pointer">
+                      <div className="flex items-center justify-between text-[#3E040E] mb-2">
+                        <div className="flex items-center gap-3">
+                          <Icon size={18} className="text-[#96742A]" />
+                          <span className="text-[10px] font-bold tracking-widest uppercase">{title}</span>
+                        </div>
+                        <Plus size={14} className="text-[#382E2E]/40 group-hover:text-[#3E040E] transition-colors" />
+                      </div>
+                      <p className="text-[11px] text-[#382E2E]/70 pl-8 leading-relaxed max-w-sm hidden group-hover:block transition-all">{desc}</p>
+                    </div>
+                  ))}
+                </div>
+
+              </motion.div>
+            </div>
           </div>
         </div>
 
         {/* Related Products */}
         {related.length > 0 && (
-          <div className="mt-32 pt-16 border-t border-[#96742A]/20">
-            <h2 className="font-cinzel text-3xl font-semibold text-[#3E040E] text-center mb-12 uppercase tracking-widest">You May Also Love</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="mt-32 pt-20 border-t border-[#96742A]/20 mb-10">
+            <h2 className="font-cinzel text-3xl md:text-4xl font-semibold text-[#3E040E] text-center mb-16 uppercase tracking-widest">
+              Complétez Votre Style
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
               {related.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}
             </div>
           </div>

@@ -64,13 +64,22 @@ export function SequenceCanvas() {
     setImages(loadedImages);
   }, []);
 
+  const lastDrawnIndex = useRef(-1);
+  const canvasSizeRef = useRef({ width: 0, height: 0 });
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas || images.length === 0) return;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: false }); // alpha: false for better performance
     if (!ctx) return;
 
     let animationFrameId: number;
+    let resizePending = true;
+
+    const handleResize = () => {
+      resizePending = true;
+    };
+    window.addEventListener('resize', handleResize);
 
     const render = () => {
       // Get current frame based on scroll
@@ -79,37 +88,47 @@ export function SequenceCanvas() {
       if (index >= images.length) index = images.length - 1;
 
       const img = images[index];
-      if (img && img.complete) {
-        const dpr = window.devicePixelRatio || 1;
-        const rect = canvas.getBoundingClientRect();
+      
+      // Only redraw if index changed or window resized
+      if (img && img.complete && (index !== lastDrawnIndex.current || resizePending)) {
         
-        canvas.width = rect.width * dpr;
-        canvas.height = rect.height * dpr;
-        
-        ctx.scale(dpr, dpr);
-        
-        ctx.imageSmoothingEnabled = true;
+        // Only trigger layout thrashing (getBoundingClientRect) on actual resize
+        if (resizePending) {
+          const dpr = window.devicePixelRatio || 1;
+          const rect = canvas.getBoundingClientRect();
+          canvas.width = rect.width * dpr;
+          canvas.height = rect.height * dpr;
+          ctx.scale(dpr, dpr);
+          ctx.imageSmoothingEnabled = true;
+          canvasSizeRef.current = { width: rect.width, height: rect.height };
+          resizePending = false;
+        }
 
         // Object cover logic
         const imgRatio = img.width / img.height;
-        const canvasRatio = rect.width / rect.height;
+        const { width: rectWidth, height: rectHeight } = canvasSizeRef.current;
+        const canvasRatio = rectWidth / rectHeight;
         
         let drawWidth, drawHeight, offsetX, offsetY;
 
         if (imgRatio > canvasRatio) {
-          drawHeight = rect.height;
-          drawWidth = rect.height * imgRatio;
-          offsetX = (rect.width - drawWidth) / 2;
+          drawHeight = rectHeight;
+          drawWidth = rectHeight * imgRatio;
+          offsetX = (rectWidth - drawWidth) / 2;
           offsetY = 0;
         } else {
-          drawWidth = rect.width;
-          drawHeight = rect.width / imgRatio;
+          drawWidth = rectWidth;
+          drawHeight = rectWidth / imgRatio;
           offsetX = 0;
-          offsetY = (rect.height - drawHeight) / 2;
+          offsetY = (rectHeight - drawHeight) / 2;
         }
 
-        ctx.clearRect(0, 0, rect.width, rect.height);
+        // Fill background instead of clearRect (since alpha: false)
+        ctx.fillStyle = '#20030C';
+        ctx.fillRect(0, 0, rectWidth, rectHeight);
         ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+
+        lastDrawnIndex.current = index;
       }
 
       animationFrameId = requestAnimationFrame(render);
@@ -118,6 +137,7 @@ export function SequenceCanvas() {
     render();
 
     return () => {
+      window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(animationFrameId);
     };
   }, [images, frameIndex]);
@@ -197,27 +217,79 @@ function OverlayText({ scrollProgress, activeSection }: { scrollProgress: Motion
       {activeIndex === 0 && (
         <motion.div 
           style={{ opacity: heroOpacity, y: heroY }}
-          className="absolute inset-0 flex flex-col items-center justify-end pointer-events-auto pb-12 lg:pb-16"
+          className="absolute inset-0 flex flex-col items-center justify-center pointer-events-auto"
         >
-          <div className="text-center max-w-3xl px-6 flex flex-col items-center">
-            <span className="font-montserrat text-[10px] md:text-xs tracking-[0.4em] uppercase text-zari mb-4 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+            className="mt-32 text-center max-w-5xl px-8 py-12 md:px-16 md:py-16 flex flex-col items-center relative bg-[#20030C]/40 backdrop-blur-3xl backdrop-saturate-150 rounded-3xl mx-4 border border-white/20 shadow-[0_16px_40px_0_rgba(0,0,0,0.8)]"
+          >
+            {/* Liquid Edge Highlight */}
+            <div className="absolute inset-0 rounded-3xl border border-white/10 pointer-events-none" style={{ boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.3)' }} />
+
+            {/* Indian Palace Jharokha Borders */}
+            <div className="absolute top-4 left-4 right-4 bottom-4 border border-[#D9B26D]/40 rounded-2xl pointer-events-none" />
+            
+            {/* Ornate Corners */}
+            <svg className="absolute top-5 left-5 w-10 h-10 text-[#D9B26D] drop-shadow-md" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M 0 0 L 100 0 C 100 50, 50 100, 0 100 Z" stroke="currentColor" fill="currentColor" fillOpacity="0.15" />
+              <path d="M 0 0 L 70 0 C 70 35, 35 70, 0 70 Z" stroke="currentColor" />
+            </svg>
+            <svg className="absolute top-5 right-5 w-10 h-10 text-[#D9B26D] drop-shadow-md" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="2" style={{ transform: 'scaleX(-1)' }}>
+              <path d="M 0 0 L 100 0 C 100 50, 50 100, 0 100 Z" stroke="currentColor" fill="currentColor" fillOpacity="0.15" />
+              <path d="M 0 0 L 70 0 C 70 35, 35 70, 0 70 Z" stroke="currentColor" />
+            </svg>
+            <svg className="absolute bottom-5 left-5 w-10 h-10 text-[#D9B26D] drop-shadow-md" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="2" style={{ transform: 'scaleY(-1)' }}>
+              <path d="M 0 0 L 100 0 C 100 50, 50 100, 0 100 Z" stroke="currentColor" fill="currentColor" fillOpacity="0.15" />
+              <path d="M 0 0 L 70 0 C 70 35, 35 70, 0 70 Z" stroke="currentColor" />
+            </svg>
+            <svg className="absolute bottom-5 right-5 w-10 h-10 text-[#D9B26D] drop-shadow-md" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="2" style={{ transform: 'scale(-1, -1)' }}>
+              <path d="M 0 0 L 100 0 C 100 50, 50 100, 0 100 Z" stroke="currentColor" fill="currentColor" fillOpacity="0.15" />
+              <path d="M 0 0 L 70 0 C 70 35, 35 70, 0 70 Z" stroke="currentColor" />
+            </svg>
+
+            <motion.span 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="font-montserrat text-[11px] md:text-sm tracking-[0.4em] uppercase text-[#D9B26D] mb-5 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] mt-2"
+            >
               PURITY • CRAFTSMANSHIP • HERITAGE
-            </span>
-            <h1 className="font-cinzel text-5xl md:text-6xl text-[#FBF9F6] mb-6 drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)] tracking-wide">
-              An Invitation to Splendor
-            </h1>
-            <p className="font-cormorant italic text-xl md:text-2xl text-[#FBF9F6] mb-12 drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)] max-w-2xl leading-relaxed">
+            </motion.span>
+            
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.7 }}
+              className="font-cinzel text-5xl md:text-7xl lg:text-8xl text-[#FBF9F6] mb-6 drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)] tracking-wider"
+            >
+              AN INVITATION TO SPLENDOR
+            </motion.h1>
+            
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.9 }}
+              className="font-cormorant italic text-2xl md:text-3xl text-[#FBF9F6] mb-10 drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)] max-w-3xl leading-relaxed"
+            >
               Authentic Kanchipuram & Banarasi silks, handpicked for moments that matter.
-            </p>
-            <div className="flex flex-col gap-6 w-full sm:w-auto items-center mt-4">
-              <button className="bg-[#FBF9F6] text-[#1A050A] px-12 py-3.5 rounded-full font-montserrat text-xs tracking-widest font-bold hover:bg-zari transition-colors duration-300 w-full sm:w-auto uppercase shadow-[0_4px_20px_rgba(0,0,0,0.4)] hover:shadow-[0_4px_25px_rgba(217,178,109,0.4)]">
+            </motion.p>
+            
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 1.1 }}
+              className="flex flex-col gap-6 w-full sm:w-auto items-center mt-2 relative z-10"
+            >
+              <button className="bg-gradient-to-r from-[#B8925A] via-[#F1D9A0] to-[#B8925A] text-[#1A050A] px-14 py-4 rounded-full font-montserrat text-sm tracking-widest font-bold hover:scale-105 transition-transform duration-300 w-full sm:w-auto uppercase shadow-[0_4px_20px_rgba(217,178,109,0.4)] hover:shadow-[0_6px_25px_rgba(217,178,109,0.6)]">
                 STEP INSIDE
               </button>
-              <a href="#" className="font-montserrat text-[11px] font-semibold uppercase tracking-[0.2em] text-[#FBF9F6] hover:text-zari transition-colors underline underline-offset-8 decoration-zari drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] self-center">
+              <a href="#" className="font-montserrat text-xs font-semibold uppercase tracking-[0.25em] text-[#FBF9F6] hover:text-[#D9B26D] transition-colors underline underline-offset-8 decoration-[#D9B26D] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] self-center mt-2">
                 The Autumn / Festive Edit
               </a>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </motion.div>
       )}
 
