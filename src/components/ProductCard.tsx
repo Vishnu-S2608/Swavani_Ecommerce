@@ -7,6 +7,7 @@ import { Heart, ShoppingBag, Star, Eye } from "lucide-react";
 import { Product } from "@/lib/data";
 import { useCart } from "@/context/CartContext";
 import { clsx } from "clsx";
+import { getCloudflareImageUrl } from "@/lib/cloudflare";
 
 interface ProductCardProps {
   product: Product;
@@ -19,6 +20,8 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
   const [hovered,    setHovered]    = useState(false);
 
   const discount = Math.round(((product.mrp - product.price) / product.mrp) * 100);
+  const mainImage = getCloudflareImageUrl(product.image, { width: 600, quality: 85 });
+  const hoverImage = getCloudflareImageUrl(product.hoverImage || product.image, { width: 600, quality: 85 });
 
   return (
     <motion.div
@@ -39,7 +42,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
           className="absolute inset-0"
         >
           <Image
-            src={product.image}
+            src={mainImage}
             alt={product.name}
             fill
             className="object-cover object-top"
@@ -53,7 +56,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
           className="absolute inset-0"
         >
           <Image
-            src={product.hoverImage}
+            src={hoverImage}
             alt={`${product.name} alternate`}
             fill
             className="object-cover object-top"

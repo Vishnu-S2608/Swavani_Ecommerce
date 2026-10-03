@@ -3,6 +3,7 @@ import "./globals.css";
 import "./cinematic.css";
 import { cinzel, cormorant, montserrat } from "./fonts";
 import { CartProvider } from "@/context/CartContext";
+import { AuthProvider } from "@/context/AuthContext";
 import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
@@ -35,24 +36,26 @@ export default function RootLayout({
         style={{ background: '#20030C', color: '#F4E8D4', margin: 0, padding: 0 }}
         className="antialiased font-montserrat"
       >
-        <CartProvider>
-          <Toaster
-            position="top-center"
-            toastOptions={{
-              style: {
-                background: "#3A0615",
-                color: "#D9B26D",
-                fontFamily: "var(--font-montserrat)",
-                border: "1px solid rgba(217,178,109,.3)",
-                fontSize: "12px",
-                letterSpacing: ".08em",
-              },
-            }}
-          />
-          <ScrollytellingNavbar />
-          {children}
-          <Footer />
-        </CartProvider>
+        <AuthProvider>
+          <CartProvider>
+            <Toaster
+              position="top-center"
+              toastOptions={{
+                style: {
+                  background: "#3A0615",
+                  color: "#D9B26D",
+                  fontFamily: "var(--font-montserrat)",
+                  border: "1px solid rgba(217,178,109,.3)",
+                  fontSize: "12px",
+                  letterSpacing: ".08em",
+                },
+              }}
+            />
+            <ScrollytellingNavbar />
+            {children}
+            <Footer />
+          </CartProvider>
+        </AuthProvider>
       </body>
     </html>
   );

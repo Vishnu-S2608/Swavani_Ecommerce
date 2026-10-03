@@ -10,6 +10,23 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ["framer-motion", "lucide-react"],
   },
+  devIndicators: {
+    position: "bottom-right",
+  },
+  async redirects() {
+    return [
+      {
+        source: "/:prefix+/admin/login",
+        destination: "/admin/login",
+        permanent: false,
+      },
+      {
+        source: "/:prefix+/admin",
+        destination: "/admin",
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

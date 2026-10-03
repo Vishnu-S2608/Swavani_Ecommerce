@@ -1,9 +1,11 @@
 "use client";
-import { useState, useMemo } from "react";
+
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ProductCard } from "@/components/ProductCard";
 import { SectionHeading } from "@/components/SectionHeading";
-import { products } from "@/lib/data";
+import { products as fallbackProducts, Product } from "@/lib/data";
+import { getActiveProducts } from "@/lib/firestore";
 import { SlidersHorizontal, X } from "lucide-react";
 
 const CATEGORIES = ["All", "Silk Sarees", "Handloom", "Bridal", "Casual"];
@@ -16,14 +18,45 @@ const SORT_OPTIONS = [
 ];
 
 export default function CollectionsPage() {
+  const [productList, setProductList] = useState<Product[]>(fallbackProducts);
   const [category, setCategory] = useState("All");
   const [occasion, setOccasion] = useState("All");
   const [sort,     setSort]     = useState("new");
   const [maxPrice, setMaxPrice] = useState(30000);
   const [filterOpen, setFilterOpen] = useState(false);
 
+  useEffect(() => {
+    getActiveProducts()
+      .then((docs) => {
+        if (docs && docs.length > 0) {
+          const mapped: Product[] = docs.map((d) => ({
+            id: d.id || "",
+            name: d.name,
+            subtitle: d.subtitle,
+            price: d.price,
+            mrp: d.mrp,
+            image: d.imageUrl,
+            hoverImage: d.hoverImageUrl,
+            category: d.category,
+            fabric: d.fabric,
+            occasion: d.occasion,
+            colors: d.colors || [],
+            isNew: Boolean(d.isNew),
+            isBestseller: Boolean(d.isBestseller),
+            rating: d.rating || 5,
+            reviews: d.reviews || 0,
+            description: d.description || "",
+          }));
+          setProductList(mapped);
+        }
+      })
+      .catch((err) => {
+        console.warn("Using offline fallback catalog products", err);
+      });
+  }, []);
+
   const filtered = useMemo(() => {
-    let list = [...products];
+    let list = [...productList];
     if (category !== "All") list = list.filter((p) => p.category === category);
     if (occasion !== "All") list = list.filter((p) => p.occasion === occasion);
     list = list.filter((p) => p.price <= maxPrice);
@@ -32,7 +65,7 @@ export default function CollectionsPage() {
     if (sort === "htl")   list = list.sort((a, b) => b.price - a.price);
     if (sort === "rated") list = list.sort((a, b) => b.rating - a.rating);
     return list;
-  }, [category, occasion, sort, maxPrice]);
+  }, [productList, category, occasion, sort, maxPrice]);
 
   const FilterSidebar = () => (
     <div className="space-y-8">

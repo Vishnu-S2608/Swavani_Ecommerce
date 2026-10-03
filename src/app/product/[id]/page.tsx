@@ -1,13 +1,14 @@
 "use client";
-import { useState, use } from "react";
+import { useState, use, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Star, Heart, Truck, RotateCcw, Shield, Minus, Plus } from "lucide-react";
-import { products } from "@/lib/data";
+import { products, Product } from "@/lib/data";
+import { getProductById } from "@/lib/firestore";
+import { getCloudflareImageUrl } from "@/lib/cloudflare";
 import { useCart } from "@/context/CartContext";
 import { ProductCard } from "@/components/ProductCard";
-import { notFound } from "next/navigation";
 
 export default function ProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -17,10 +18,48 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
   const [wishlisted,    setWishlisted]    = useState(false);
   const [qty, setQty] = useState(1);
 
-  const product = products.find((p) => p.id === id);
-  if (!product) notFound();
+  const staticMatch = products.find((p) => p.id === id);
+  const [product, setProduct] = useState<Product | null>(staticMatch || null);
 
-  const images = [product.image, product.hoverImage, product.image, product.hoverImage]; // Duplicating for demo to show 4 thumbnails
+  useEffect(() => {
+    getProductById(id).then((doc) => {
+      if (doc) {
+        setProduct({
+          id: doc.id || id,
+          name: doc.name,
+          subtitle: doc.subtitle,
+          price: doc.price,
+          mrp: doc.mrp,
+          image: doc.imageUrl,
+          hoverImage: doc.hoverImageUrl,
+          category: doc.category,
+          fabric: doc.fabric,
+          occasion: doc.occasion,
+          colors: doc.colors || [],
+          isNew: Boolean(doc.isNew),
+          isBestseller: Boolean(doc.isBestseller),
+          rating: doc.rating || 5,
+          reviews: doc.reviews || 0,
+          description: doc.description || "",
+        });
+      }
+    }).catch((e) => {
+      console.warn("Could not query Firestore for product", e);
+    });
+  }, [id]);
+
+  if (!product) {
+    return (
+      <div className="min-h-screen bg-[#FBF9F6] pt-36 pb-20 flex flex-col items-center justify-center font-montserrat">
+        <p className="text-xl font-cinzel text-[#3E040E] mb-2">Loading Saree Details…</p>
+        <p className="text-sm text-[#382E2E]/60">Fetching from Swavani catalog</p>
+      </div>
+    );
+  }
+
+  const mainOptimized = getCloudflareImageUrl(product.image, { width: 1200, quality: 90 });
+  const hoverOptimized = getCloudflareImageUrl(product.hoverImage || product.image, { width: 1200, quality: 90 });
+  const images = [mainOptimized, hoverOptimized, mainOptimized, hoverOptimized];
   const related = products.filter((p) => p.id !== product.id && p.category === product.category).slice(0, 4);
 
   return (

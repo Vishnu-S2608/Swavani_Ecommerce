@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { MapPin, Phone, Mail, ArrowUp } from "lucide-react";
 
 const footerLinks = {
@@ -17,6 +18,7 @@ const footerLinks = {
     { name: "Lookbook", href: "/lookbook" },
     { name: "Visit Us", href: "/contact" },
     { name: "Wishlist", href: "/wishlist" },
+    { name: "Admin Portal", href: "/admin/login" },
   ],
   policies: [
     { name: "Shipping Policy", href: "/policies/shipping" },
@@ -30,7 +32,12 @@ const footerLinks = {
 
 
 export function Footer() {
+  const pathname = usePathname();
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
+
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
 
   return (
     <footer
