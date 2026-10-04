@@ -13,12 +13,13 @@ export async function POST(req: Request) {
     // Securely calculate total from database
     let total = 0;
     for (const item of items) {
-      const docSnap = await adminDb.collection("products").doc(item.productId).get();
+      const productId = item.productId || item.id;
+      const docSnap = await adminDb.collection("products").doc(productId).get();
       if (docSnap.exists) {
         const productData = docSnap.data();
         total += (productData?.price || 0) * (item.qty || 1);
       } else {
-        return NextResponse.json({ error: `Product ${item.productId} not found` }, { status: 400 });
+        return NextResponse.json({ error: `Product ${productId} not found` }, { status: 400 });
       }
     }
 

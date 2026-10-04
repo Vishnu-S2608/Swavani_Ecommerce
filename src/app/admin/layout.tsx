@@ -12,6 +12,8 @@ import {
   LogOut,
   ChevronLeft,
   ChevronRight,
+  Menu,
+  X,
 } from "lucide-react";
 import "./admin.css";
 
@@ -27,6 +29,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const router = useRouter();
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     if (pathname === "/admin/login") return;
@@ -34,6 +37,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       router.replace("/admin/login");
     }
   }, [loading, user, isAdmin, router, pathname]);
+
+  // Close mobile menu on navigation
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
 
   // If on admin login page, render children directly without admin shell or loading block
   if (pathname === "/admin/login") {
@@ -56,9 +64,42 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   return (
     <div className="admin-shell">
+      {/* Mobile Header */}
+      <div className="admin-mobile-header">
+        <div className="sidebar-logo-mark">HS</div>
+        <button
+          className="mobile-menu-btn"
+          onClick={() => setMobileMenuOpen(true)}
+          aria-label="Open mobile menu"
+        >
+          <Menu size={24} strokeWidth={2} />
+        </button>
+      </div>
+
+      {/* Sidebar Overlay for Mobile */}
+      {mobileMenuOpen && (
+        <div
+          className="admin-sidebar-overlay"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className={`admin-sidebar ${sidebarOpen ? "open" : "collapsed"}`}>
-        {/* Toggle Collapse Button */}
+      <aside
+        className={`admin-sidebar ${sidebarOpen ? "open" : "collapsed"} ${
+          mobileMenuOpen ? "mobile-open" : ""
+        }`}
+      >
+        {/* Mobile Close Button */}
+        <button
+          className="mobile-close-btn"
+          onClick={() => setMobileMenuOpen(false)}
+          aria-label="Close mobile menu"
+        >
+          <X size={20} strokeWidth={2.5} />
+        </button>
+
+        {/* Toggle Collapse Button (Desktop Only) */}
         <button
           className="sidebar-collapse-btn"
           onClick={() => setSidebarOpen((v) => !v)}
@@ -75,7 +116,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* Brand Header */}
         <div className="sidebar-logo-container">
           <div className="sidebar-logo-mark">HS</div>
-          {sidebarOpen && (
+          {(sidebarOpen || mobileMenuOpen) && (
             <div className="sidebar-logo-text-wrap">
               <span className="sidebar-logo-title">SWAVANI</span>
               <span className="sidebar-logo-sub">Admin Portal</span>
@@ -93,12 +134,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 key={item.href}
                 href={item.href}
                 className={`sidebar-link ${isActive ? "active" : ""}`}
-                title={!sidebarOpen ? item.label : undefined}
+                title={!sidebarOpen && !mobileMenuOpen ? item.label : undefined}
               >
                 <div className="sidebar-icon-wrap">
                   <Icon size={19} strokeWidth={isActive ? 2.2 : 1.8} />
                 </div>
-                {sidebarOpen && <span className="sidebar-label">{item.label}</span>}
+                {(sidebarOpen || mobileMenuOpen) && (
+                  <span className="sidebar-label">{item.label}</span>
+                )}
               </Link>
             );
           })}
@@ -106,7 +149,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
         {/* User Profile & Sign Out Footer */}
         <div className="sidebar-footer">
-          {sidebarOpen && (
+          {(sidebarOpen || mobileMenuOpen) && (
             <div className="sidebar-user-card">
               <div className="sidebar-user-avatar">
                 {userDoc?.displayName?.[0]?.toUpperCase() || "A"}
@@ -128,7 +171,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             title="Sign Out"
           >
             <LogOut size={15} strokeWidth={2} />
-            {sidebarOpen && <span>Sign Out</span>}
+            {(sidebarOpen || mobileMenuOpen) && <span>Sign Out</span>}
           </button>
         </div>
       </aside>

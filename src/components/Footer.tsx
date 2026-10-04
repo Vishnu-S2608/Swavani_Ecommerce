@@ -11,10 +11,7 @@ const footerLinks = {
   ],
   info: [
     { name: "Our Story", href: "/about" },
-    { name: "The Artisans", href: "/about#artisans" },
-    { name: "Lookbook", href: "/lookbook" },
     { name: "Visit Us", href: "/contact" },
-    { name: "Wishlist", href: "/wishlist" },
     { name: "Admin Portal", href: "/admin/login" },
   ],
   policies: [
@@ -60,7 +57,7 @@ export function Footer() {
       {/* Main footer grid */}
       <div className="relative py-16">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-14">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
 
             {/* Brand column */}
             <div className="lg:col-span-2">
@@ -134,24 +131,7 @@ export function Footer() {
               </ul>
             </div>
 
-            {/* Policies */}
-            <div>
-              <h4 style={{ fontFamily: "var(--font-cinzel), serif", fontSize: "11px", letterSpacing: ".2em", textTransform: "uppercase", color: "#D9B26D", fontWeight: 600, marginBottom: "14px" }}>Policies</h4>
-              <ul className="space-y-2.5">
-                {footerLinks.policies.map((l) => (
-                  <li key={l.name}>
-                    <Link
-                      href={l.href}
-                      style={{ fontFamily: "var(--font-montserrat), sans-serif", fontSize: "11px", color: "rgba(244,232,212,.6)", textDecoration: "none", letterSpacing: ".06em", transition: "color .25s" }}
-                      onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#D9B26D")}
-                      onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "rgba(244,232,212,.6)")}
-                    >
-                      {l.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+
           </div>
         </div>
       </div>

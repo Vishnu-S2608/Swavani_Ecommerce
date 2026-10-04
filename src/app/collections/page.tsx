@@ -155,13 +155,6 @@ export default function CollectionsPage() {
 
       <div className="max-w-7xl mx-auto px-6 mt-12">
         <div className="flex gap-10">
-          {/* Desktop Sidebar */}
-          <aside className="hidden lg:block w-64 flex-shrink-0">
-            <div className="sticky top-28 bg-[#FBF9F6] rounded-2xl p-8 shadow-sm border border-[#96742A]/20">
-              <FilterSidebar />
-            </div>
-          </aside>
-
           {/* Main */}
           <div className="flex-1">
             {/* Top bar */}
@@ -170,13 +163,6 @@ export default function CollectionsPage() {
                 Showing <span className="text-[#3E040E]">{filtered.length}</span> sarees
               </p>
               <div className="flex items-center gap-4">
-                {/* Mobile filter toggle */}
-                <button
-                  onClick={() => setFilterOpen(true)}
-                  className="lg:hidden flex items-center gap-2 px-6 py-2.5 bg-[#FBF9F6] border border-[#96742A]/30 rounded-full text-xs font-montserrat font-bold text-[#3E040E] uppercase tracking-widest hover:bg-[#EBDCC5]"
-                >
-                  <SlidersHorizontal size={14} /> Filter
-                </button>
                 {/* Sort */}
                 <select
                   value={sort}
@@ -221,31 +207,6 @@ export default function CollectionsPage() {
         </div>
       </div>
 
-      {/* Mobile filter drawer */}
-      <AnimatePresence>
-        {filterOpen && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-[#3E040E]/40 backdrop-blur-sm z-[60] lg:hidden"
-              onClick={() => setFilterOpen(false)}
-            />
-            <motion.div
-              initial={{ x: "-100%" }} animate={{ x: 0 }} exit={{ x: "-100%" }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="fixed inset-y-0 left-0 w-4/5 max-w-sm bg-[#F4E8D4] shadow-2xl z-[70] p-6 overflow-y-auto lg:hidden"
-            >
-              <div className="flex items-center justify-between mb-8 border-b border-[#96742A]/20 pb-4">
-                <h2 className="font-cinzel text-xl font-semibold text-[#3E040E]">Filters</h2>
-                <button onClick={() => setFilterOpen(false)} className="p-2 text-[#3E040E]/60 hover:text-[#3E040E] bg-[#EBDCC5] rounded-full">
-                  <X size={20} />
-                </button>
-              </div>
-              <FilterSidebar />
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
     </div>
   );
 }

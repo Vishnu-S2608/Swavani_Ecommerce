@@ -167,7 +167,21 @@ export function Navbar() {
 
           {/* ── RIGHT SECTION (Icons) ── */}
           <div className="flex items-center gap-4 lg:gap-7 xl:gap-10 relative z-10">
-            {/* ACTION ICONS REMOVED AS REQUESTED */}
+            <Link
+              href="/cart"
+              className="relative p-2 transition-colors"
+              style={{ color: "#D9B26D" }}
+              aria-label="Cart"
+              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#F4E8D4")}
+              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#D9B26D")}
+            >
+              <ShoppingBag size={20} />
+              {count > 0 && (
+                <span className="absolute -top-1 -right-1 bg-[#D9B26D] text-[#3A0615] text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                  {count}
+                </span>
+              )}
+            </Link>
           </div>
         </div>
 

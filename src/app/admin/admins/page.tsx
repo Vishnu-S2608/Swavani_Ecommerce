@@ -352,7 +352,10 @@ export default function AdminTeamPage() {
         
         .info-note { font-size: 13px; color: #6C554D; margin-top: 1.5rem; padding: 0.85rem 1.15rem; background: #FFFFFF; border: 1px solid rgba(180,120,60,0.18); border-radius: 10px; box-shadow: 0 2px 8px rgba(90,50,20,0.02); }
         
-        @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+        @media (max-width: 600px) { 
+          .form-row { grid-template-columns: 1fr; } 
+          .admin-card { flex-wrap: wrap; }
+        }
       `}</style>
     </div>
   );

@@ -80,31 +80,15 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12 pt-4">
         <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 relative">
           
-          {/* Left: Images Section (Thumbnails + Main) */}
-          <div className="w-full lg:w-[55%] flex flex-col-reverse lg:flex-row gap-4 lg:h-[75vh] lg:sticky lg:top-24">
-            
-            {/* Thumbnails */}
-            <div className="flex lg:flex-col gap-3 overflow-x-auto lg:overflow-y-auto no-scrollbar lg:w-20 flex-shrink-0 pb-2 lg:pb-0">
-              {images.map((img, i) => (
-                <button
-                  key={i}
-                  onClick={() => setSelectedImage(i)}
-                  className={`relative w-20 aspect-[2/3] flex-shrink-0 transition-all ${
-                    selectedImage === i ? "opacity-100 ring-1 ring-[#3E040E] ring-offset-2 ring-offset-[#FBF9F6]" : "opacity-50 hover:opacity-100"
-                  }`}
-                >
-                  <Image src={img} alt={`View ${i + 1}`} fill className="object-cover object-top" sizes="80px" />
-                </button>
-              ))}
-            </div>
-
+          {/* Left: Main Image Section */}
+          <div className="w-full lg:w-[55%] lg:h-[75vh] lg:sticky lg:top-24">
             {/* Main Image */}
             <motion.div
               key={selectedImage}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.3 }}
-              className="flex-1 relative aspect-[2/3] md:aspect-auto bg-[#EBDCC5]"
+              className="w-full h-full relative aspect-[2/3] lg:aspect-auto bg-[#EBDCC5]"
             >
               <Image
                 src={images[selectedImage]}
@@ -178,20 +162,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                   ))}
                 </div>
 
-                {/* Color Swatches — from product data */}
-                <div className="mb-8">
-                  <p className="text-[9px] font-bold text-[#382E2E]/50 uppercase tracking-[0.2em] mb-3">Available Colours</p>
-                  <div className="flex gap-4">
-                    {product.colors.map((color, i) => (
-                      <button
-                        key={i}
-                        title={color}
-                        className="relative w-10 h-10 rounded-full border-2 border-[#EBDCC5] hover:scale-110 transition-transform"
-                        style={{ backgroundColor: color }}
-                      />
-                    ))}
-                  </div>
-                </div>
+
 
                 {/* Quantity */}
                 <div className="mb-10">

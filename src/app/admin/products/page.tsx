@@ -170,15 +170,7 @@ export default function AdminProductsPage() {
     }
   };
 
-  const addColor = () => {
-    if (!formData.colors.includes(colorInput)) {
-      setFormData({ ...formData, colors: [...formData.colors, colorInput] });
-    }
-  };
 
-  const removeColor = (hex: string) => {
-    setFormData({ ...formData, colors: formData.colors.filter((c) => c !== hex) });
-  };
 
   // Filter products
   const filtered = products.filter((p) => {
@@ -322,11 +314,7 @@ export default function AdminProductsPage() {
                     )}
                   </div>
 
-                  <div className="card-palette">
-                    {product.colors?.map((c) => (
-                      <span key={c} className="color-dot" style={{ background: c }} title={c} />
-                    ))}
-                  </div>
+
 
                   <div className="card-actions">
                     <button
@@ -406,19 +394,7 @@ export default function AdminProductsPage() {
                   />
                 </div>
 
-                <div className="form-group">
-                  <label>Category *</label>
-                  <select
-                    value={formData.category}
-                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  >
-                    {CATEGORIES.map((c) => (
-                      <option key={c} value={c}>
-                        {c}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+
 
                 <div className="form-group">
                   <label>Fabric Type *</label>
@@ -434,19 +410,7 @@ export default function AdminProductsPage() {
                   </select>
                 </div>
 
-                <div className="form-group">
-                  <label>Occasion *</label>
-                  <select
-                    value={formData.occasion}
-                    onChange={(e) => setFormData({ ...formData, occasion: e.target.value })}
-                  >
-                    {OCCASIONS.map((o) => (
-                      <option key={o} value={o}>
-                        {o}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+
 
                 <div className="form-group">
                   <label>Inventory Stock Units</label>
@@ -477,44 +441,7 @@ export default function AdminProductsPage() {
                   />
                 </div>
 
-                {/* Color swatches */}
-                <div className="form-group full-width">
-                  <label>Color Swatches</label>
-                  <div className="color-editor">
-                    <div className="color-preview-chips">
-                      {formData.colors.map((c) => (
-                        <span key={c} className="color-chip">
-                          <span className="chip-circle" style={{ background: c }} />
-                          <span className="chip-hex">{c}</span>
-                          <button
-                            type="button"
-                            onClick={() => removeColor(c)}
-                            className="chip-remove"
-                          >
-                            ×
-                          </button>
-                        </span>
-                      ))}
-                    </div>
-                    <div className="color-adder">
-                      <input
-                        type="color"
-                        value={colorInput}
-                        onChange={(e) => setColorInput(e.target.value)}
-                        className="color-picker-input"
-                      />
-                      <input
-                        type="text"
-                        value={colorInput}
-                        onChange={(e) => setColorInput(e.target.value)}
-                        className="color-hex-input"
-                      />
-                      <button type="button" onClick={addColor} className="btn-add-color">
-                        + Add Color
-                      </button>
-                    </div>
-                  </div>
-                </div>
+
 
                 {/* Toggles */}
                 <div className="form-group full-width form-checkboxes">
@@ -655,18 +582,7 @@ export default function AdminProductsPage() {
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #B4783C; box-shadow: 0 0 0 3px rgba(180,120,60,0.1); }
         .form-group select option { background: #FFFFFF; color: #2D1E1E; }
 
-        /* Color editor */
-        .color-editor { display: flex; flex-direction: column; gap: 0.75rem; }
-        .color-preview-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-        .color-chip { display: flex; align-items: center; gap: 0.4rem; background: #FFFFFF; border: 1px solid rgba(180,120,60,0.2); border-radius: 6px; padding: 0.25rem 0.5rem; }
-        .chip-circle { width: 14px; height: 14px; border-radius: 50%; }
-        .chip-hex { font-size: 11px; font-family: monospace; color: #4A352F; font-weight: 600; }
-        .chip-remove { background: transparent; border: none; color: #8C746A; cursor: pointer; font-size: 14px; padding: 0 2px; }
-        .chip-remove:hover { color: #C62828; }
-        .color-adder { display: flex; align-items: center; gap: 0.5rem; }
-        .color-picker-input { width: 36px; height: 36px; padding: 0; border: none; border-radius: 6px; cursor: pointer; background: transparent; }
-        .color-hex-input { width: 90px; text-transform: uppercase; }
-        .btn-add-color { background: #FFFFFF; border: 1px solid rgba(180,120,60,0.3); color: #3A0A18; font-size: 12px; font-weight: 600; border-radius: 6px; padding: 0.6rem 0.85rem; cursor: pointer; }
+
 
         .form-checkboxes { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 0.5rem; }
         .checkbox-label { display: flex; align-items: center; gap: 0.5rem; font-size: 13px; color: #3A0A18; font-weight: 600; cursor: pointer; }

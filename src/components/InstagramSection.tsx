@@ -79,26 +79,6 @@ export function InstagramSection() {
                 Silk in Real Life
               </h2>
             </div>
-            <motion.a
-              href="/lookbook"
-              style={{
-                fontFamily: "var(--font-montserrat), sans-serif",
-                fontSize: "10px",
-                letterSpacing: ".18em",
-                textTransform: "uppercase",
-                color: "#3A0615",
-                textDecoration: "none",
-                fontWeight: 600,
-                display: "flex",
-                alignItems: "center",
-                gap: "6px",
-                whiteSpace: "nowrap",
-              }}
-              whileHover={{ x: 4, color: "#7D1A38" }}
-              transition={{ duration: 0.2 }}
-            >
-              Open Lookbook →
-            </motion.a>
           </motion.div>
 
           {/* Masonry gallery */}
