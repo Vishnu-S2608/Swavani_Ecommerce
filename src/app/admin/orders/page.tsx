@@ -1,11 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getAllOrders, updateOrderStatus, OrderDoc, OrderStatus } from "@/lib/firestore";
+import { getAllOrders, updateOrderStatus, deleteOrder, OrderDoc, OrderStatus } from "@/lib/firestore";
 
 const STATUS_OPTIONS: { label: string; value: OrderStatus; color: string }[] = [
-  { label: "Pending", value: "pending", color: "#f59e0b" },
-  { label: "Paid", value: "paid", color: "#10b981" },
   { label: "Processing", value: "processing", color: "#6366f1" },
   { label: "Shipped", value: "shipped", color: "#3b82f6" },
   { label: "Delivered", value: "delivered", color: "#22c55e" },
@@ -20,8 +18,9 @@ export default function AdminOrdersPage() {
   const [selectedOrder, setSelectedOrder] = useState<OrderDoc | null>(null);
   const [updating, setUpdating] = useState(false);
   const [trackingInput, setTrackingInput] = useState("");
-  const [statusInput, setStatusInput] = useState<OrderStatus>("pending");
+  const [statusInput, setStatusInput] = useState<OrderStatus>("processing");
   const [feedback, setFeedback] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   const loadOrders = async () => {
     setLoading(true);
@@ -63,6 +62,24 @@ export default function AdminOrdersPage() {
       alert("Failed to update order");
     } finally {
       setUpdating(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!selectedOrder?.id) return;
+    if (!confirm("Are you sure you want to permanently delete this order?")) return;
+    setDeleting(true);
+    try {
+      await deleteOrder(selectedOrder.id);
+      setFeedback("Order deleted successfully.");
+      setTimeout(() => setFeedback(null), 3000);
+      setSelectedOrder(null);
+      await loadOrders();
+    } catch (err) {
+      console.error(err);
+      setFeedback("Failed to delete order.");
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -263,20 +280,34 @@ export default function AdminOrdersPage() {
                     </div>
 
                     <div className="form-group">
-                      <label>Courier Tracking Number</label>
-                      <input
-                        type="text"
-                        placeholder="e.g. BLUEDART-987654321"
+                      <label>Paragraph</label>
+                      <textarea
+                        rows={3}
+                        placeholder="Add paragraph or notes here..."
                         value={trackingInput}
                         onChange={(e) => setTrackingInput(e.target.value)}
                         className="form-input"
+                        style={{ resize: "vertical", padding: "8px 12px" }}
                       />
                     </div>
                   </div>
 
-                  <button type="submit" disabled={updating} className="btn-save-status">
-                    {updating ? "Saving…" : "Save Status & Tracking"}
-                  </button>
+                  <div style={{ display: "flex", gap: "10px", marginTop: "16px" }}>
+                    <button type="submit" disabled={updating} className="btn-save-status" style={{ flex: 1 }}>
+                      {updating ? "Saving…" : "Save Status & Tracking"}
+                    </button>
+                    {selectedOrder.status === "delivered" && (
+                      <button
+                        type="button"
+                        onClick={handleDelete}
+                        disabled={deleting}
+                        className="btn-save-status"
+                        style={{ background: "#ef4444", color: "white", flex: 1 }}
+                      >
+                        {deleting ? "Deleting…" : "Delete Order"}
+                      </button>
+                    )}
+                  </div>
                 </form>
               </div>
 

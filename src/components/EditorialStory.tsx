@@ -288,17 +288,6 @@ export function EditorialStory() {
               animate={rightInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.85 }}
             >
-              <motion.div
-                className="w-14 h-14 flex items-center justify-center flex-shrink-0"
-                whileHover={{ rotate: 15, scale: 1.1 }}
-                transition={{ type: "spring", stiffness: 300 }}
-                style={{
-                  border: "1px solid rgba(217,178,109,.45)",
-                  background: "rgba(58,6,21,.6)",
-                }}
-              >
-                <span style={{ fontSize: "24px" }}>✦</span>
-              </motion.div>
               <div>
                 <div style={{ fontFamily: "var(--font-cinzel), serif", fontSize: "12px", letterSpacing: ".14em", color: "#D9B26D", fontWeight: 600, textTransform: "uppercase" }}>
                   Silk Mark Certified

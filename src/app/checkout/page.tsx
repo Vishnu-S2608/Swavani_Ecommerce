@@ -84,11 +84,11 @@ export default function CheckoutPage() {
         return;
       }
 
-      // 2. Call our API to create an order
-      const response = await fetch("/api/razorpay", {
+      // 2. Call our secure API to create an order
+      const response = await fetch("/api/razorpay/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: finalTotal }),
+        body: JSON.stringify({ items }),
       });
       const orderData = await response.json();
 
@@ -104,9 +104,9 @@ export default function CheckoutPage() {
         image: "/logo.png",
         order_id: orderData.id,
         handler: async function (response: any) {
-          // 4. On success, create the order in Firestore
+          // 4. On success, verify payment and create the order securely on server
           try {
-            const newOrder: Omit<OrderDoc, "id" | "createdAt" | "updatedAt"> = {
+            const orderData = {
               userId: "anonymous", 
               userEmail: formData.email,
               userName: formData.name,
@@ -120,7 +120,6 @@ export default function CheckoutPage() {
               subtotal: total,
               shipping: shippingCost,
               total: finalTotal,
-              status: "paid", // updating status
               shippingAddress: {
                 name: formData.name,
                 phone: formData.phone,
@@ -130,12 +129,23 @@ export default function CheckoutPage() {
                 state: formData.state,
                 pincode: formData.pincode,
               },
-              razorpayPaymentId: response.razorpay_payment_id,
-              razorpayOrderId: response.razorpay_order_id,
-              razorpaySignature: response.razorpay_signature,
             };
 
-            const id = await createOrder(newOrder);
+            const verifyRes = await fetch("/api/razorpay/verify-payment", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_signature: response.razorpay_signature,
+                orderData,
+              })
+            });
+
+            const verifyData = await verifyRes.json();
+            if (verifyData.error) throw new Error(verifyData.error);
+            
+            const id = verifyData.orderId;
             
             const pData = {
               orderId: id,

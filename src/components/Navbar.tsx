@@ -5,69 +5,64 @@ import { Search, Heart, ShoppingBag, Menu, X, ChevronDown } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { motion, AnimatePresence } from "framer-motion";
 
+import { usePathname } from "next/navigation";
+
 type NavLink = { label: string; href: string; sub?: { name: string; href: string }[] };
 
-const navLinks: NavLink[] = [
+const leftLinks: NavLink[] = [
   { label: "Home",        href: "/" },
   { label: "Shop",        href: "/collections" },
-  { label: "Lookbook",    href: "/lookbook" },
-  { label: "Our Story",   href: "/about" },
-  { label: "Visit Us",    href: "/contact" },
 ];
 
-/* SVG lotus mark for logo */
-function LotusArch({ size = 44 }: { size?: number }) {
-  return (
-    <svg
-      width={size}
-      height={size * 1.1}
-      viewBox="-5 -12 150 128"
-      fill="none"
-      className="overflow-visible"
-    >
-      <g stroke="#D9B26D" strokeWidth="2.2" strokeLinejoin="round">
-        <path d="M8,106 V64 C8,52 18,48 26,42 C36,35 50,35 58,27 C63,22 66,20 70,15 C74,20 77,22 82,27 C90,35 104,35 114,42 C122,48 132,52 132,64 V106 Z" />
-      </g>
-      <g fill="#D9B26D" stroke="#3A0615" strokeWidth="1">
-        {/* Inner petal set */}
-        <ellipse cx="70" cy="11" rx="3" ry="7" />
-        <ellipse cx="70" cy="11" rx="3" ry="7" transform="rotate(72 70 15)" />
-        <ellipse cx="70" cy="11" rx="3" ry="7" transform="rotate(144 70 15)" />
-        <ellipse cx="70" cy="11" rx="3" ry="7" transform="rotate(216 70 15)" />
-        <ellipse cx="70" cy="11" rx="3" ry="7" transform="rotate(288 70 15)" />
-        <circle cx="70" cy="15" r="2.5" fill="#3A0615" />
-      </g>
-      <g fill="#D9B26D">
-        <circle cx="34" cy="38" r="2.2" />
-        <circle cx="106" cy="38" r="2.2" />
-      </g>
-    </svg>
-  );
-}
+const rightLinks: NavLink[] = [
+  { label: "Our Story",    href: "/about" },
+  { label: "Visit Us",     href: "/contact" },
+];
+
+const navLinks: NavLink[] = [...leftLinks, ...rightLinks];
 
 export function Navbar() {
+  const pathname = usePathname();
+  
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
+  
   const { count } = useCart();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
+  
+  const isHome = pathname === "/";
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60);
-    window.addEventListener("scroll", onScroll);
+    const onScroll = () => {
+      // On home page, we only show this navbar after scrolling past the hero (approx 85vh)
+      const threshold = isHome ? window.innerHeight * 0.85 : 60;
+      setScrolled(window.scrollY > threshold);
+    };
+    
+    // Check immediately in case we load scrolled down
+    onScroll();
+    
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [isHome]);
+
+  // Hide the global navbar completely if on home and not scrolled, 
+  // because MahiraHeroBanner provides the initial top navbar.
+  const isHidden = isHome && !scrolled;
 
   return (
     <>
       {/* ── MAIN HEADER ── */}
       <header
-        className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isHidden ? 'opacity-0 pointer-events-none translate-y-[-100%]' : 'opacity-100 pointer-events-auto translate-y-0'}`}
         style={{
           background: scrolled
             ? "linear-gradient(180deg, #3A0615 0%, #4a0d20 100%)"
             : "linear-gradient(180deg, rgba(58,6,21,.95) 0%, rgba(92,15,39,.85) 100%)",
-          borderBottom: "1px solid rgba(184,146,90,.25)",
           boxShadow: scrolled ? "0 4px 32px rgba(58,6,21,.55)" : "none",
           backdropFilter: scrolled ? "blur(10px)" : "none",
         }}
@@ -80,168 +75,10 @@ export function Navbar() {
           }}
         />
 
-        <div className="max-w-8xl mx-auto px-5 sm:px-8 lg:px-14 h-20 flex items-center justify-between">
+        <div className="relative max-w-8xl mx-auto px-5 sm:px-8 lg:px-14 h-24 flex items-center justify-between">
 
-          {/* ── LOGO ── */}
-          <Link href="/" className="flex items-center gap-3 group shrink-0" aria-label="Swavani — House of Silk">
-            <LotusArch size={40} />
-            <div className="flex flex-col">
-              <span
-                style={{
-                  fontFamily: "var(--font-cinzel), Georgia, serif",
-                  fontSize: "clamp(16px, 2.2vw, 22px)",
-                  letterSpacing: ".2em",
-                  fontWeight: 700,
-                  color: "#F4E8D4",
-                  transition: "color .3s",
-                  lineHeight: 1,
-                }}
-                className="group-hover:text-[#D9B26D]"
-              >
-                SWAVANI
-              </span>
-              <span
-                style={{
-                  fontFamily: "var(--font-montserrat), sans-serif",
-                  fontSize: "7px",
-                  letterSpacing: ".32em",
-                  textTransform: "uppercase",
-                  color: "#D9B26D",
-                  fontWeight: 600,
-                  marginTop: "4px",
-                }}
-              >
-                House of Silk &amp; Heritage
-              </span>
-            </div>
-          </Link>
-
-          {/* ── NAV LINKS ── */}
-          <nav className="hidden lg:flex items-center gap-7 xl:gap-10">
-            {navLinks.map((link) => (
-              <div
-                key={link.label}
-                className="relative py-2"
-                onMouseEnter={() => link.sub && setActiveDropdown(link.label)}
-                onMouseLeave={() => setActiveDropdown(null)}
-              >
-                <Link
-                  href={link.href}
-                  className="flex items-center gap-1 group/nav"
-                  style={{
-                    fontFamily: "var(--font-montserrat), sans-serif",
-                    fontSize: "11px",
-                    fontWeight: 600,
-                    letterSpacing: ".1em",
-                    textTransform: "uppercase",
-                    color: "#D9B26D",
-                    textDecoration: "none",
-                    transition: "color .25s",
-                  }}
-                  onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#F4E8D4")}
-                  onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#D9B26D")}
-                >
-                  {link.label}
-                  {link.sub && <ChevronDown size={10} className="opacity-60 transition-transform group-hover/nav:rotate-180" />}
-                </Link>
-
-                {/* Dropdown */}
-                {link.sub && (
-                  <AnimatePresence>
-                    {activeDropdown === link.label && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 6 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 6 }}
-                        transition={{ duration: 0.15 }}
-                        style={{
-                          position: "absolute",
-                          top: "100%",
-                          left: 0,
-                          minWidth: "220px",
-                          background: "linear-gradient(180deg, #3A0615, #5C0F27)",
-                          border: "1px solid rgba(184,146,90,.35)",
-                          boxShadow: "0 20px 60px rgba(58,6,21,.5)",
-                          zIndex: 60,
-                          padding: "8px",
-                        }}
-                      >
-                        {/* Gold top line */}
-                        <div style={{ height: "1px", background: "linear-gradient(90deg, transparent, #D9B26D, transparent)", marginBottom: "6px" }} />
-                        {link.sub!.map((s) => (
-                          <Link
-                            key={s.name}
-                            href={s.href}
-                            className="block px-4 py-2.5 transition-all"
-                            style={{
-                              fontFamily: "var(--font-montserrat), sans-serif",
-                              fontSize: "11px",
-                              fontWeight: 500,
-                              letterSpacing: ".1em",
-                              textTransform: "uppercase",
-                              color: "#F4E8D4",
-                              textDecoration: "none",
-                            }}
-                            onMouseEnter={(e) => {
-                              (e.currentTarget as HTMLElement).style.color = "#D9B26D";
-                              (e.currentTarget as HTMLElement).style.background = "rgba(92,15,39,.6)";
-                            }}
-                            onMouseLeave={(e) => {
-                              (e.currentTarget as HTMLElement).style.color = "#F4E8D4";
-                              (e.currentTarget as HTMLElement).style.background = "transparent";
-                            }}
-                          >
-                            {s.name}
-                          </Link>
-                        ))}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                )}
-              </div>
-            ))}
-          </nav>
-
-          {/* ── ACTION ICONS ── */}
-          <div className="flex items-center gap-2 sm:gap-4 shrink-0">
-            <button
-              onClick={() => setSearchOpen(true)}
-              className="p-2 transition-colors"
-              style={{ color: "#D9B26D" }}
-              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#F4E8D4")}
-              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#D9B26D")}
-              aria-label="Search"
-            >
-              <Search size={19} />
-            </button>
-            <Link
-              href="/wishlist"
-              className="p-2 transition-colors"
-              style={{ color: "#D9B26D" }}
-              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#F4E8D4")}
-              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#D9B26D")}
-              aria-label="Wishlist"
-            >
-              <Heart size={19} />
-            </Link>
-            <Link
-              href="/cart"
-              className="relative p-2 transition-colors"
-              style={{ color: "#D9B26D" }}
-              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#F4E8D4")}
-              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#D9B26D")}
-              aria-label="Cart"
-            >
-              <ShoppingBag size={19} />
-              {count > 0 && (
-                <span
-                  className="absolute top-1 right-1 flex items-center justify-center text-[9px] font-bold w-4 h-4 rounded-full"
-                  style={{ background: "#D9B26D", color: "#3A0615" }}
-                >
-                  {count}
-                </span>
-              )}
-            </Link>
+          {/* ── LEFT SECTION (Mobile Menu) ── */}
+          <div className="flex items-center gap-4 relative z-10">
             <button
               onClick={() => setMobileOpen(true)}
               className="lg:hidden p-2 transition-colors"
@@ -250,6 +87,87 @@ export function Navbar() {
             >
               <Menu size={22} />
             </button>
+          </div>
+
+          {/* ── CENTERED NAV & LOGO ── */}
+          <div className="flex items-center justify-center w-full absolute inset-0 z-0 pointer-events-none">
+            <div className="hidden lg:flex items-center justify-end gap-10 xl:gap-14 w-1/3 pr-10 pointer-events-auto">
+              {leftLinks.map((link) => (
+                <div
+                  key={link.label}
+                  className="relative py-2"
+                  onMouseEnter={() => link.sub && setActiveDropdown(link.label)}
+                  onMouseLeave={() => setActiveDropdown(null)}
+                >
+                  <Link
+                    href={link.href}
+                    className="flex items-center gap-1 group/nav"
+                    style={{
+                      fontFamily: "var(--font-montserrat), sans-serif",
+                      fontSize: "11px",
+                      fontWeight: 500,
+                      letterSpacing: ".18em",
+                      textTransform: "uppercase",
+                      color: "#F4E8D4",
+                      textDecoration: "none",
+                      transition: "color .25s",
+                    }}
+                    onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#F4E8D4")}
+                    onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#D9B26D")}
+                  >
+                    {link.label}
+                  </Link>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex items-center justify-center shrink-0 pointer-events-auto">
+              <Link 
+                href="/" 
+                className="flex items-center justify-center relative z-10" 
+                aria-label="Swavani — House of Silk"
+              >
+                <div id="main-nav-logo" className="premium-logo-container transition-transform duration-500 group-hover:scale-105">
+                  <div className="premium-logo-base" />
+                  <div className="premium-logo-shine" />
+                </div>
+              </Link>
+            </div>
+
+            <div className="hidden lg:flex items-center justify-start gap-10 xl:gap-14 w-1/3 pl-10 pointer-events-auto">
+              {rightLinks.map((link) => (
+                <div
+                  key={link.label}
+                  className="relative py-2"
+                  onMouseEnter={() => link.sub && setActiveDropdown(link.label)}
+                  onMouseLeave={() => setActiveDropdown(null)}
+                >
+                  <Link
+                    href={link.href}
+                    className="flex items-center gap-1 group/nav"
+                    style={{
+                      fontFamily: "var(--font-montserrat), sans-serif",
+                      fontSize: "11px",
+                      fontWeight: 500,
+                      letterSpacing: ".18em",
+                      textTransform: "uppercase",
+                      color: "#F4E8D4",
+                      textDecoration: "none",
+                      transition: "color .25s",
+                    }}
+                    onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#F4E8D4")}
+                    onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#D9B26D")}
+                  >
+                    {link.label}
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── RIGHT SECTION (Icons) ── */}
+          <div className="flex items-center gap-4 lg:gap-7 xl:gap-10 relative z-10">
+            {/* ACTION ICONS REMOVED AS REQUESTED */}
           </div>
         </div>
 

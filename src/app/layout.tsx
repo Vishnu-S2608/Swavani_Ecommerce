@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import "./cinematic.css";
 import { cinzel, cormorant, montserrat } from "./fonts";
 import { CartProvider } from "@/context/CartContext";
 import { AuthProvider } from "@/context/AuthContext";
@@ -19,7 +18,7 @@ export const metadata: Metadata = {
   },
 };
 
-import { ScrollytellingNavbar } from "@/components/ScrollytellingNavbar";
+import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
 export default function RootLayout({
@@ -30,10 +29,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${cinzel.variable} ${cormorant.variable} ${montserrat.variable}`}
+      className="font-cinzel font-cormorant font-montserrat"
     >
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+      </head>
       <body
-        style={{ background: '#20030C', color: '#F4E8D4', margin: 0, padding: 0 }}
+        style={{ background: '#111a14', color: '#F4E8D4', margin: 0, padding: 0 }}
         className="antialiased font-montserrat"
       >
         <AuthProvider>
@@ -51,7 +55,7 @@ export default function RootLayout({
                 },
               }}
             />
-            <ScrollytellingNavbar />
+            <Navbar />
             {children}
             <Footer />
           </CartProvider>

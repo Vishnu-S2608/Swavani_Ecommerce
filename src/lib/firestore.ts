@@ -214,6 +214,10 @@ export async function updateOrderStatus(
   });
 }
 
+export async function deleteOrder(id: string): Promise<void> {
+  await deleteDoc(doc(db, ORDERS, id));
+}
+
 // ─── Users ────────────────────────────────────────────────────────────────────
 
 export async function createUserDoc(

@@ -9,7 +9,7 @@ export interface CartItem extends Product {
 
 export interface CartContextType {
   items: CartItem[];
-  addToCart: (product: Product) => void;
+  addToCart: (product: Product, quantity?: number) => void;
   removeFromCart: (id: string) => void;
   updateQty: (id: string, qty: number) => void;
   clearCart: () => void;
@@ -52,14 +52,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }, [wishlist]);
 
-  const addToCart = (product: Product) => {
+  const addToCart = (product: Product, quantity: number = 1) => {
     const exists = items.find((i) => i.id === product.id);
     if (exists) {
       toast.success("Quantity updated in your bag!");
-      setItems((prev) => prev.map((i) => (i.id === product.id ? { ...i, qty: i.qty + 1 } : i)));
+      setItems((prev) => prev.map((i) => (i.id === product.id ? { ...i, qty: i.qty + quantity } : i)));
     } else {
       toast.success(`${product.name} added to your bag! ✨`);
-      setItems((prev) => [...prev, { ...product, qty: 1 }]);
+      setItems((prev) => [...prev, { ...product, qty: quantity }]);
     }
   };
 

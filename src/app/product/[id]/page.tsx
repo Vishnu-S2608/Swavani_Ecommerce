@@ -2,6 +2,7 @@
 import { useState, use, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Star, Heart, Truck, RotateCcw, Shield, Minus, Plus } from "lucide-react";
 import { products, Product } from "@/lib/data";
@@ -12,6 +13,7 @@ import { ProductCard } from "@/components/ProductCard";
 
 export default function ProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
+  const router = useRouter();
 
   const { addToCart } = useCart();
   const [selectedImage, setSelectedImage] = useState(0);
@@ -79,15 +81,15 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
         <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 relative">
           
           {/* Left: Images Section (Thumbnails + Main) */}
-          <div className="w-full lg:w-[55%] flex flex-col-reverse md:flex-row gap-4 h-[60vh] md:h-[75vh] sticky top-24">
+          <div className="w-full lg:w-[55%] flex flex-col-reverse lg:flex-row gap-4 lg:h-[75vh] lg:sticky lg:top-24">
             
             {/* Thumbnails */}
-            <div className="flex md:flex-col gap-3 overflow-x-auto md:overflow-y-auto no-scrollbar md:w-20 flex-shrink-0">
+            <div className="flex lg:flex-col gap-3 overflow-x-auto lg:overflow-y-auto no-scrollbar lg:w-20 flex-shrink-0 pb-2 lg:pb-0">
               {images.map((img, i) => (
                 <button
                   key={i}
                   onClick={() => setSelectedImage(i)}
-                  className={`relative w-20 aspect-[3/4] flex-shrink-0 transition-all ${
+                  className={`relative w-20 aspect-[2/3] flex-shrink-0 transition-all ${
                     selectedImage === i ? "opacity-100 ring-1 ring-[#3E040E] ring-offset-2 ring-offset-[#FBF9F6]" : "opacity-50 hover:opacity-100"
                   }`}
                 >
@@ -102,7 +104,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.3 }}
-              className="flex-1 relative aspect-[3/4] md:aspect-auto bg-[#EBDCC5]"
+              className="flex-1 relative aspect-[2/3] md:aspect-auto bg-[#EBDCC5]"
             >
               <Image
                 src={images[selectedImage]}
@@ -215,7 +217,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => addToCart(product)}
+                    onClick={() => addToCart(product, qty)}
                     className="flex-1 py-4 px-6 bg-[#3E040E] text-[#FBF9F6] font-montserrat font-semibold text-xs tracking-[0.2em] uppercase transition-colors hover:bg-black rounded-full"
                   >
                     Add to Cart
@@ -223,7 +225,10 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => addToCart(product)}
+                    onClick={() => {
+                      addToCart(product, qty);
+                      router.push('/checkout');
+                    }}
                     className="flex-1 py-4 px-6 bg-transparent border border-[#3E040E] text-[#3E040E] font-montserrat font-semibold text-xs tracking-[0.2em] uppercase transition-colors hover:bg-[#3E040E]/5 rounded-full"
                   >
                     Buy Now

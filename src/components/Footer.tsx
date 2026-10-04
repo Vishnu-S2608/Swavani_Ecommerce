@@ -6,11 +6,8 @@ import { MapPin, Phone, Mail, ArrowUp } from "lucide-react";
 
 const footerLinks = {
   collections: [
+    { name: "Elampillai Silks", href: "/collections?category=elampillai" },
     { name: "Kanjivaram Silk", href: "/collections?category=kanjivaram" },
-    { name: "Banarasi Brocade", href: "/collections?category=banarasi" },
-    { name: "Pattu Heritage", href: "/collections?category=pattu" },
-    { name: "Bridal Collection", href: "/collections?category=bridal" },
-    { name: "Cotton Handloom", href: "/collections?category=cotton" },
   ],
   info: [
     { name: "Our Story", href: "/about" },
@@ -59,62 +56,6 @@ export function Footer() {
 
       {/* Top zari vine */}
       <div className="relative h-px" style={{ background: "linear-gradient(90deg, transparent 0%, #D9B26D 30%, #F1D9A0 50%, #D9B26D 70%, transparent 100%)" }} />
-
-      {/* Newsletter strip */}
-      <div className="relative py-14 border-b" style={{ borderColor: "rgba(184,146,90,.15)" }}>
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-14">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <span style={{ color: "#D9B26D", fontSize: "12px" }}>✦</span>
-                <span style={{ fontFamily: "var(--font-montserrat), sans-serif", fontSize: "9px", letterSpacing: ".32em", textTransform: "uppercase", color: "#D9B26D", fontWeight: 600 }}>
-                  Swavani Private Circle
-                </span>
-              </div>
-              <h3
-                style={{
-                  fontFamily: "var(--font-cinzel), Georgia, serif",
-                  fontSize: "clamp(20px, 2.8vw, 30px)",
-                  letterSpacing: ".06em",
-                  textTransform: "uppercase",
-                  color: "#F4E8D4",
-                  fontWeight: 700,
-                }}
-              >
-                Receive Private Silk Previews
-              </h3>
-              <p style={{ fontFamily: "var(--font-cormorant), serif", fontSize: "15px", fontStyle: "italic", color: "rgba(244,232,212,.65)", marginTop: "6px" }}>
-                Exclusive archive drops, bridal previews and artisan stories.
-              </p>
-            </div>
-            <div className="flex gap-0 w-full max-w-md flex-shrink-0">
-              <input
-                type="email"
-                placeholder="your@email.com"
-                style={{
-                  flex: 1,
-                  background: "rgba(58,6,21,.6)",
-                  border: "1px solid rgba(184,146,90,.35)",
-                  borderRight: "none",
-                  padding: "14px 18px",
-                  fontSize: "13px",
-                  fontFamily: "var(--font-montserrat), sans-serif",
-                  color: "#F4E8D4",
-                  outline: "none",
-                }}
-                onFocus={(e) => (e.currentTarget.style.borderColor = "#D9B26D")}
-                onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(184,146,90,.35)")}
-              />
-              <button
-                className="btn-zari"
-                style={{ borderRadius: 0, flexShrink: 0, padding: "14px 22px", fontSize: "10px" }}
-              >
-                Join →
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* Main footer grid */}
       <div className="relative py-16">

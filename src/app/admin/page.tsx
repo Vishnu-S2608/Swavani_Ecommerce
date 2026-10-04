@@ -97,8 +97,6 @@ export default function AdminDashboard() {
             <StatCard label="Total Revenue" value={fmt(stats!.revenue)} icon="₹" accent="#B4783C" />
             <StatCard label="Today's Revenue" value={fmt(stats!.todayRevenue)} icon="📈" accent="#2E7D32" />
             <StatCard label="Total Orders" value={String(stats!.totalOrders)} icon="◉" accent="#3A0A18" />
-            <StatCard label="Pending Orders" value={String(stats!.pendingOrders)} icon="⏳" accent="#D97706" />
-            <StatCard label="Paid Orders" value={String(stats!.paidOrders)} icon="✓" accent="#15803D" />
             <StatCard label="Shipped Orders" value={String(stats!.shippedOrders)} icon="🚚" accent="#2563EB" />
             <StatCard label="Active Products" value={String(stats!.activeProducts)} icon="◈" accent="#B4783C" />
             <StatCard label="Total Products" value={String(stats!.totalProducts)} icon="◈" accent="#8C746A" />

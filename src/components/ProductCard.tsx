@@ -34,7 +34,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
       onMouseLeave={() => setHovered(false)}
     >
       {/* Image container */}
-      <div className="relative aspect-[3/4] overflow-hidden bg-ivory-200">
+      <div className="relative aspect-[2/3] overflow-hidden bg-ivory-200">
         {/* Main image */}
         <motion.div
           animate={{ opacity: hovered ? 0 : 1 }}
@@ -127,7 +127,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
       </div>
 
       {/* Product Info */}
-      <div className="p-5 flex flex-col h-[200px]">
+      <div className="p-5 flex flex-col flex-1">
         <p className="text-[10px] font-montserrat text-[#96742A] font-bold uppercase tracking-[0.2em] mb-1.5">{product.fabric}</p>
         <Link href={`/product/${product.id}`}>
           <h3 className="font-cinzel text-base font-semibold text-[#3E040E] hover:text-[#96742A] transition-colors leading-tight mb-1.5 uppercase tracking-wide">

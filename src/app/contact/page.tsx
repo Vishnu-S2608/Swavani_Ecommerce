@@ -9,13 +9,24 @@ export default function ContactPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const text = `*New Inquiry from ${form.name}*
+*Email:* ${form.email}
+*Subject:* ${form.subject}
+
+*Message:*
+${form.message}`;
+
+    const encodedText = encodeURIComponent(text);
+    window.open(`https://wa.me/916381895890?text=${encodedText}`, "_blank");
+    
     setSent(true);
   };
 
   const contactInfo = [
-    { icon: MapPin, label: "Store Address", value: "123 Silk Bazaar, T. Nagar, Chennai, Tamil Nadu 600017" },
-    { icon: Phone,  label: "Phone / WhatsApp", value: "+91 98765 43210" },
-    { icon: Mail,   label: "Email",    value: "hello@houseofswavani.com" },
+    { icon: MapPin, label: "Store Address", value: "15A Shanumuga puram, Thoothukudi - 628003" },
+    { icon: Phone,  label: "Phone / WhatsApp", value: "+91 63818 95890" },
+    { icon: Mail,   label: "Email",    value: "houseofswavani@gmail.com" },
     { icon: Clock,  label: "Store Hours", value: "Mon–Sat: 10:00 AM – 8:00 PM\nSunday: 11:00 AM – 6:00 PM" },
   ];
 
@@ -59,23 +70,12 @@ export default function ContactPage() {
                   </div>
                   <div className="pt-1">
                     <p className="text-xs text-[#96742A] font-montserrat font-bold uppercase tracking-widest mb-1.5">{label}</p>
-                    <p className="text-base text-[#382E2E] font-cormorant font-medium whitespace-pre-line">{value}</p>
+                    <p className="text-base text-[#382E2E] font-montserrat font-medium whitespace-pre-line">{value}</p>
                   </div>
                 </div>
               ))}
             </div>
 
-            {/* WhatsApp CTA */}
-            <motion.a
-              href="https://wa.me/919876543210"
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.03 }}
-              className="mt-12 inline-flex items-center gap-3 px-8 py-4 bg-[#3E040E] text-[#FBF9F6] font-montserrat font-semibold text-xs tracking-widest rounded-full hover:bg-black transition-colors shadow-lg"
-            >
-              <MessageCircle size={18} />
-              CHAT ON WHATSAPP
-            </motion.a>
           </motion.div>
 
           {/* Form */}
@@ -159,8 +159,8 @@ export default function ContactPage() {
         >
           <div className="text-center">
             <MapPin size={40} className="text-[#96742A]/60 mx-auto mb-4" />
-            <p className="font-montserrat font-semibold tracking-widest text-xs text-[#3E040E]/60 uppercase">Interactive map — T. Nagar, Chennai</p>
-            <p className="text-xl text-[#382E2E]/80 font-cormorant font-medium mt-2">123 Silk Bazaar, Tamil Nadu 600017</p>
+            <p className="font-montserrat font-semibold tracking-widest text-xs text-[#3E040E]/60 uppercase">Interactive map — Thoothukudi</p>
+            <p className="text-xl text-[#382E2E]/80 font-cormorant font-medium mt-2">15A Shanumuga puram, Thoothukudi - 628003</p>
           </div>
         </motion.div>
       </div>
