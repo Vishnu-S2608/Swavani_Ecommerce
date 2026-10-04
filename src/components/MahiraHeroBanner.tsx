@@ -3,10 +3,10 @@
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, type Variants } from 'framer-motion';
 
 /* ─── Animation variants ──────────────────────────────────── */
-const fadeUp = (delay = 0, duration = 0.9) => ({
+const fadeUp = (delay = 0, duration = 0.9): Variants => ({
   hidden: { opacity: 0, y: 28 },
   show: {
     opacity: 1,
@@ -15,7 +15,7 @@ const fadeUp = (delay = 0, duration = 0.9) => ({
   },
 });
 
-const fadeIn = (delay = 0, duration = 0.8) => ({
+const fadeIn = (delay = 0, duration = 0.8): Variants => ({
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
@@ -23,7 +23,7 @@ const fadeIn = (delay = 0, duration = 0.8) => ({
   },
 });
 
-const lineExpand = (delay = 0) => ({
+const lineExpand = (delay = 0): Variants => ({
   hidden: { scaleX: 0, opacity: 0 },
   show: {
     scaleX: 1,
