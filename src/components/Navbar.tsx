@@ -1,10 +1,10 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Search, Heart, MessageCircle, Menu, X, ChevronDown } from "lucide-react";
+import { useRouter, usePathname } from "next/navigation";
+import { Search, MessageCircle, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-
-import { usePathname } from "next/navigation";
+import { WHATSAPP_NUMBER } from "@/lib/data";
 
 type NavLink = { label: string; href: string; sub?: { name: string; href: string }[] };
 
@@ -22,9 +22,11 @@ const navLinks: NavLink[] = [...leftLinks, ...rightLinks];
 
 export function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [, setActiveDropdown] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   
   const isHome = pathname === "/";
@@ -42,6 +44,15 @@ export function Navbar() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, [isHome]);
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!searchQuery.trim()) return;
+    const term = searchQuery.trim();
+    setSearchOpen(false);
+    setSearchQuery("");
+    router.push(`/collections?search=${encodeURIComponent(term)}`);
+  };
 
   // Hide the global navbar completely if on home and not scrolled, 
   // because MahiraHeroBanner provides the initial top navbar.
@@ -70,15 +81,23 @@ export function Navbar() {
 
         <div className="relative max-w-8xl mx-auto px-5 sm:px-8 lg:px-14 h-24 flex items-center justify-between">
 
-          {/* ── LEFT SECTION (Mobile Menu) ── */}
-          <div className="flex items-center gap-4 relative z-10">
+          {/* ── LEFT SECTION (Mobile Menu & Search) ── */}
+          <div className="flex items-center gap-3 relative z-10">
             <button
               onClick={() => setMobileOpen(true)}
-              className="lg:hidden p-2 transition-colors"
+              className="lg:hidden p-2 transition-colors cursor-pointer"
               style={{ color: "#D9B26D" }}
               aria-label="Menu"
             >
               <Menu size={22} />
+            </button>
+            <button
+              onClick={() => setSearchOpen(true)}
+              className="lg:hidden p-2 transition-colors cursor-pointer"
+              style={{ color: "#D9B26D" }}
+              aria-label="Search"
+            >
+              <Search size={20} />
             </button>
           </div>
 
@@ -158,13 +177,27 @@ export function Navbar() {
             </div>
           </div>
 
-          {/* ── RIGHT SECTION (WhatsApp Concierge) ── */}
-          <div className="flex items-center gap-4 lg:gap-7 xl:gap-10 relative z-10">
+          {/* ── RIGHT SECTION (Search & WhatsApp Concierge) ── */}
+          <div className="flex items-center gap-3 lg:gap-6 xl:gap-8 relative z-10">
+            {/* Search Trigger */}
+            <button
+              onClick={() => setSearchOpen(true)}
+              className="hidden lg:flex items-center gap-2 p-2 transition-colors cursor-pointer text-[#D9B26D] hover:text-[#F4E8D4]"
+              aria-label="Search collection"
+              title="Search Archive"
+            >
+              <Search size={18} />
+              <span className="text-[11px] font-semibold tracking-widest uppercase">
+                Search
+              </span>
+            </button>
+
+            {/* WhatsApp CTA */}
             <a
-              href="https://wa.me/916381895890?text=Hello%20House%20of%20Swavani%2C%20I%20would%20like%20to%20enquire%20about%20your%20saree%20collections."
+              href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hello%20House%20of%20Swavani%2C%20I%20would%20like%20to%20enquire%20about%20your%20saree%20collections.`}
               target="_blank"
               rel="noopener noreferrer"
-              className="relative p-2 flex items-center gap-2 transition-colors"
+              className="relative p-2 flex items-center gap-2 transition-colors cursor-pointer"
               style={{ color: "#D9B26D" }}
               aria-label="WhatsApp Concierge"
               title="Chat with WhatsApp Concierge"
@@ -207,7 +240,7 @@ export function Navbar() {
               className="fixed left-0 top-0 bottom-0 w-80 z-50 flex flex-col"
               style={{
                 background: "linear-gradient(135deg, #3A0615 0%, #5C0F27 50%, #3A0615 100%)",
-                backgroundImage: "url('/download (2).jpg')",
+                backgroundImage: "url('/silk-texture-bg.jpg')",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 borderRight: "1px solid rgba(184,146,90,.3)",
@@ -226,7 +259,7 @@ export function Navbar() {
                       HOUSE OF SILK &amp; HERITAGE
                     </div>
                   </div>
-                  <button onClick={() => setMobileOpen(false)} style={{ color: "#D9B26D" }}>
+                  <button onClick={() => setMobileOpen(false)} style={{ color: "#D9B26D" }} aria-label="Close menu">
                     <X size={22} />
                   </button>
                 </div>
@@ -289,8 +322,9 @@ export function Navbar() {
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "1px", background: "linear-gradient(90deg, transparent, #D9B26D, transparent)" }} />
               <button
                 onClick={() => setSearchOpen(false)}
-                className="absolute top-4 right-4 transition-colors"
+                className="absolute top-4 right-4 transition-colors cursor-pointer"
                 style={{ color: "#D9B26D" }}
+                aria-label="Close search"
                 onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#F4E8D4")}
                 onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#D9B26D")}
               >
@@ -299,26 +333,39 @@ export function Navbar() {
               <p style={{ fontFamily: "var(--font-montserrat)", fontSize: "10px", letterSpacing: ".3em", textTransform: "uppercase", color: "#D9B26D", marginBottom: "12px" }}>
                 SEARCH THE ARCHIVE
               </p>
-              <input
-                autoFocus
-                type="text"
-                placeholder="Search Kanjivaram, Banarasi, Bridal Silk…"
-                style={{
-                  width: "100%",
-                  background: "rgba(58,6,21,.7)",
-                  border: "1px solid rgba(184,146,90,.35)",
-                  padding: "14px 16px",
-                  fontSize: "14px",
-                  color: "#F4E8D4",
-                  fontFamily: "var(--font-montserrat), sans-serif",
-                  outline: "none",
-                }}
-                onFocus={(e) => (e.currentTarget.style.borderColor = "#D9B26D")}
-                onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(184,146,90,.35)")}
-              />
-              <div className="flex flex-wrap gap-2 mt-4">
+              <form onSubmit={handleSearchSubmit}>
+                <div className="relative">
+                  <input
+                    autoFocus
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search Kanjivaram, Soft Silk, Bridal Sarees…"
+                    style={{
+                      width: "100%",
+                      background: "rgba(58,6,21,.7)",
+                      border: "1px solid rgba(184,146,90,.35)",
+                      padding: "14px 44px 14px 16px",
+                      fontSize: "14px",
+                      color: "#F4E8D4",
+                      fontFamily: "var(--font-montserrat), sans-serif",
+                      outline: "none",
+                    }}
+                    onFocus={(e) => (e.currentTarget.style.borderColor = "#D9B26D")}
+                    onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(184,146,90,.35)")}
+                  />
+                  <button
+                    type="submit"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#D9B26D] hover:text-[#F4E8D4] cursor-pointer"
+                    aria-label="Submit search"
+                  >
+                    <Search size={18} />
+                  </button>
+                </div>
+              </form>
+              <div className="flex flex-wrap gap-2 mt-4 items-center">
                 <span style={{ fontSize: "11px", color: "rgba(244,232,212,.5)", fontFamily: "var(--font-montserrat)" }}>Popular:</span>
-                {["Kanjivaram Crimson", "24K Zari Banarasi", "Bridal Silk", "Pattu Heritage"].map((tag) => (
+                {["Kanchivaram Silk", "Bridal Silk", "Royal Amethyst", "Temple Border", "Elampillai Silks"].map((tag) => (
                   <Link
                     key={tag}
                     href={`/collections?search=${encodeURIComponent(tag)}`}

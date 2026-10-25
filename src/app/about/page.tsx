@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { WHATSAPP_NUMBER } from "@/lib/data";
 import {
   Gem,
   Sparkles,
@@ -397,7 +398,7 @@ export default function AboutPage() {
               Browse The Archive
             </Link>
             <a
-              href="https://wa.me/916381895890?text=Hello%20House%20of%20Swavani%2C%20I%20would%20like%20to%20learn%20more%20about%20your%20handloom%20sarees."
+              href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hello%20House%20of%20Swavani%2C%20I%20would%20like%20to%20learn%20more%20about%20your%20handloom%20sarees.`}
               target="_blank"
               rel="noopener noreferrer"
               className="w-full sm:w-auto px-8 py-4 bg-transparent border-2 border-[#D9B26D] text-[#D9B26D] hover:bg-[#D9B26D] hover:text-[#1A050A] font-bold text-xs uppercase tracking-[0.2em] rounded-full transition-all flex items-center justify-center gap-2"

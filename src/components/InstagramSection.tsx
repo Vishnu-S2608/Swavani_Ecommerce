@@ -2,6 +2,7 @@
 import React, { useRef } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { WHATSAPP_NUMBER } from "@/lib/data";
 
 const galleryImages = [
   { src: "/products/1/DSC03770.jpg", alt: "Kanchivaram Royal Amethyst Soft Silk Saree", span: "row-span-2" },
@@ -159,7 +160,7 @@ export function InstagramSection() {
         className="relative overflow-hidden"
         style={{
           padding: "clamp(72px, 9vw, 120px) 0",
-          backgroundImage: "url('/fond ecrant rouge aestithique.jpg')",
+          backgroundImage: "url('/crimson-silk-bg.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -301,7 +302,7 @@ export function InstagramSection() {
             transition={{ duration: 0.7, delay: 0.5 }}
           >
             <motion.a
-              href="https://wa.me/916381895890?text=Hello%20Swavani%2C%20I%20would%20like%20to%20enquire%20about%20your%20saree%20collection."
+              href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hello%20Swavani%2C%20I%20would%20like%20to%20enquire%20about%20your%20saree%20collection.`}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-zari flex items-center gap-2"

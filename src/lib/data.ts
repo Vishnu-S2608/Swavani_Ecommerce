@@ -1,3 +1,6 @@
+export const WHATSAPP_NUMBER = "916381895890";
+export const WHATSAPP_DISPLAY = "+91 6381895890";
+
 export interface ProductDetails {
   weave: string;
   zari: string;
@@ -23,8 +26,8 @@ export interface Product {
   colors: string[];
   isNew: boolean;
   isBestseller: boolean;
-  rating: number;
-  reviews: number;
+  rating?: number;
+  reviews?: number;
   description: string;
   stock: number;
   details: ProductDetails;

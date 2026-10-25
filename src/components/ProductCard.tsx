@@ -5,8 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Heart } from "lucide-react";
 import { Product } from "@/lib/data";
-import { clsx } from "clsx";
-import { getCloudflareImageUrl } from "@/lib/cloudflare";
+import { useWishlist } from "@/hooks/useWishlist";
 
 interface ProductCardProps {
   product: Product;
@@ -14,12 +13,12 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, index = 0 }: ProductCardProps) {
-  const [wishlisted, setWishlisted] = useState(false);
-  const [hovered,    setHovered]    = useState(false);
+  const { isWishlisted, toggleWishlist, mounted } = useWishlist();
+  const [hovered, setHovered] = useState(false);
 
-  const discount = Math.round(((product.mrp - product.price) / product.mrp) * 100);
-  const mainImage = getCloudflareImageUrl(product.image, { width: 600, quality: 85 });
-  const hoverImage = getCloudflareImageUrl(product.hoverImage || product.image, { width: 600, quality: 85 });
+  const wishlisted = mounted && isWishlisted(product.id);
+  const mainImage = product.image || "/products/1/DSC03770.jpg";
+  const hoverImage = product.hoverImage || mainImage;
 
   return (
     <motion.div
@@ -33,7 +32,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
     >
       <Link href={`/product/${product.id}`} className="flex flex-col h-full">
         {/* Image container */}
-        <div className="relative aspect-[2/3] overflow-hidden bg-ivory-200">
+        <div className="relative aspect-[2/3] overflow-hidden bg-[#F4E8D4]/20">
           {/* Main image */}
           <div className="absolute inset-0">
             <Image
@@ -62,24 +61,21 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
             </motion.div>
           )}
 
-
-
           {/* Wishlist */}
           <button
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              setWishlisted(!wishlisted);
+              toggleWishlist(product.id, product.name);
             }}
             className="absolute top-3 right-3 p-2 bg-[#FBF9F6]/80 backdrop-blur-sm shadow-sm transition-all text-[#3E040E] hover:scale-110 active:scale-95 z-10"
-            aria-label="Add to Wishlist"
+            aria-label={wishlisted ? "Remove from Wishlist" : "Add to Wishlist"}
           >
             <Heart
               size={16}
-              className={clsx(
-                "transition-colors duration-300",
+              className={`transition-colors duration-300 ${
                 wishlisted ? "fill-[#3E040E] text-[#3E040E]" : "text-[#3E040E]"
-              )}
+              }`}
             />
           </button>
         </div>

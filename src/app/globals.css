@@ -73,9 +73,6 @@ html {
     font-size: 16px;
   }
 
-  html.lenis { height: auto; }
-  .lenis.lenis-smooth { scroll-behavior: auto; }
-  .lenis.lenis-stopped { overflow: hidden; }
 
   body {
     background-color: var(--cream);
@@ -136,21 +133,21 @@ html {
 .silk-textured {
   background:
     linear-gradient(180deg, rgba(58,6,21,.72) 0%, rgba(92,15,39,.55) 50%, rgba(58,6,21,.88) 100%),
-    url('/fond ecrant rouge aestithique.jpg') center/cover no-repeat;
+    url('/crimson-silk-bg.jpg') center/cover no-repeat;
 }
 
 /* Damask red texture sections */
 .silk-damask {
   background:
     linear-gradient(180deg, rgba(58,6,21,.78) 0%, rgba(92,15,39,.62) 50%, rgba(58,6,21,.82) 100%),
-    url('/download (3).jpg') center/cover no-repeat;
+    url('/damask-texture-bg.jpg') center/cover no-repeat;
 }
 
 /* Velvet solid sections */
 .silk-velvet {
   background:
     linear-gradient(180deg, rgba(58,6,21,.60) 0%, rgba(92,15,39,.45) 50%, rgba(58,6,21,.70) 100%),
-    url('/download (2).jpg') center/cover no-repeat;
+    url('/silk-texture-bg.jpg') center/cover no-repeat;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -434,19 +431,6 @@ html {
   50%       { box-shadow: 0 0 20px 8px rgba(217,178,109,.35); }
 }
 
-/* ═══════════════════════════════════════════════════════════
-   SWIPER
-   ═══════════════════════════════════════════════════════════ */
-.swiper-pagination-bullet {
-  background: rgba(217,178,109,.4) !important;
-  opacity: 1 !important;
-}
-.swiper-pagination-bullet-active {
-  background: var(--zari-bright) !important;
-  width: 24px !important;
-  border-radius: 4px !important;
-  transition: width .3s ease !important;
-}
 
 /* ═══════════════════════════════════════════════════════════
    ARCH FRAME INTRO  (em- prefix = emblem animations)

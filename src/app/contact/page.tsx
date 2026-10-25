@@ -1,7 +1,9 @@
 "use client";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { MapPin, Phone, Mail, Clock, Send, MessageCircle } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
+
+import { WHATSAPP_NUMBER, WHATSAPP_DISPLAY } from "@/lib/data";
 
 export default function ContactPage() {
   const [sent, setSent] = useState(false);
@@ -18,14 +20,14 @@ export default function ContactPage() {
 ${form.message}`;
 
     const encodedText = encodeURIComponent(text);
-    window.open(`https://wa.me/916381895890?text=${encodedText}`, "_blank");
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodedText}`, "_blank");
     
     setSent(true);
   };
 
   const contactInfo = [
     { icon: MapPin, label: "Store Address", value: "15A Shanumuga puram, Thoothukudi - 628003" },
-    { icon: Phone,  label: "Phone / WhatsApp", value: "+91 63818 95890" },
+    { icon: Phone,  label: "Phone / WhatsApp", value: WHATSAPP_DISPLAY },
     { icon: Mail,   label: "Email",    value: "houseofswavani@gmail.com" },
     { icon: Clock,  label: "Store Hours", value: "Mon–Sat: 10:00 AM – 8:00 PM\nSunday: 11:00 AM – 6:00 PM" },
   ];
@@ -56,10 +58,10 @@ ${form.message}`;
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <p className="font-cormorant italic text-2xl text-[#96742A] mb-4">We'd Love to Hear From You</p>
+            <p className="font-cormorant italic text-2xl text-[#96742A] mb-4">We&apos;d Love to Hear From You</p>
             <h2 className="font-cinzel text-3xl font-semibold text-[#3E040E] mb-6">Reach Out To Us</h2>
             <p className="font-cormorant font-medium text-lg text-[#382E2E] leading-relaxed mb-12">
-              Whether you need styling advice, have a query about your order, or simply want to know more about our sarees — we're always here for you.
+              Whether you need styling advice, have a query about your order, or simply want to know more about our sarees — we&apos;re always here for you.
             </p>
 
             <div className="space-y-8">
@@ -94,7 +96,7 @@ ${form.message}`;
                 <div className="text-6xl mb-6">✨</div>
                 <h3 className="font-cinzel text-3xl font-semibold text-[#3E040E] mb-4">Thank You!</h3>
                 <p className="font-cormorant text-xl text-[#382E2E]">
-                  We've received your message and will get back to you shortly.
+                  We&apos;ve received your message and will get back to you shortly.
                 </p>
               </motion.div>
             ) : (

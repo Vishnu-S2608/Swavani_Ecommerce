@@ -46,7 +46,7 @@ export function EditorialStory() {
       className="relative overflow-hidden"
       style={{
         padding: "clamp(80px, 10vw, 130px) 0",
-        backgroundImage: "url('/download (3).jpg')",
+        backgroundImage: "url('/damask-texture-bg.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}

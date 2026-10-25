@@ -1,14 +1,17 @@
 "use client";
 import React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { MapPin, Phone, Mail, ArrowUp } from "lucide-react";
+import { WHATSAPP_NUMBER, WHATSAPP_DISPLAY } from "@/lib/data";
 
 const footerLinks = {
   collections: [
-    { name: "Elampillai Silks", href: "/collections?category=elampillai" },
     { name: "Kanjivaram Silk", href: "/collections?category=kanjivaram" },
+    { name: "Elampillai Silks", href: "/collections?category=elampillai" },
+    { name: "Bridal Heirloom", href: "/collections?occasion=wedding" },
   ],
-  info: [
+  boutique: [
     { name: "Our Story", href: "/about" },
     { name: "Visit Us", href: "/contact" },
   ],
@@ -29,7 +32,7 @@ export function Footer() {
       className="relative overflow-hidden"
       style={{
         background: "linear-gradient(180deg, #3A0615 0%, #2a0510 100%)",
-        backgroundImage: "url('/download (2).jpg')",
+        backgroundImage: "url('/silk-texture-bg.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundBlendMode: "multiply",
@@ -48,12 +51,19 @@ export function Footer() {
       {/* Main footer grid */}
       <div className="relative py-16">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-14">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-8">
 
             {/* Brand column */}
             <div className="lg:col-span-2">
-              <div className="mb-8">
-                <img src="/swavani-logo-transparent.png" alt="Swavani Logo" className="h-16 md:h-20 lg:h-24 w-auto object-contain drop-shadow-xl" />
+              <div className="mb-6">
+                <Image
+                  src="/swavani-logo-transparent.png"
+                  alt="Swavani Logo"
+                  width={220}
+                  height={80}
+                  className="h-16 md:h-20 w-auto object-contain drop-shadow-xl"
+                  priority={false}
+                />
               </div>
               <p
                 style={{
@@ -71,7 +81,7 @@ export function Footer() {
               <div className="space-y-2.5">
                 {[
                   { Icon: MapPin, text: "15A Shanumuga puram, Thoothukudi - 628003" },
-                  { Icon: Phone, text: "+91 6381895890" },
+                  { Icon: Phone, text: WHATSAPP_DISPLAY },
                   { Icon: Mail,  text: "houseofswavani@gmail.com" },
                 ].map(({ Icon, text }) => (
                   <div key={text} className="flex items-start gap-2.5">
@@ -86,7 +96,9 @@ export function Footer() {
 
             {/* Collections */}
             <div>
-              <h4 style={{ fontFamily: "var(--font-cinzel), serif", fontSize: "11px", letterSpacing: ".2em", textTransform: "uppercase", color: "#D9B26D", fontWeight: 600, marginBottom: "14px" }}>Collections</h4>
+              <h4 style={{ fontFamily: "var(--font-cinzel), serif", fontSize: "11px", letterSpacing: ".2em", textTransform: "uppercase", color: "#D9B26D", fontWeight: 600, marginBottom: "14px" }}>
+                Collections
+              </h4>
               <ul className="space-y-2.5">
                 {footerLinks.collections.map((l) => (
                   <li key={l.name}>
@@ -103,11 +115,13 @@ export function Footer() {
               </ul>
             </div>
 
-            {/* Info */}
+            {/* Boutique */}
             <div>
-              <h4 style={{ fontFamily: "var(--font-cinzel), serif", fontSize: "11px", letterSpacing: ".2em", textTransform: "uppercase", color: "#D9B26D", fontWeight: 600, marginBottom: "14px" }}>Boutique</h4>
+              <h4 style={{ fontFamily: "var(--font-cinzel), serif", fontSize: "11px", letterSpacing: ".2em", textTransform: "uppercase", color: "#D9B26D", fontWeight: 600, marginBottom: "14px" }}>
+                Boutique
+              </h4>
               <ul className="space-y-2.5">
-                {footerLinks.info.map((l) => (
+                {footerLinks.boutique.map((l) => (
                   <li key={l.name}>
                     <Link
                       href={l.href}
@@ -122,6 +136,26 @@ export function Footer() {
               </ul>
             </div>
 
+            {/* Policies */}
+            <div>
+              <h4 style={{ fontFamily: "var(--font-cinzel), serif", fontSize: "11px", letterSpacing: ".2em", textTransform: "uppercase", color: "#D9B26D", fontWeight: 600, marginBottom: "14px" }}>
+                Policies &amp; Care
+              </h4>
+              <ul className="space-y-2.5">
+                {footerLinks.policies.map((l) => (
+                  <li key={l.name}>
+                    <Link
+                      href={l.href}
+                      style={{ fontFamily: "var(--font-montserrat), sans-serif", fontSize: "11px", color: "rgba(244,232,212,.6)", textDecoration: "none", letterSpacing: ".06em", transition: "color .25s" }}
+                      onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#D9B26D")}
+                      onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "rgba(244,232,212,.6)")}
+                    >
+                      {l.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
           </div>
         </div>
@@ -135,7 +169,7 @@ export function Footer() {
           </p>
           <div className="flex items-center gap-6">
             <a
-              href="https://wa.me/916381895890"
+              href={`https://wa.me/${WHATSAPP_NUMBER}`}
               target="_blank"
               rel="noopener noreferrer"
               style={{ fontFamily: "var(--font-montserrat), sans-serif", fontSize: "9px", letterSpacing: ".18em", textTransform: "uppercase", color: "rgba(244,232,212,.5)", textDecoration: "none", transition: "color .25s" }}

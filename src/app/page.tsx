@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useSyncExternalStore } from 'react';
 import { MahiraHeroBanner } from '@/components/MahiraHeroBanner';
 import { CuratedShowcase } from '@/components/CuratedShowcase';
 import { EditorialStory } from '@/components/EditorialStory';
@@ -9,21 +9,23 @@ import { InstagramSection } from '@/components/InstagramSection';
 import { BrandShowcase } from '@/components/BrandShowcase';
 import { CurtainOpeningV2 } from '@/components/CurtainOpeningV2';
 
-export default function LandingPage() {
-  const [showCurtain, setShowCurtain] = useState(false);
+function subscribe() {
+  return () => {};
+}
 
-  useEffect(() => {
-    // Only show curtain animation on very first visit in session
-    if (typeof window !== "undefined") {
-      const alreadyShown = sessionStorage.getItem("swavani_curtain_shown");
-      if (!alreadyShown) {
-        setShowCurtain(true);
-      }
-    }
-  }, []);
+function getCurtainSnapshot() {
+  if (typeof window === "undefined") return false;
+  return !sessionStorage.getItem("swavani_curtain_shown");
+}
+
+export default function LandingPage() {
+  const shouldShowInitial = useSyncExternalStore(subscribe, getCurtainSnapshot, () => false);
+  const [curtainDismissed, setCurtainDismissed] = useState(false);
+
+  const showCurtain = shouldShowInitial && !curtainDismissed;
 
   const handleCurtainComplete = () => {
-    setShowCurtain(false);
+    setCurtainDismissed(true);
     if (typeof window !== "undefined") {
       sessionStorage.setItem("swavani_curtain_shown", "true");
     }

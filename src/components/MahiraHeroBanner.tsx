@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence, type Variants } from 'framer-motion';
+import { WHATSAPP_NUMBER } from '@/lib/data';
 
 /* ─── Animation variants ──────────────────────────────────── */
 const fadeUp = (delay = 0, duration = 0.9): Variants => ({
@@ -33,12 +34,15 @@ const lineExpand = (delay = 0): Variants => ({
 });
 
 /* ─── Component ───────────────────────────────────────────── */
+function subscribe() {
+  return () => {};
+}
+
 export function MahiraHeroBanner() {
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(subscribe, () => true, () => false);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    setMounted(true);
 
     // Ken-burns: subtle slow zoom on the background
     const bg = sectionRef.current?.querySelector<HTMLDivElement>('.mhb-bg');
@@ -413,7 +417,7 @@ function MahiraNavbarOverlay() {
       {/* ── RIGHT SECTION (WhatsApp Concierge) ── */}
       <div className="flex items-center gap-4 relative z-10">
         <a
-          href="https://wa.me/916381895890?text=Hello%20House%20of%20Swavani%2C%20I%20would%20like%20to%20enquire%20about%20your%20saree%20collections."
+          href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hello%20House%20of%20Swavani%2C%20I%20would%20like%20to%20enquire%20about%20your%20saree%20collections.`}
           target="_blank"
           rel="noopener noreferrer"
           className="relative p-2 flex items-center gap-2 transition-colors text-[#D9B26D] hover:text-[#F4E8D4]"
@@ -534,17 +538,3 @@ function NavLink({ href, children }: { href: string; children: React.ReactNode }
   );
 }
 
-function NavIconBtn({ href, label, className = '', children }: { href: string; label: string; className?: string; children: React.ReactNode }) {
-  return (
-    <Link
-      href={href}
-      aria-label={label}
-      className={`p-2 block transition-colors ${className}`}
-      style={{ color: 'rgba(244,232,212,0.8)' }}
-      onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = '#D9B26D')}
-      onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = 'rgba(244,232,212,0.8)')}
-    >
-      {children}
-    </Link>
-  );
-}
