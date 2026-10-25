@@ -12,14 +12,8 @@ const footerLinks = {
     { name: "Our Story", href: "/about" },
     { name: "Visit Us", href: "/contact" },
   ],
-  policies: [
-    { name: "Shipping Policy", href: "/policies/shipping" },
-    { name: "Returns & Exchanges", href: "/policies/returns" },
-    { name: "Privacy Policy", href: "/policies/privacy" },
-    { name: "Terms of Service", href: "/policies/terms" },
-    { name: "Care Instructions", href: "/policies/care" },
-  ],
 };
+
 
 export function Footer() {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
@@ -72,7 +66,7 @@ export function Footer() {
                 {[
                   { Icon: MapPin, text: "15A Shanumuga puram, Thoothukudi - 628003" },
                   { Icon: Phone, text: "+91 6381895890" },
-                  { Icon: Mail,  text: "houseofswavani@gmail.com" },
+                  { Icon: Mail, text: "houseofswavani@gmail.com" },
                 ].map(({ Icon, text }) => (
                   <div key={text} className="flex items-start gap-2.5">
                     <Icon size={13} style={{ color: "#D9B26D", flexShrink: 0, marginTop: "2px" }} />

@@ -9,19 +9,39 @@ import { products, Product } from "@/lib/data";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductGallery } from "@/components/ProductGallery";
 
+const MAX_QTY_PER_ORDER = 10;
+
 export default function ProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
 
   const [wishlisted, setWishlisted] = useState(false);
   const [qty, setQty] = useState(1);
 
-  const product =
-    products.find(
-      (p) =>
-        p.id === id ||
-        p.id.toLowerCase() === id.toLowerCase() ||
-        p.id.replace(/^p/i, "") === id.replace(/^p/i, "")
-    ) || products[0];
+  const product = products.find(
+    (p) =>
+      p.id === id ||
+      p.id.toLowerCase() === id.toLowerCase() ||
+      p.id.replace(/^p/i, "") === id.replace(/^p/i, "")
+  );
+
+  // Show a clean not-found UI for invalid product IDs
+  if (!product) {
+    return (
+      <div className="min-h-screen bg-[#FBF9F6] pt-32 pb-20 flex flex-col items-center justify-center font-montserrat text-[#382E2E]">
+        <p className="font-montserrat text-xs font-semibold tracking-[0.25em] text-[#96742A] uppercase mb-4">404 — Not Found</p>
+        <h1 className="font-cinzel text-4xl font-semibold text-[#3E040E] uppercase tracking-wider mb-4">Saree Not Found</h1>
+        <p className="font-cormorant text-lg italic text-[#382E2E]/60 mb-8">
+          This saree is no longer available or the link may be incorrect.
+        </p>
+        <Link
+          href="/collections"
+          className="px-8 py-3 bg-[#3E040E] text-[#FBF9F6] font-montserrat text-xs font-bold uppercase tracking-widest rounded-full hover:bg-black transition-all"
+        >
+          Browse All Collections
+        </Link>
+      </div>
+    );
+  }
 
   const galleryImages =
     product.images && product.images.length > 0
@@ -219,8 +239,9 @@ Please confirm availability and share payment/delivery details. Thank you!`;
                       {qty}
                     </span>
                     <button
-                      onClick={() => setQty(qty + 1)}
-                      className="flex-1 flex justify-center items-center text-[#3E040E]/60 hover:text-[#3E040E] hover:bg-[#96742A]/10 h-full transition-colors"
+                      onClick={() => setQty(Math.min(Math.min(product.stock, MAX_QTY_PER_ORDER), qty + 1))}
+                      disabled={qty >= Math.min(product.stock, MAX_QTY_PER_ORDER)}
+                      className="flex-1 flex justify-center items-center text-[#3E040E]/60 hover:text-[#3E040E] hover:bg-[#96742A]/10 h-full transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent"
                       aria-label="Increase quantity"
                     >
                       <Plus size={14} />

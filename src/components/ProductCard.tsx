@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 import { Heart } from "lucide-react";
 import { Product } from "@/lib/data";
 import { clsx } from "clsx";
-import { getCloudflareImageUrl } from "@/lib/cloudflare";
 
 interface ProductCardProps {
   product: Product;
@@ -18,8 +17,8 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
   const [hovered,    setHovered]    = useState(false);
 
   const discount = Math.round(((product.mrp - product.price) / product.mrp) * 100);
-  const mainImage = getCloudflareImageUrl(product.image, { width: 600, quality: 85 });
-  const hoverImage = getCloudflareImageUrl(product.hoverImage || product.image, { width: 600, quality: 85 });
+  const mainImage  = product.image;
+  const hoverImage = product.hoverImage || product.image;
 
   return (
     <motion.div

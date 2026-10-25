@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Search, Heart, MessageCircle, Menu, X, ChevronDown } from "lucide-react";
+import { MessageCircle, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { usePathname } from "next/navigation";
@@ -9,13 +9,13 @@ import { usePathname } from "next/navigation";
 type NavLink = { label: string; href: string; sub?: { name: string; href: string }[] };
 
 const leftLinks: NavLink[] = [
-  { label: "Home",        href: "/" },
-  { label: "Shop",        href: "/collections" },
+  { label: "Home", href: "/" },
+  { label: "Shop", href: "/collections" },
 ];
 
 const rightLinks: NavLink[] = [
-  { label: "Our Story",    href: "/about" },
-  { label: "Visit Us",     href: "/contact" },
+  { label: "Our Story", href: "/about" },
+  { label: "Visit Us", href: "/contact" },
 ];
 
 const navLinks: NavLink[] = [...leftLinks, ...rightLinks];
@@ -26,7 +26,7 @@ export function Navbar() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
-  
+
   const isHome = pathname === "/";
 
   useEffect(() => {
@@ -35,10 +35,10 @@ export function Navbar() {
       const threshold = isHome ? window.innerHeight * 0.85 : 60;
       setScrolled(window.scrollY > threshold);
     };
-    
+
     // Check immediately in case we load scrolled down
     onScroll();
-    
+
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, [isHome]);
@@ -115,9 +115,9 @@ export function Navbar() {
             </div>
 
             <div className="flex items-center justify-center shrink-0 pointer-events-auto">
-              <Link 
-                href="/" 
-                className="flex items-center justify-center relative z-10" 
+              <Link
+                href="/"
+                className="flex items-center justify-center relative z-10"
                 aria-label="Swavani — House of Silk"
               >
                 <div id="main-nav-logo" className="premium-logo-container transition-transform duration-500 group-hover:scale-105">
