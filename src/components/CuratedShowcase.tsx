@@ -10,37 +10,37 @@ const collections = [
     name: "Kanjivaram",
     subtitle: "Pure Mulberry Silk",
     description: "Temple-border zari work, rich colour block weave — the queen of Indian silks. Each piece is a lifetime heirloom.",
-    image: "/saree-1.jpg",
-    href: "/collections?category=kanjivaram",
+    image: "/products/1/DSC03770.jpg",
+    href: "/collections?category=silk",
     accent: "#0F5C63",
     badge: "GI Certified",
   },
   {
     id: "02",
-    name: "Banarasi",
-    subtitle: "Imperial Brocade",
-    description: "Opulent brocade woven on the looms of Varanasi for centuries. Resham, kinkhab and tissue weaves.",
-    image: "/saree-2.jpg",
-    href: "/collections?category=banarasi",
+    name: "Sapphire Silks",
+    subtitle: "Imperial Heritage",
+    description: "Opulent pure silk weaves in peacock and royal jewel tones. Handcrafted on traditional looms.",
+    image: "/products/11/DSC03853.jpg",
+    href: "/collections?category=silk",
     accent: "#2B2F6B",
     badge: "Royal Heritage",
   },
   {
     id: "03",
-    name: "Pattu",
-    subtitle: "Heritage Pattu Silk",
-    description: "South Indian Pattu with rich geometric motifs, temple borders, and vibrant colour combinations.",
-    image: "/saree-3.jpg",
-    href: "/collections?category=pattu",
+    name: "Pattu & Soft Silks",
+    subtitle: "Heritage South Silk",
+    description: "South Indian Pattu with rich geometric motifs, temple borders, and featherlight drape.",
+    image: "/products/15/DSC03892.jpg",
+    href: "/collections?category=handloom",
     accent: "#D98324",
     badge: "Handloom Mark",
   },
   {
     id: "04",
-    name: "Bridal",
-    subtitle: "Trousseau & Heirloom",
-    description: "Bespoke bridal silks — from grand Kanjivaram bridal sets to delicate Banarasi tissue for the mehndi ceremony.",
-    image: "/saree-4.jpg",
+    name: "Bridal Trousseau",
+    subtitle: "Sacred Ceremony Heirlooms",
+    description: "Bespoke bridal silks — from auspicious marigold korvai silks to regal temple zari weaves.",
+    image: "/products/5/DSC03798.jpg",
     href: "/collections?category=bridal",
     accent: "#C24B6B",
     badge: "Bespoke",
@@ -202,6 +202,7 @@ function CollectionCard({ col, idx }: { col: typeof collections[0]; idx: number 
             src={col.image}
             alt={col.name}
             fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
             className="object-cover"
             style={{ objectPosition: "center 20%" }}
           />
@@ -211,37 +212,7 @@ function CollectionCard({ col, idx }: { col: typeof collections[0]; idx: number 
           className="absolute inset-0 pointer-events-none transition-opacity duration-500 group-hover:opacity-100 opacity-0"
           style={{ background: "linear-gradient(to top, rgba(58,6,21,.65) 0%, rgba(58,6,21,.15) 60%, transparent 100%)" }}
         />
-        {/* Number badge */}
-        <div
-          className="absolute top-4 left-4 z-10"
-          style={{
-            fontFamily: "var(--font-cinzel), serif",
-            fontSize: "13px",
-            letterSpacing: ".14em",
-            color: "#D9B26D",
-            background: "rgba(58,6,21,.85)",
-            border: "1px solid rgba(217,178,109,.35)",
-            padding: "4px 10px",
-            backdropFilter: "blur(8px)",
-          }}
-        >
-          {col.id}
-        </div>
-        {/* Badge */}
-        <div
-          className="absolute top-4 right-4 z-10"
-          style={{
-            fontFamily: "var(--font-montserrat), sans-serif",
-            fontSize: "9px",
-            letterSpacing: ".16em",
-            textTransform: "uppercase",
-            color: "#F4E8D4",
-            background: col.accent,
-            padding: "4px 10px",
-          }}
-        >
-          {col.badge}
-        </div>
+
         {/* Hover CTA */}
         <motion.div
           className="absolute inset-x-4 bottom-4 z-10"

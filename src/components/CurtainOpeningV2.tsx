@@ -55,7 +55,22 @@ export function CurtainOpeningV2({ onComplete }: Props) {
   }, [onComplete]);
 
   return (
-    <div ref={bgRef} className={`fixed inset-0 z-[9999] transition-opacity duration-500 ${play ? 'play' : ''} ${landed ? 'landed' : ''}`} style={{ '--logo': 'url(/swavani-logo-transparent.png)', '--ar': '3.1915', '--gold': '#d4a853', '--cream': '#f4e9d6', '--bg': '#0a1914' } as React.CSSProperties}>
+    <div
+      ref={bgRef}
+      onClick={onComplete}
+      className={`fixed inset-0 z-[9999] transition-opacity duration-500 cursor-pointer ${play ? 'play' : ''} ${landed ? 'landed' : ''}`}
+      style={{ '--logo': 'url(/swavani-logo-transparent.png)', '--ar': '3.1915', '--gold': '#d4a853', '--cream': '#f4e9d6', '--bg': '#0a1914' } as React.CSSProperties}
+      title="Click anywhere to skip intro"
+    >
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          onComplete();
+        }}
+        className="absolute top-6 right-6 z-50 text-[10px] uppercase tracking-[0.2em] font-montserrat text-[#d4a853]/70 hover:text-[#d4a853] bg-black/40 hover:bg-black/60 px-3 py-1.5 rounded-full border border-[#d4a853]/20 transition-all"
+      >
+        Skip Intro ✕
+      </button>
       <style>{`
         .nav-intro { position:absolute; top:0; left:0; right:0; height: 96px; z-index:30; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; }
         #nl { width:clamp(180px, 22vw, 280px); aspect-ratio:var(--ar); opacity:0; }

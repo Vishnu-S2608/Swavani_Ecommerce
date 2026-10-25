@@ -1,8 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Search, Heart, ShoppingBag, Menu, X, ChevronDown } from "lucide-react";
-import { useCart } from "@/context/CartContext";
+import { Search, Heart, MessageCircle, Menu, X, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { usePathname } from "next/navigation";
@@ -23,12 +22,6 @@ const navLinks: NavLink[] = [...leftLinks, ...rightLinks];
 
 export function Navbar() {
   const pathname = usePathname();
-  
-  if (pathname?.startsWith("/admin")) {
-    return null;
-  }
-  
-  const { count } = useCart();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -165,23 +158,24 @@ export function Navbar() {
             </div>
           </div>
 
-          {/* ── RIGHT SECTION (Icons) ── */}
+          {/* ── RIGHT SECTION (WhatsApp Concierge) ── */}
           <div className="flex items-center gap-4 lg:gap-7 xl:gap-10 relative z-10">
-            <Link
-              href="/cart"
-              className="relative p-2 transition-colors"
+            <a
+              href="https://wa.me/916381895890?text=Hello%20House%20of%20Swavani%2C%20I%20would%20like%20to%20enquire%20about%20your%20saree%20collections."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative p-2 flex items-center gap-2 transition-colors"
               style={{ color: "#D9B26D" }}
-              aria-label="Cart"
+              aria-label="WhatsApp Concierge"
+              title="Chat with WhatsApp Concierge"
               onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#F4E8D4")}
               onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#D9B26D")}
             >
-              <ShoppingBag size={20} />
-              {count > 0 && (
-                <span className="absolute -top-1 -right-1 bg-[#D9B26D] text-[#3A0615] text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
-                  {count}
-                </span>
-              )}
-            </Link>
+              <MessageCircle size={20} />
+              <span className="hidden sm:inline text-[11px] font-semibold tracking-widest uppercase">
+                WhatsApp
+              </span>
+            </a>
           </div>
         </div>
 

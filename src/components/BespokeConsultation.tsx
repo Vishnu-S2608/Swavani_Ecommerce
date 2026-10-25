@@ -14,7 +14,7 @@ export function BespokeConsultation() {
     const msg = encodeURIComponent(
       `Hello Swavani! I'd like to book a consultation.\n\nName: ${form.name}\nPhone: ${form.phone}\nOccasion: ${form.occasion}\nNote: ${form.note}`
     );
-    window.open(`https://wa.me/919999999999?text=${msg}`, "_blank");
+    window.open(`https://wa.me/916381895890?text=${msg}`, "_blank");
     setSent(true);
   };
 

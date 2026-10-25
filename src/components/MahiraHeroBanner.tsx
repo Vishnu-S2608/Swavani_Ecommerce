@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence, type Variants } from 'framer-motion';
-import { useCart } from "@/context/CartContext";
 
 /* ─── Animation variants ──────────────────────────────────── */
 const fadeUp = (delay = 0, duration = 0.9): Variants => ({
@@ -351,7 +350,6 @@ const mobileNavLinks = [
 /* ─── Integrated transparent navbar ─────────────────────────── */
 function MahiraNavbarOverlay() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { count } = useCart();
 
   return (
     <>
@@ -412,27 +410,23 @@ function MahiraNavbarOverlay() {
         </div>
       </div>
 
-      {/* ── RIGHT SECTION (Icons) ── */}
+      {/* ── RIGHT SECTION (WhatsApp Concierge) ── */}
       <div className="flex items-center gap-4 relative z-10">
-        <Link
-          href="/cart"
-          className="relative p-2 transition-colors"
-          style={{ color: "rgba(244,232,212,0.8)" }}
-          aria-label="Cart"
-          onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#D9B26D")}
-          onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "rgba(244,232,212,0.8)")}
+        <a
+          href="https://wa.me/916381895890?text=Hello%20House%20of%20Swavani%2C%20I%20would%20like%20to%20enquire%20about%20your%20saree%20collections."
+          target="_blank"
+          rel="noopener noreferrer"
+          className="relative p-2 flex items-center gap-2 transition-colors text-[#D9B26D] hover:text-[#F4E8D4]"
+          aria-label="WhatsApp Concierge"
+          title="Chat on WhatsApp"
         >
-          <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8">
-            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
-            <line x1="3" y1="6" x2="21" y2="6" />
-            <path d="M16 10a4 4 0 0 1-8 0" />
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
           </svg>
-          {count > 0 && (
-            <span className="absolute -top-1 -right-1 bg-[#D9B26D] text-[#3A0615] text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
-              {count}
-            </span>
-          )}
-        </Link>
+          <span className="hidden sm:inline text-[11px] font-semibold tracking-widest uppercase">
+            WhatsApp
+          </span>
+        </a>
       </div>
 
     </nav>

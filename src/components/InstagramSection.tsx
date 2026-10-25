@@ -4,12 +4,12 @@ import Image from "next/image";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 
 const galleryImages = [
-  { src: "/saree-1.jpg", alt: "Kanjivaram silk saree — crimson zari", span: "row-span-2" },
-  { src: "/saree-2.jpg", alt: "Banarasi brocade — royal blue", span: "" },
-  { src: "/hero-model.jpg", alt: "Bridal silk editorial", span: "" },
-  { src: "/saree-3.jpg", alt: "Pattu heritage silk", span: "row-span-2" },
-  { src: "/saree-4.jpg", alt: "Bridal zari pallu", span: "" },
-  { src: "/saree-5.jpg", alt: "Occasion silk saree", span: "" },
+  { src: "/products/1/DSC03770.jpg", alt: "Kanchivaram Royal Amethyst Soft Silk Saree", span: "row-span-2" },
+  { src: "/products/11/DSC03853.jpg", alt: "Royal Sapphire Kanchivaram Silk Saree", span: "" },
+  { src: "/products/2/DSC03775.jpg", alt: "Vermilion Radiance Kanchivaram Soft Silk Saree", span: "" },
+  { src: "/products/5/DSC03798.jpg", alt: "Marigold Kanchivaram Soft Silk Saree", span: "row-span-2" },
+  { src: "/products/15/DSC03892.jpg", alt: "Royal Peacock Emerald Kanchivaram Silk Saree", span: "" },
+  { src: "/products/21/DSC03947.jpg", alt: "Midnight Sapphire Silk Saree with Antique Gold Buttas", span: "" },
 ];
 
 export function InstagramSection() {
@@ -103,7 +103,14 @@ export function InstagramSection() {
                   border: "1px solid rgba(184,146,90,.25)",
                 }}
               >
-                <Image src={img.src} alt={img.alt} fill className="object-cover" style={{ objectPosition: "center 20%", transition: "transform 0.7s ease" }} />
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  fill
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                  className="object-cover"
+                  style={{ objectPosition: "center 20%", transition: "transform 0.7s ease" }}
+                />
                 <motion.div
                   className="absolute inset-0 flex items-center justify-center"
                   initial={{ opacity: 0 }}
@@ -284,7 +291,7 @@ export function InstagramSection() {
               marginBottom: "40px",
             }}
           >
-            123 Silk Bazaar Road, Kanchipuram 631502 &nbsp;·&nbsp; Mon–Sat 10am–7pm
+            15A Shanumuga puram, Thoothukudi 628003 &nbsp;·&nbsp; Mon–Sat 10am–8pm
           </motion.p>
 
           <motion.div
@@ -294,7 +301,7 @@ export function InstagramSection() {
             transition={{ duration: 0.7, delay: 0.5 }}
           >
             <motion.a
-              href="https://wa.me/919999999999?text=Hello%20Swavani%2C%20I%20would%20like%20to%20enquire%20about%20your%20saree%20collection."
+              href="https://wa.me/916381895890?text=Hello%20Swavani%2C%20I%20would%20like%20to%20enquire%20about%20your%20saree%20collection."
               target="_blank"
               rel="noopener noreferrer"
               className="btn-zari flex items-center gap-2"

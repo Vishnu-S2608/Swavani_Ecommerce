@@ -10,10 +10,23 @@ import { BrandShowcase } from '@/components/BrandShowcase';
 import { CurtainOpeningV2 } from '@/components/CurtainOpeningV2';
 
 export default function LandingPage() {
-  const [showCurtain, setShowCurtain] = useState(true);
+  const [showCurtain, setShowCurtain] = useState(false);
+
+  useEffect(() => {
+    // Only show curtain animation on very first visit in session
+    if (typeof window !== "undefined") {
+      const alreadyShown = sessionStorage.getItem("swavani_curtain_shown");
+      if (!alreadyShown) {
+        setShowCurtain(true);
+      }
+    }
+  }, []);
 
   const handleCurtainComplete = () => {
     setShowCurtain(false);
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("swavani_curtain_shown", "true");
+    }
   };
 
   return (

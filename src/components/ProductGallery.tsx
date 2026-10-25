@@ -1,0 +1,340 @@
+"use client";
+
+import React, { useState, useRef, useEffect, useCallback } from "react";
+import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ZoomIn,
+  ZoomOut,
+  RotateCcw,
+  X,
+} from "lucide-react";
+
+interface ProductGalleryProps {
+  images: string[];
+  productName: string;
+}
+
+export function ProductGallery({
+  images,
+  productName,
+}: ProductGalleryProps) {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [isZooming, setIsZooming] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [lightboxZoom, setLightboxZoom] = useState(1);
+
+  const mainStageRef = useRef<HTMLDivElement>(null);
+
+  const safeImages = images && images.length > 0 ? images : ["/products/1/DSC03770.jpg"];
+  const currentImage = safeImages[selectedIndex] || safeImages[0];
+
+  // Navigation handlers
+  const handlePrev = useCallback(() => {
+    setSelectedIndex((prev) => (prev === 0 ? safeImages.length - 1 : prev - 1));
+  }, [safeImages.length]);
+
+  const handleNext = useCallback(() => {
+    setSelectedIndex((prev) => (prev === safeImages.length - 1 ? 0 : prev + 1));
+  }, [safeImages.length]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") handlePrev();
+      if (e.key === "ArrowRight") handleNext();
+      if (e.key === "Escape") {
+        setIsLightboxOpen(false);
+        setLightboxZoom(1);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handlePrev, handleNext]);
+
+  // Mouse move handler for interactive zoom inspection
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!mainStageRef.current) return;
+    const rect = mainStageRef.current.getBoundingClientRect();
+    const x = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+    const y = Math.max(0, Math.min(100, ((e.clientY - rect.top) / rect.height) * 100));
+    setMousePos({ x, y });
+  };
+
+  const handleMouseEnter = () => {
+    setIsZooming(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsZooming(false);
+    setMousePos({ x: 50, y: 50 });
+  };
+
+  return (
+    <>
+      <div className="w-full flex flex-col-reverse sm:flex-row gap-3 sm:gap-4 lg:sticky lg:top-24 h-fit">
+        {/* Thumbnails Strip */}
+        <div className="flex sm:flex-col gap-2.5 overflow-x-auto sm:overflow-y-auto shrink-0 pb-1 sm:pb-0 sm:max-h-[calc(100vh-140px)] sm:max-h-[660px] scrollbar-thin">
+          {safeImages.map((imgSrc, idx) => {
+            const isActive = selectedIndex === idx;
+            return (
+              <button
+                key={idx}
+                onClick={() => setSelectedIndex(idx)}
+                onMouseEnter={() => setSelectedIndex(idx)}
+                className={`group relative w-16 h-20 sm:w-[72px] sm:h-24 rounded-xl overflow-hidden border-2 transition-all duration-300 flex-shrink-0 bg-[#F4E8D4]/40 ${
+                  isActive
+                    ? "border-[#3E040E] shadow-[0_0_12px_rgba(62,4,14,0.3)] scale-[1.04] ring-2 ring-[#96742A]/40"
+                    : "border-[#96742A]/20 opacity-70 hover:opacity-100 hover:border-[#96742A]/60"
+                }`}
+                aria-label={`View angle ${idx + 1}`}
+              >
+                <Image
+                  src={imgSrc}
+                  alt={`${productName} thumbnail ${idx + 1}`}
+                  fill
+                  className="object-cover object-top transition-transform duration-300 group-hover:scale-105"
+                  sizes="80px"
+                />
+                {isActive && (
+                  <div className="absolute inset-0 bg-[#3E040E]/10 pointer-events-none" />
+                )}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Main Stage Image Container - Viewport Fitted, Clean Photo */}
+        <div className="flex-1 flex flex-col">
+          <div
+            ref={mainStageRef}
+            onClick={() => {
+              setIsLightboxOpen(true);
+              setLightboxZoom(1);
+            }}
+            onMouseMove={handleMouseMove}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            className="relative w-full h-[460px] sm:h-[540px] lg:h-[calc(100vh-160px)] lg:max-h-[660px] lg:min-h-[500px] rounded-2xl overflow-hidden shadow-2xl border border-[#96742A]/25 bg-gradient-to-b from-[#FAF8F5] via-[#F4EFEA] to-[#EAE2D5] select-none cursor-zoom-in group"
+            title="Click to view full screen"
+          >
+            {/* The Main Image with Interactive Smooth Zoom */}
+            <div className="w-full h-full relative overflow-hidden flex items-center justify-center p-2 sm:p-3">
+              <motion.div
+                key={selectedIndex}
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3 }}
+                className="w-full h-full relative flex items-center justify-center"
+              >
+                <div
+                  className="w-full h-full relative transition-transform duration-150 ease-out"
+                  style={{
+                    transformOrigin: `${mousePos.x}% ${mousePos.y}%`,
+                    transform: isZooming ? "scale(2.2)" : "scale(1)",
+                  }}
+                >
+                  <Image
+                    src={currentImage}
+                    alt={productName}
+                    fill
+                    className="object-contain object-center drop-shadow-md"
+                    priority
+                    sizes="(max-width: 1024px) 100vw, 55vw"
+                  />
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Subtle Navigation Chevrons on Image Stage (fade-in on hover, no pill container) */}
+            {safeImages.length > 1 && (
+              <>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handlePrev();
+                  }}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 p-2 text-[#3E040E]/60 hover:text-[#3E040E] transition-all opacity-0 group-hover:opacity-100 hover:scale-125 z-10 drop-shadow-md"
+                  aria-label="Previous image"
+                >
+                  <ChevronLeft size={30} />
+                </button>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleNext();
+                  }}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-[#3E040E]/60 hover:text-[#3E040E] transition-all opacity-0 group-hover:opacity-100 hover:scale-125 z-10 drop-shadow-md"
+                  aria-label="Next image"
+                >
+                  <ChevronRight size={30} />
+                </button>
+              </>
+            )}
+          </div>
+
+          {/* Quick Caption Under Image */}
+          <div className="flex items-center justify-between text-[10px] font-semibold uppercase tracking-[0.2em] text-[#382E2E]/60 mt-2 px-1">
+            <span>Angle {selectedIndex + 1} of {safeImages.length}</span>
+            <span className="text-[#96742A] flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#96742A] inline-block animate-pulse" />
+              100% Authentic Handloom Shots
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Fullscreen Luxury Lightbox Modal */}
+      <AnimatePresence>
+        {isLightboxOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/95 backdrop-blur-lg flex flex-col justify-between p-4 sm:p-6"
+            onClick={() => setIsLightboxOpen(false)}
+          >
+            {/* Modal Top Bar */}
+            <div
+              className="flex items-center justify-between text-white z-20 pb-3 border-b border-white/10"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div>
+                <h3 className="font-cinzel text-base sm:text-lg font-semibold text-[#D9B26D] tracking-wide">
+                  {productName}
+                </h3>
+                <p className="text-[11px] text-white/60 uppercase tracking-widest font-montserrat">
+                  High-Resolution Zari Inspection · Angle {selectedIndex + 1} of {safeImages.length}
+                </p>
+              </div>
+
+              {/* Zoom & Close controls */}
+              <div className="flex items-center gap-2 sm:gap-3">
+                <button
+                  onClick={() => setLightboxZoom((z) => Math.max(1, z - 0.5))}
+                  className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                  title="Zoom Out"
+                >
+                  <ZoomOut size={18} />
+                </button>
+                <span className="text-xs font-mono px-2 py-1 bg-white/10 rounded-md">
+                  {Math.round(lightboxZoom * 100)}%
+                </span>
+                <button
+                  onClick={() => setLightboxZoom((z) => Math.min(3.5, z + 0.5))}
+                  className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                  title="Zoom In"
+                >
+                  <ZoomIn size={18} />
+                </button>
+                <button
+                  onClick={() => setLightboxZoom(1)}
+                  className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                  title="Reset Zoom"
+                >
+                  <RotateCcw size={18} />
+                </button>
+                <button
+                  onClick={() => {
+                    setIsLightboxOpen(false);
+                    setLightboxZoom(1);
+                  }}
+                  className="p-2 rounded-full bg-white/20 hover:bg-[#3E040E] text-white transition-colors ml-2"
+                  title="Close (Esc)"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+            </div>
+
+            {/* Modal Image Viewport */}
+            <div
+              className="relative flex-1 flex items-center justify-center overflow-hidden my-3 cursor-grab active:cursor-grabbing"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <motion.div
+                drag={lightboxZoom > 1}
+                dragConstraints={{ left: -400, right: 400, top: -400, bottom: 400 }}
+                className="relative max-w-full max-h-[75vh] w-auto h-[75vh] aspect-[2/3] flex items-center justify-center transition-transform duration-200"
+                style={{
+                  transform: `scale(${lightboxZoom})`,
+                }}
+              >
+                <Image
+                  src={currentImage}
+                  alt={productName}
+                  fill
+                  className="object-contain"
+                  sizes="100vw"
+                  priority
+                />
+              </motion.div>
+
+              {/* Prev / Next Buttons in Lightbox */}
+              {safeImages.length > 1 && (
+                <>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handlePrev();
+                      setLightboxZoom(1);
+                    }}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/15 hover:bg-white/30 text-white transition-colors backdrop-blur-md"
+                    aria-label="Previous image"
+                  >
+                    <ChevronLeft size={28} />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleNext();
+                      setLightboxZoom(1);
+                    }}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/15 hover:bg-white/30 text-white transition-colors backdrop-blur-md"
+                    aria-label="Next image"
+                  >
+                    <ChevronRight size={28} />
+                  </button>
+                </>
+              )}
+            </div>
+
+            {/* Modal Bottom Thumbnail Strip */}
+            <div
+              className="flex items-center justify-center gap-3 pt-2 z-20"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {safeImages.map((imgSrc, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => {
+                    setSelectedIndex(idx);
+                    setLightboxZoom(1);
+                  }}
+                  className={`relative w-14 h-18 rounded-lg overflow-hidden border-2 transition-all ${
+                    selectedIndex === idx
+                      ? "border-[#D9B26D] scale-110 shadow-lg"
+                      : "border-white/20 opacity-50 hover:opacity-100"
+                  }`}
+                >
+                  <Image
+                    src={imgSrc}
+                    alt={`Thumbnail ${idx + 1}`}
+                    fill
+                    className="object-cover object-top"
+                    sizes="60px"
+                  />
+                </button>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}

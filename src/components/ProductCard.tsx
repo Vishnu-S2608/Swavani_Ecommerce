@@ -35,52 +35,34 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
         {/* Image container */}
         <div className="relative aspect-[2/3] overflow-hidden bg-ivory-200">
           {/* Main image */}
-          <motion.div
-            animate={{ opacity: hovered ? 0 : 1 }}
-            transition={{ duration: 0.4 }}
-            className="absolute inset-0"
-          >
+          <div className="absolute inset-0">
             <Image
               src={mainImage}
               alt={product.name}
               fill
-              className="object-cover object-top"
+              className={`object-cover object-top transition-opacity duration-300 ${hovered ? 'opacity-0' : 'opacity-100'}`}
               sizes="(max-width: 768px) 50vw, 25vw"
             />
-          </motion.div>
-          {/* Hover image */}
-          <motion.div
-            animate={{ opacity: hovered ? 1 : 0 }}
-            transition={{ duration: 0.4 }}
-            className="absolute inset-0"
-          >
-            <Image
-              src={hoverImage}
-              alt={`${product.name} alternate`}
-              fill
-              className="object-cover object-top"
-              sizes="(max-width: 768px) 50vw, 25vw"
-            />
-          </motion.div>
-
-          {/* Badges */}
-          <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
-            {product.isNew && (
-              <span className="bg-crimson-600 text-ivory-100 text-[10px] font-outfit font-bold px-2.5 py-1 rounded-full tracking-wider uppercase">
-                New
-              </span>
-            )}
-            {product.isBestseller && (
-              <span className="bg-gold-400 text-crimson-800 text-[10px] font-outfit font-bold px-2.5 py-1 rounded-full tracking-wider uppercase">
-                Bestseller
-              </span>
-            )}
-            {discount > 0 && (
-              <span className="bg-crimson-800 text-ivory-100 text-[10px] font-outfit font-bold px-2.5 py-1 rounded-full tracking-wider">
-                -{discount}%
-              </span>
-            )}
           </div>
+          {/* Hover image - loaded on interaction */}
+          {hovered && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.25 }}
+              className="absolute inset-0"
+            >
+              <Image
+                src={hoverImage}
+                alt={`${product.name} alternate`}
+                fill
+                className="object-cover object-top"
+                sizes="(max-width: 768px) 50vw, 25vw"
+              />
+            </motion.div>
+          )}
+
+
 
           {/* Wishlist */}
           <button

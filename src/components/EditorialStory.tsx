@@ -103,6 +103,7 @@ export function EditorialStory() {
                     src="/heritage-fabric.jpg"
                     alt="Weaver at handloom — Swavani Craft Story"
                     fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
                     className="object-cover"
                     style={{ objectPosition: "center 25%" }}
                   />

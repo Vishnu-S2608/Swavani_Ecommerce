@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { cinzel, cormorant, montserrat } from "./fonts";
-import { CartProvider } from "@/context/CartContext";
-import { AuthProvider } from "@/context/AuthContext";
 import { Toaster } from "react-hot-toast";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "House of Swavani — Premium Handwoven Indian Sarees",
@@ -17,9 +17,6 @@ export const metadata: Metadata = {
     type: "website",
   },
 };
-
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
 
 export default function RootLayout({
   children,
@@ -40,26 +37,22 @@ export default function RootLayout({
         style={{ background: '#111a14', color: '#F4E8D4', margin: 0, padding: 0 }}
         className="antialiased font-montserrat"
       >
-        <AuthProvider>
-          <CartProvider>
-            <Toaster
-              position="top-center"
-              toastOptions={{
-                style: {
-                  background: "#3A0615",
-                  color: "#D9B26D",
-                  fontFamily: "var(--font-montserrat)",
-                  border: "1px solid rgba(217,178,109,.3)",
-                  fontSize: "12px",
-                  letterSpacing: ".08em",
-                },
-              }}
-            />
-            <Navbar />
-            {children}
-            <Footer />
-          </CartProvider>
-        </AuthProvider>
+        <Toaster
+          position="top-center"
+          toastOptions={{
+            style: {
+              background: "#3A0615",
+              color: "#D9B26D",
+              fontFamily: "var(--font-montserrat)",
+              border: "1px solid rgba(217,178,109,.3)",
+              fontSize: "12px",
+              letterSpacing: ".08em",
+            },
+          }}
+        />
+        <Navbar />
+        {children}
+        <Footer />
       </body>
     </html>
   );

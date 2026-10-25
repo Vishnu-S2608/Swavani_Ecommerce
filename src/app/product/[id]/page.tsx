@@ -1,244 +1,306 @@
 "use client";
-import { useState, use, useEffect } from "react";
-import Image from "next/image";
+
+import { useState, use } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Star, Heart, Truck, RotateCcw, Shield, Minus, Plus } from "lucide-react";
+import { Heart, Truck, RotateCcw, Shield, Minus, Plus, MessageCircle } from "lucide-react";
 import { products, Product } from "@/lib/data";
-import { getProductById } from "@/lib/firestore";
-import { getCloudflareImageUrl } from "@/lib/cloudflare";
-import { useCart } from "@/context/CartContext";
 import { ProductCard } from "@/components/ProductCard";
+import { ProductGallery } from "@/components/ProductGallery";
 
 export default function ProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
-  const router = useRouter();
 
-  const { addToCart } = useCart();
-  const [selectedImage, setSelectedImage] = useState(0);
-  const [wishlisted,    setWishlisted]    = useState(false);
+  const [wishlisted, setWishlisted] = useState(false);
   const [qty, setQty] = useState(1);
 
-  const staticMatch = products.find((p) => p.id === id);
-  const [product, setProduct] = useState<Product | null>(staticMatch || null);
+  const product =
+    products.find(
+      (p) =>
+        p.id === id ||
+        p.id.toLowerCase() === id.toLowerCase() ||
+        p.id.replace(/^p/i, "") === id.replace(/^p/i, "")
+    ) || products[0];
 
-  useEffect(() => {
-    getProductById(id).then((doc) => {
-      if (doc) {
-        setProduct({
-          id: doc.id || id,
-          name: doc.name,
-          subtitle: doc.subtitle,
-          price: doc.price,
-          mrp: doc.mrp,
-          image: doc.imageUrl,
-          hoverImage: doc.hoverImageUrl,
-          category: doc.category,
-          fabric: doc.fabric,
-          occasion: doc.occasion,
-          colors: doc.colors || [],
-          isNew: Boolean(doc.isNew),
-          isBestseller: Boolean(doc.isBestseller),
-          rating: doc.rating || 5,
-          reviews: doc.reviews || 0,
-          description: doc.description || "",
-        });
-      }
-    }).catch((e) => {
-      console.warn("Could not query Firestore for product", e);
-    });
-  }, [id]);
+  const galleryImages =
+    product.images && product.images.length > 0
+      ? product.images
+      : [product.image, product.hoverImage || product.image];
 
-  if (!product) {
-    return (
-      <div className="min-h-screen bg-[#FBF9F6] pt-36 pb-20 flex flex-col items-center justify-center font-montserrat">
-        <p className="text-xl font-cinzel text-[#3E040E] mb-2">Loading Saree Details…</p>
-        <p className="text-sm text-[#382E2E]/60">Fetching from Swavani catalog</p>
-      </div>
-    );
-  }
+  const related = products
+    .filter((p) => p.id !== product.id && (p.category === product.category || p.occasion === product.occasion))
+    .slice(0, 4);
 
-  const mainOptimized = getCloudflareImageUrl(product.image, { width: 1200, quality: 90 });
-  const hoverOptimized = getCloudflareImageUrl(product.hoverImage || product.image, { width: 1200, quality: 90 });
-  const images = [mainOptimized, hoverOptimized, mainOptimized, hoverOptimized];
-  const related = products.filter((p) => p.id !== product.id && p.category === product.category).slice(0, 4);
+  const discount = Math.round(((product.mrp - product.price) / product.mrp) * 100);
+
+  const handleBuyNow = () => {
+    const totalAmount = product.price * qty;
+    const currentUrl = typeof window !== "undefined" ? window.location.href : `https://swavanistore.com/product/${product.id}`;
+
+    const message = `*HOUSE OF SWAVANI — ORDER ENQUIRY*
+━━━━━━━━━━━━━━━━━━━━
+Hello Swavani Concierge, I would like to order this authentic handloom saree:
+
+• *Saree:* ${product.name}
+• *Price:* ₹${product.price.toLocaleString("en-IN")} each
+• *Quantity:* ${qty}
+• *Total Amount:* ₹${totalAmount.toLocaleString("en-IN")}
+• *Fabric:* ${product.fabric}
+• *Origin:* ${product.details?.origin || "Tamil Nadu, India"}
+• *Product Link:* ${currentUrl}
+
+Please confirm availability and share payment/delivery details. Thank you!`;
+
+    const whatsappUrl = `https://wa.me/916381895890?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, "_blank");
+  };
 
   return (
-    <div className="min-h-screen bg-[#FBF9F6] pt-32 pb-20 font-montserrat text-[#382E2E]">
-      {/* Breadcrumb - subtle at the top */}
-      <div className="px-6 lg:px-12 py-4">
+    <div className="min-h-screen bg-[#FBF9F6] pt-24 lg:pt-28 pb-20 font-montserrat text-[#382E2E]">
+      {/* Breadcrumb */}
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-3">
         <div className="flex items-center gap-2 text-[10px] font-semibold tracking-[0.2em] uppercase text-[#382E2E]/50">
-          <Link href="/" className="hover:text-[#96742A] transition-colors">Home</Link>
+          <Link href="/" className="hover:text-[#96742A] transition-colors">
+            Home
+          </Link>
           <span>/</span>
-          <Link href="/collections" className="hover:text-[#96742A] transition-colors">Sarees</Link>
+          <Link href="/collections" className="hover:text-[#96742A] transition-colors">
+            Collections
+          </Link>
           <span>/</span>
-          <span className="text-[#3E040E]">{product.name}</span>
+          <span className="text-[#3E040E] font-bold line-clamp-1">{product.name}</span>
         </div>
       </div>
 
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 pt-4">
-        <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 relative">
-          
-          {/* Left: Main Image Section */}
-          <div className="w-full lg:w-[55%] lg:h-[75vh] lg:sticky lg:top-24">
-            {/* Main Image */}
-            <motion.div
-              key={selectedImage}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.3 }}
-              className="w-full h-full relative aspect-[2/3] lg:aspect-auto bg-[#EBDCC5]"
-            >
-              <Image
-                src={images[selectedImage]}
-                alt={product.name}
-                fill
-                className="object-cover object-top"
-                priority
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
-            </motion.div>
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 pt-2">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-14 relative items-start">
+          {/* Left: Interactive Viewport-Fitted Gallery */}
+          <div className="w-full lg:w-[54%]">
+            <ProductGallery
+              images={galleryImages}
+              productName={product.name}
+            />
           </div>
 
-          {/* Right: Product Info */}
-          <div className="w-full lg:w-[45%] py-2 lg:pr-8">
-            <div className="lg:sticky lg:top-32 self-start py-4 lg:pr-12">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-              >
-                <div className="flex items-center justify-between mb-4">
-                  {/* Badge */}
+          {/* Right: Product Details & Actions */}
+          <div className="w-full lg:w-[46%] py-1">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-[#96742A] text-[10px] font-bold tracking-[0.3em] uppercase">
+                    {product.fabric} &nbsp;·&nbsp; {product.details?.origin || "Handloom India"}
+                  </span>
                   {product.isNew && (
-                    <span className="inline-block text-[#96742A] border border-[#96742A] text-[9px] font-bold px-3 py-1 uppercase tracking-[0.3em]">
-                      Nouveau
+                    <span className="text-[9px] font-bold text-[#3E040E] uppercase tracking-widest bg-[#3E040E]/10 px-2 py-0.5 rounded">
+                      New Arrival
                     </span>
                   )}
-                  {/* Wishlist Icon */}
-                  <button
-                    onClick={() => setWishlisted(!wishlisted)}
-                    className="p-2 transition-colors hover:text-[#96742A]"
-                    aria-label="Add to wishlist"
-                  >
-                    <Heart size={20} className={wishlisted ? "fill-[#3E040E] text-[#3E040E]" : "text-[#382E2E]/60"} />
-                  </button>
+                  {product.isBestseller && (
+                    <span className="text-[9px] font-bold text-[#96742A] uppercase tracking-widest bg-[#96742A]/10 px-2 py-0.5 rounded">
+                      Bestseller
+                    </span>
+                  )}
                 </div>
 
-                <h1 className="font-cinzel text-4xl lg:text-5xl font-semibold text-[#3E040E] leading-[1.1] mb-6 uppercase tracking-wider">
-                  {product.name}
-                </h1>
+                <button
+                  onClick={() => setWishlisted(!wishlisted)}
+                  className="p-2 transition-colors hover:text-[#96742A]"
+                  aria-label="Add to wishlist"
+                >
+                  <Heart
+                    size={22}
+                    className={wishlisted ? "fill-[#3E040E] text-[#3E040E]" : "text-[#382E2E]/50"}
+                  />
+                </button>
+              </div>
 
-                {/* Price */}
-                <div className="mb-8">
-                  <span className="font-montserrat text-2xl lg:text-3xl font-normal text-[#3E040E]">
-                    ₹{product.price.toLocaleString("en-IN")}
+              <h1 className="font-cinzel text-3xl lg:text-4xl font-semibold text-[#3E040E] leading-tight mb-2 uppercase tracking-wide">
+                {product.name}
+              </h1>
+
+              <p className="text-xs text-[#96742A] font-semibold tracking-wider uppercase mb-5 font-montserrat">
+                {product.subtitle}
+              </p>
+
+              {/* Price */}
+              <div className="flex items-baseline gap-4 mb-6">
+                <span className="font-montserrat text-3xl font-semibold text-[#3E040E]">
+                  ₹{product.price.toLocaleString("en-IN")}
+                </span>
+                {product.mrp > product.price && (
+                  <span className="font-montserrat text-base text-[#382E2E]/40 line-through">
+                    ₹{product.mrp.toLocaleString("en-IN")}
                   </span>
-                  <p className="text-[10px] uppercase tracking-widest font-medium text-[#382E2E]/50 mt-2">
-                    Taxes incluses. Livraison calculée au paiement.
-                  </p>
-                </div>
+                )}
+                {discount > 0 && (
+                  <span className="bg-[#96742A]/10 text-[#96742A] text-xs font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
+                    Save {discount}%
+                  </span>
+                )}
+              </div>
 
-                {/* Decorative Divider */}
-                <div className="h-px w-full bg-gradient-to-r from-[#96742A]/40 via-[#96742A]/10 to-transparent mb-8"></div>
+              <p className="text-[10px] uppercase tracking-widest font-medium text-[#382E2E]/60 mb-6">
+                Inclusive of all taxes &nbsp;·&nbsp; Free insured doorstep delivery across India
+              </p>
 
-                <p className="font-cormorant text-xl lg:text-2xl text-[#382E2E]/90 leading-relaxed mb-10 italic">
-                  {product.description}
-                </p>
+              {/* Decorative Divider */}
+              <div className="h-px w-full bg-gradient-to-r from-[#96742A]/40 via-[#96742A]/10 to-transparent mb-6"></div>
 
-                {/* Bullet points (Grid layout) */}
-                <div className="grid grid-cols-2 gap-y-6 gap-x-4 mb-10">
-                  {[
-                    { label: "Material", value: `100% ${product.fabric}` },
-                    { label: "Occasion", value: product.occasion },
-                    { label: "Length", value: "5.5m (with blouse piece)" },
-                    { label: "Care", value: "Dry clean recommended" },
-                  ].map((item, idx) => (
-                    <div key={idx} className="flex flex-col gap-1">
-                      <span className="text-[9px] font-bold text-[#382E2E]/50 uppercase tracking-[0.2em]">{item.label}</span>
-                      <span className="font-cormorant text-lg text-[#3E040E]">{item.value}</span>
-                    </div>
-                  ))}
-                </div>
+              {/* Description */}
+              <p className="font-cormorant text-xl text-[#382E2E]/90 leading-relaxed mb-8 italic">
+                &ldquo;{product.description}&rdquo;
+              </p>
 
-
-
-                {/* Quantity */}
-                <div className="mb-10">
-                  <p className="text-[9px] font-bold text-[#382E2E]/50 uppercase tracking-[0.2em] mb-3">Quantity</p>
-                  <div className="flex items-center gap-6">
-                    <div className="flex items-center border border-[#96742A]/30 bg-transparent h-14 w-36 rounded-full overflow-hidden">
-                      <button onClick={() => setQty(Math.max(1, qty - 1))} className="flex-1 flex justify-center items-center text-[#3E040E]/60 hover:text-[#3E040E] hover:bg-[#96742A]/10 h-full transition-colors"><Minus size={16} /></button>
-                      <span className="font-montserrat text-sm font-semibold text-[#3E040E] w-8 text-center">{qty}</span>
-                      <button onClick={() => setQty(qty + 1)} className="flex-1 flex justify-center items-center text-[#3E040E]/60 hover:text-[#3E040E] hover:bg-[#96742A]/10 h-full transition-colors"><Plus size={16} /></button>
-                    </div>
-                    <div className="flex items-center gap-2 text-xs font-semibold tracking-wide text-[#2A3B24]">
-                      <span className="relative flex h-2.5 w-2.5">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#2A3B24] opacity-40"></span>
-                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#2A3B24]"></span>
-                      </span>
-                      En stock
-                    </div>
+              {/* Specifications Grid */}
+              <div className="bg-[#EBDCC5]/30 rounded-2xl p-6 border border-[#96742A]/20 mb-8">
+                <h3 className="font-cinzel text-xs font-bold uppercase tracking-[0.2em] text-[#3E040E] mb-4">
+                  Artisan Specifications
+                </h3>
+                <div className="grid grid-cols-2 gap-y-4 gap-x-6 text-xs">
+                  <div>
+                    <span className="text-[9px] font-bold text-[#382E2E]/50 uppercase tracking-[0.2em] block mb-1">
+                      Weave
+                    </span>
+                    <span className="font-semibold text-[#3E040E]">{product.details?.weave || "Handloom Silk"}</span>
+                  </div>
+                  <div>
+                    <span className="text-[9px] font-bold text-[#382E2E]/50 uppercase tracking-[0.2em] block mb-1">
+                      Zari Details
+                    </span>
+                    <span className="font-semibold text-[#3E040E]">{product.details?.zari || "Tested Gold Zari"}</span>
+                  </div>
+                  <div>
+                    <span className="text-[9px] font-bold text-[#382E2E]/50 uppercase tracking-[0.2em] block mb-1">
+                      Dimensions
+                    </span>
+                    <span className="font-semibold text-[#3E040E]">{product.details?.length || "5.5 metres"}</span>
+                  </div>
+                  <div>
+                    <span className="text-[9px] font-bold text-[#382E2E]/50 uppercase tracking-[0.2em] block mb-1">
+                      Blouse Piece
+                    </span>
+                    <span className="font-semibold text-[#3E040E]">{product.details?.blouse || "0.8m Included"}</span>
+                  </div>
+                  <div>
+                    <span className="text-[9px] font-bold text-[#382E2E]/50 uppercase tracking-[0.2em] block mb-1">
+                      Origin Looms
+                    </span>
+                    <span className="font-semibold text-[#3E040E]">{product.details?.origin || "Tamil Nadu, India"}</span>
+                  </div>
+                  <div>
+                    <span className="text-[9px] font-bold text-[#382E2E]/50 uppercase tracking-[0.2em] block mb-1">
+                      Certification
+                    </span>
+                    <span className="font-semibold text-[#3E040E]">{product.details?.certification || "Silk Mark"}</span>
                   </div>
                 </div>
+              </div>
 
-                {/* CTA Buttons */}
-                <div className="flex flex-col sm:flex-row gap-4 mb-10">
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => addToCart(product, qty)}
-                    className="flex-1 py-4 px-6 bg-[#3E040E] text-[#FBF9F6] font-montserrat font-semibold text-xs tracking-[0.2em] uppercase transition-colors hover:bg-black rounded-full"
-                  >
-                    Add to Cart
-                  </motion.button>
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => {
-                      addToCart(product, qty);
-                      router.push('/checkout');
-                    }}
-                    className="flex-1 py-4 px-6 bg-transparent border border-[#3E040E] text-[#3E040E] font-montserrat font-semibold text-xs tracking-[0.2em] uppercase transition-colors hover:bg-[#3E040E]/5 rounded-full"
-                  >
-                    Buy Now
-                  </motion.button>
+              {/* Quantity */}
+              <div className="mb-8">
+                <p className="text-[10px] font-bold text-[#382E2E]/50 uppercase tracking-[0.2em] mb-3">
+                  Quantity
+                </p>
+                <div className="flex items-center gap-6">
+                  <div className="flex items-center border border-[#96742A]/30 bg-white h-12 w-32 rounded-full overflow-hidden shadow-sm">
+                    <button
+                      onClick={() => setQty(Math.max(1, qty - 1))}
+                      className="flex-1 flex justify-center items-center text-[#3E040E]/60 hover:text-[#3E040E] hover:bg-[#96742A]/10 h-full transition-colors"
+                      aria-label="Decrease quantity"
+                    >
+                      <Minus size={14} />
+                    </button>
+                    <span className="font-montserrat text-sm font-semibold text-[#3E040E] w-8 text-center">
+                      {qty}
+                    </span>
+                    <button
+                      onClick={() => setQty(qty + 1)}
+                      className="flex-1 flex justify-center items-center text-[#3E040E]/60 hover:text-[#3E040E] hover:bg-[#96742A]/10 h-full transition-colors"
+                      aria-label="Increase quantity"
+                    >
+                      <Plus size={14} />
+                    </button>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs font-semibold tracking-wide text-[#2A3B24]">
+                    <span className="relative flex h-2.5 w-2.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#2A3B24] opacity-40"></span>
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#2A3B24]"></span>
+                    </span>
+                    Ready to dispatch
+                  </div>
                 </div>
+              </div>
 
-                {/* Accordion / Trust Badges replacing simple text */}
-                <div className="border-t border-[#96742A]/20 pt-8 mt-8 space-y-6">
-                  {[
-                    { icon: Truck,   title: "EXPRESS DELIVERY & RETURNS", desc: "Free delivery on orders above ₹2,999. Easy returns within 7 days." },
-                    { icon: Shield,  title: "SECURE PAYMENT", desc: "All transactions are secured and encrypted. Pay via UPI, Cards or COD." },
-                    { icon: RotateCcw, title: "AUTHENTICITY GUARANTEE", desc: "Every saree comes with a Silk Mark certificate ensuring 100% genuine silk." },
-                  ].map(({ icon: Icon, title, desc }) => (
-                    <div key={title} className="group cursor-pointer">
-                      <div className="flex items-center justify-between text-[#3E040E] mb-2">
-                        <div className="flex items-center gap-3">
-                          <Icon size={18} className="text-[#96742A]" />
-                          <span className="text-[10px] font-bold tracking-widest uppercase">{title}</span>
-                        </div>
-                        <Plus size={14} className="text-[#382E2E]/40 group-hover:text-[#3E040E] transition-colors" />
-                      </div>
-                      <p className="text-[11px] text-[#382E2E]/70 pl-8 leading-relaxed max-w-sm hidden group-hover:block transition-all">{desc}</p>
+              {/* Buy Now via WhatsApp CTA */}
+              <div className="mb-10">
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={handleBuyNow}
+                  className="w-full py-4 px-8 bg-gradient-to-r from-[#1B5E20] via-[#2E7D32] to-[#1B5E20] hover:from-[#144A18] hover:to-[#144A18] text-[#FBF9F6] font-montserrat font-bold text-xs tracking-[0.2em] uppercase transition-all rounded-full shadow-xl flex items-center justify-center gap-3 border border-[#81C784]/30 cursor-pointer"
+                >
+                  <MessageCircle size={20} className="text-[#A5D6A7]" />
+                  <span>Buy Now via WhatsApp</span>
+                </motion.button>
+                <p className="text-[10px] text-center text-[#382E2E]/60 uppercase tracking-widest mt-2 font-medium">
+                  Direct weaver connection · Verified Silk Mark · Free doorstep delivery across India
+                </p>
+              </div>
+
+              {/* Trust badges */}
+              <div className="border-t border-[#96742A]/20 pt-8 space-y-4">
+                {[
+                  {
+                    icon: Truck,
+                    title: "EXPRESS DISPATCH & DELIVERY",
+                    desc: "Free insured doorstep shipping across India. Dispatched within 24–48 hours.",
+                  },
+                  {
+                    icon: Shield,
+                    title: "GUARANTEED PURITY",
+                    desc: "Govt. of India Silk Mark certified. Pure natural silk and tested zari.",
+                  },
+                  {
+                    icon: RotateCcw,
+                    title: "7-DAY EASY RETURNS & EXCHANGE",
+                    desc: "Hassle-free exchange guarantee with full doorstep pickup support.",
+                  },
+                ].map(({ icon: Icon, title, desc }) => (
+                  <div key={title} className="flex items-start gap-4 p-3 rounded-xl bg-white/60 border border-[#96742A]/10">
+                    <Icon size={18} className="text-[#96742A] shrink-0 mt-0.5" />
+                    <div>
+                      <h4 className="text-[10px] font-bold tracking-widest text-[#3E040E] uppercase mb-0.5">
+                        {title}
+                      </h4>
+                      <p className="text-[11px] text-[#382E2E]/70 leading-relaxed">{desc}</p>
                     </div>
-                  ))}
-                </div>
-
-              </motion.div>
-            </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
           </div>
         </div>
 
-        {/* Related Products */}
+        {/* Related Sarees */}
         {related.length > 0 && (
-          <div className="mt-32 pt-20 border-t border-[#96742A]/20 mb-10">
-            <h2 className="font-cinzel text-3xl md:text-4xl font-semibold text-[#3E040E] text-center mb-16 uppercase tracking-widest">
-              Complétez Votre Style
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-              {related.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}
+          <div className="mt-28 pt-16 border-t border-[#96742A]/20">
+            <div className="text-center mb-12">
+              <p className="font-montserrat text-xs font-semibold tracking-[0.25em] text-[#96742A] uppercase mb-2">
+                Handcrafted Pairings
+              </p>
+              <h2 className="font-cinzel text-3xl font-semibold text-[#3E040E] uppercase tracking-wider">
+                Complementary Weaves
+              </h2>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {related.map((p, i) => (
+                <ProductCard key={p.id} product={p} index={i} />
+              ))}
             </div>
           </div>
         )}
