@@ -1,9 +1,11 @@
 "use client";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Send, ExternalLink } from "lucide-react";
 
 import { WHATSAPP_NUMBER, WHATSAPP_DISPLAY } from "@/lib/data";
+
+const GOOGLE_MAPS_LINK = "https://www.google.com/maps/place/15A,+Shanmugapuram,+Thoothukudi,+Tamil+Nadu+628001/@8.798323,78.1488893,819m/data=!3m2!1e3!4b1!4m6!3m5!1s0x3b03efa3bc372999:0x86c0ce06c5f53177!8m2!3d8.798323!4d78.1488893!16s%2Fg%2F11gg_vgsv8?entry=ttu";
 
 export default function ContactPage() {
   const [sent, setSent] = useState(false);
@@ -26,7 +28,7 @@ ${form.message}`;
   };
 
   const contactInfo = [
-    { icon: MapPin, label: "Store Address", value: "15A Shanumuga puram, Thoothukudi - 628003" },
+    { icon: MapPin, label: "Store Address", value: "15A Shanmugapuram, Thoothukudi - 628001" },
     { icon: Phone,  label: "Phone / WhatsApp", value: WHATSAPP_DISPLAY },
     { icon: Mail,   label: "Email",    value: "houseofswavani@gmail.com" },
     { icon: Clock,  label: "Store Hours", value: "Mon–Sat: 10:00 AM – 8:00 PM\nSunday: 11:00 AM – 6:00 PM" },
@@ -152,17 +154,46 @@ ${form.message}`;
           </motion.div>
         </div>
 
-        {/* Map placeholder */}
+        {/* Interactive Google Map */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mt-16 h-80 rounded-3xl overflow-hidden bg-[#EBDCC5] border border-[#96742A]/20 flex items-center justify-center shadow-inner"
+          transition={{ duration: 0.6 }}
+          className="mt-16 rounded-3xl overflow-hidden bg-[#FBF9F6] border border-[#96742A]/20 shadow-xl"
         >
-          <div className="text-center">
-            <MapPin size={40} className="text-[#96742A]/60 mx-auto mb-4" />
-            <p className="font-montserrat font-semibold tracking-widest text-xs text-[#3E040E]/60 uppercase">Interactive map — Thoothukudi</p>
-            <p className="text-xl text-[#382E2E]/80 font-cormorant font-medium mt-2">15A Shanumuga puram, Thoothukudi - 628003</p>
+          <div className="p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#96742A]/15 bg-[#EBDCC5]/50">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <MapPin size={16} className="text-[#96742A]" />
+                <p className="text-xs font-montserrat font-bold text-[#96742A] uppercase tracking-widest">Store Location</p>
+              </div>
+              <h3 className="font-cinzel text-xl md:text-2xl font-semibold text-[#3E040E]">House of Swavani Boutique</h3>
+              <p className="text-sm font-montserrat text-[#382E2E]/80 mt-1">15A, Shanmugapuram, Thoothukudi, Tamil Nadu 628001</p>
+            </div>
+            <a
+              href={GOOGLE_MAPS_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#3E040E] text-[#D9B26D] font-montserrat font-semibold text-xs uppercase tracking-widest hover:bg-[#5C0F27] transition-all shadow-md self-start md:self-auto"
+            >
+              <span>Get Directions</span>
+              <ExternalLink size={14} />
+            </a>
+          </div>
+
+          <div className="w-full h-80 md:h-[450px] relative bg-[#EBDCC5]/20">
+            <iframe
+              title="House of Swavani Google Map"
+              src="https://maps.google.com/maps?q=8.798323,78.1488893&t=&z=16&ie=UTF8&iwloc=&output=embed"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              className="w-full h-full"
+            />
           </div>
         </motion.div>
       </div>

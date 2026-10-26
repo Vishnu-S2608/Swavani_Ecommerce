@@ -79,17 +79,27 @@ export function Footer() {
                 Custodians of India&apos;s finest handwoven silks since 2024. Every saree carries the memory of the artisan who wove it.
               </p>
               <div className="space-y-2.5">
+                <a
+                  href="https://www.google.com/maps/place/15A,+Shanmugapuram,+Thoothukudi,+Tamil+Nadu+628001/@8.798323,78.1488893,819m/data=!3m2!1e3!4b1!4m6!3m5!1s0x3b03efa3bc372999:0x86c0ce06c5f53177!8m2!3d8.798323!4d78.1488893!16s%2Fg%2F11gg_vgsv8?entry=ttu"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-start gap-2.5 text-inherit no-underline hover:text-[#D9B26D] transition-colors group"
+                >
+                  <MapPin size={13} style={{ color: "#D9B26D", flexShrink: 0, marginTop: "2px" }} />
+                  <span style={{ fontFamily: "var(--font-montserrat), sans-serif", fontSize: "11px", color: "rgba(244,232,212,.65)", letterSpacing: ".04em" }} className="group-hover:text-[#D9B26D] transition-colors">
+                    15A Shanmugapuram, Thoothukudi - 628001
+                  </span>
+                </a>
                 {[
-                  { Icon: MapPin, text: "15A Shanumuga puram, Thoothukudi - 628003" },
-                  { Icon: Phone, text: WHATSAPP_DISPLAY },
-                  { Icon: Mail,  text: "houseofswavani@gmail.com" },
-                ].map(({ Icon, text }) => (
-                  <div key={text} className="flex items-start gap-2.5">
+                  { Icon: Phone, text: WHATSAPP_DISPLAY, href: `tel:${WHATSAPP_NUMBER}` },
+                  { Icon: Mail,  text: "houseofswavani@gmail.com", href: "mailto:houseofswavani@gmail.com" },
+                ].map(({ Icon, text, href }) => (
+                  <a key={text} href={href} className="flex items-start gap-2.5 text-inherit no-underline hover:text-[#D9B26D] transition-colors">
                     <Icon size={13} style={{ color: "#D9B26D", flexShrink: 0, marginTop: "2px" }} />
                     <span style={{ fontFamily: "var(--font-montserrat), sans-serif", fontSize: "11px", color: "rgba(244,232,212,.65)", letterSpacing: ".04em" }}>
                       {text}
                     </span>
-                  </div>
+                  </a>
                 ))}
               </div>
             </div>

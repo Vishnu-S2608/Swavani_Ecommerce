@@ -273,7 +273,7 @@ export function InstagramSection() {
               marginBottom: "40px",
             }}
           >
-            15A Shanumuga puram, Thoothukudi 628003 &nbsp;·&nbsp; Mon–Sat 10am–8pm
+            15A Shanmugapuram, Thoothukudi 628001 &nbsp;·&nbsp; Mon–Sat 10am–8pm
           </motion.p>
 
           <motion.div
