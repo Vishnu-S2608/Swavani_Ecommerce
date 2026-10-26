@@ -115,9 +115,7 @@ export default function PrivacyPolicyPage() {
                 5. Grievance Officer
               </h3>
               <p>
-                In compliance with the Information Technology Act 2000 and rules made thereunder:
-                <br />
-                <strong>Grievance Officer:</strong> Vishnu S, House of Swavani
+                In compliance with the Information Technology Act 2000 and rules made thereunder:                
                 <br />
                 <strong>Address:</strong> 15A Shanumuga puram, Thoothukudi - 628003, Tamil Nadu, India
                 <br />
