@@ -8,7 +8,6 @@ import { products as staticProducts } from "@/lib/data";
 import { SlidersHorizontal, X, Search, RotateCcw } from "lucide-react";
 
 const CATEGORIES = ["All", "Silk Sarees", "Handloom", "Bridal", "Casual"];
-const OCCASIONS = ["All", "Wedding", "Festival", "Bridal", "Casual"];
 const SORT_OPTIONS = [
   { label: "Newest First", value: "new" },
   { label: "Price: Low–High", value: "lth" },
@@ -21,8 +20,6 @@ interface FilterSidebarProps {
   setSearchQuery: (val: string) => void;
   category: string;
   setCategory: (val: string) => void;
-  occasion: string;
-  setOccasion: (val: string) => void;
   maxPrice: number;
   setMaxPrice: (val: number) => void;
   resetFilters: () => void;
@@ -33,8 +30,6 @@ function FilterSidebar({
   setSearchQuery,
   category,
   setCategory,
-  occasion,
-  setOccasion,
   maxPrice,
   setMaxPrice,
   resetFilters,
@@ -71,26 +66,6 @@ function FilterSidebar({
               }`}
             >
               {c}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Occasion */}
-      <div>
-        <h3 className="font-cinzel text-base font-semibold text-[#3E040E] mb-3">Occasion</h3>
-        <div className="space-y-1.5">
-          {OCCASIONS.map((o) => (
-            <button
-              key={o}
-              onClick={() => setOccasion(o)}
-              className={`block w-full text-left px-4 py-2 rounded-xl text-xs font-montserrat font-medium transition-all cursor-pointer ${
-                occasion === o
-                  ? "bg-[#3E040E] text-[#FBF9F6] shadow-sm font-semibold"
-                  : "text-[#382E2E]/70 hover:bg-[#EBDCC5] hover:text-[#3E040E]"
-              }`}
-            >
-              {o}
             </button>
           ))}
         </div>
@@ -152,7 +127,6 @@ function CollectionsContent() {
     return matched || "All";
   });
 
-  const [occasion, setOccasion] = useState("All");
   const [sort, setSort] = useState("new");
   const [maxPrice, setMaxPrice] = useState(40000);
   const [searchQuery, setSearchQuery] = useState(() => urlSearch || "");
@@ -164,11 +138,6 @@ function CollectionsContent() {
     // Category filter
     if (category !== "All") {
       list = list.filter((p) => p.category === category);
-    }
-
-    // Occasion filter
-    if (occasion !== "All") {
-      list = list.filter((p) => p.occasion === occasion);
     }
 
     // Price filter
@@ -199,11 +168,10 @@ function CollectionsContent() {
     }
 
     return list;
-  }, [category, occasion, sort, maxPrice, searchQuery]);
+  }, [category, sort, maxPrice, searchQuery]);
 
   const resetFilters = () => {
     setCategory("All");
-    setOccasion("All");
     setMaxPrice(40000);
     setSearchQuery("");
     setSort("new");
@@ -245,8 +213,6 @@ function CollectionsContent() {
                   setSearchQuery={setSearchQuery}
                   category={category}
                   setCategory={setCategory}
-                  occasion={occasion}
-                  setOccasion={setOccasion}
                   maxPrice={maxPrice}
                   setMaxPrice={setMaxPrice}
                   resetFilters={resetFilters}

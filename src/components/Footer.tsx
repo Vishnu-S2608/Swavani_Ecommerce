@@ -9,7 +9,7 @@ const footerLinks = {
   collections: [
     { name: "Kanjivaram Silk", href: "/collections?category=kanjivaram" },
     { name: "Elampillai Silks", href: "/collections?category=elampillai" },
-    { name: "Bridal Heirloom", href: "/collections?occasion=wedding" },
+    { name: "Bridal Heirloom", href: "/collections?category=Bridal" },
   ],
   boutique: [
     { name: "Our Story", href: "/about" },

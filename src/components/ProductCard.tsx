@@ -3,9 +3,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Heart } from "lucide-react";
 import { Product } from "@/lib/data";
-import { useWishlist } from "@/hooks/useWishlist";
 
 interface ProductCardProps {
   product: Product;
@@ -13,10 +11,8 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, index = 0 }: ProductCardProps) {
-  const { isWishlisted, toggleWishlist, mounted } = useWishlist();
   const [hovered, setHovered] = useState(false);
 
-  const wishlisted = mounted && isWishlisted(product.id);
   const mainImage = product.image || "/products/1/DSC03770.jpg";
   const hoverImage = product.hoverImage || mainImage;
 
@@ -60,24 +56,6 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
               />
             </motion.div>
           )}
-
-          {/* Wishlist */}
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              toggleWishlist(product.id, product.name);
-            }}
-            className="absolute top-3 right-3 p-2 bg-[#FBF9F6]/80 backdrop-blur-sm shadow-sm transition-all text-[#3E040E] hover:scale-110 active:scale-95 z-10"
-            aria-label={wishlisted ? "Remove from Wishlist" : "Add to Wishlist"}
-          >
-            <Heart
-              size={16}
-              className={`transition-colors duration-300 ${
-                wishlisted ? "fill-[#3E040E] text-[#3E040E]" : "text-[#3E040E]"
-              }`}
-            />
-          </button>
         </div>
 
         {/* Product Info */}

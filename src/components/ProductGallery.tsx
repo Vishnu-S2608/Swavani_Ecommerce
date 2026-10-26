@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -22,12 +22,8 @@ export function ProductGallery({
   productName,
 }: ProductGalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [isZooming, setIsZooming] = useState(false);
-  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [lightboxZoom, setLightboxZoom] = useState(1);
-
-  const mainStageRef = useRef<HTMLDivElement>(null);
 
   const safeImages = images && images.length > 0 ? images : ["/products/1/DSC03770.jpg"];
   const currentImage = safeImages[selectedIndex] || safeImages[0];
@@ -54,24 +50,6 @@ export function ProductGallery({
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handlePrev, handleNext]);
-
-  // Mouse move handler for interactive zoom inspection
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!mainStageRef.current) return;
-    const rect = mainStageRef.current.getBoundingClientRect();
-    const x = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
-    const y = Math.max(0, Math.min(100, ((e.clientY - rect.top) / rect.height) * 100));
-    setMousePos({ x, y });
-  };
-
-  const handleMouseEnter = () => {
-    setIsZooming(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsZooming(false);
-    setMousePos({ x: 50, y: 50 });
-  };
 
   return (
     <>
@@ -107,36 +85,26 @@ export function ProductGallery({
           })}
         </div>
 
-        {/* Main Stage Image Container - Viewport Fitted, Clean Photo */}
+        {/* Main Stage Image Container - Clean View without hover zoom */}
         <div className="flex-1 flex flex-col">
           <div
-            ref={mainStageRef}
             onClick={() => {
               setIsLightboxOpen(true);
               setLightboxZoom(1);
             }}
-            onMouseMove={handleMouseMove}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            className="relative w-full h-[460px] sm:h-[540px] lg:h-[calc(100vh-160px)] lg:max-h-[660px] lg:min-h-[500px] rounded-2xl overflow-hidden shadow-2xl border border-[#96742A]/25 bg-gradient-to-b from-[#FAF8F5] via-[#F4EFEA] to-[#EAE2D5] select-none cursor-zoom-in group"
+            className="relative w-full h-[460px] sm:h-[540px] lg:h-[calc(100vh-160px)] lg:max-h-[660px] lg:min-h-[500px] rounded-2xl overflow-hidden shadow-2xl border border-[#96742A]/25 bg-gradient-to-b from-[#FAF8F5] via-[#F4EFEA] to-[#EAE2D5] select-none cursor-pointer group"
             title="Click to view full screen"
           >
-            {/* The Main Image with Interactive Smooth Zoom */}
+            {/* The Main Image - Static and Crisp */}
             <div className="w-full h-full relative overflow-hidden flex items-center justify-center p-2 sm:p-3">
               <motion.div
                 key={selectedIndex}
-                initial={{ opacity: 0, scale: 0.98 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.3 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.25 }}
                 className="w-full h-full relative flex items-center justify-center"
               >
-                <div
-                  className="w-full h-full relative transition-transform duration-150 ease-out"
-                  style={{
-                    transformOrigin: `${mousePos.x}% ${mousePos.y}%`,
-                    transform: isZooming ? "scale(2.2)" : "scale(1)",
-                  }}
-                >
+                <div className="w-full h-full relative">
                   <Image
                     src={currentImage}
                     alt={productName}
@@ -149,7 +117,7 @@ export function ProductGallery({
               </motion.div>
             </div>
 
-            {/* Subtle Navigation Chevrons on Image Stage (fade-in on hover, no pill container) */}
+            {/* Subtle Navigation Chevrons on Image Stage */}
             {safeImages.length > 1 && (
               <>
                 <button
@@ -158,7 +126,7 @@ export function ProductGallery({
                     e.stopPropagation();
                     handlePrev();
                   }}
-                  className="absolute left-2 top-1/2 -translate-y-1/2 p-2 text-[#3E040E]/60 hover:text-[#3E040E] transition-all opacity-0 group-hover:opacity-100 hover:scale-125 z-10 drop-shadow-md"
+                  className="absolute left-2 top-1/2 -translate-y-1/2 p-2 text-[#3E040E]/60 hover:text-[#3E040E] transition-all opacity-0 group-hover:opacity-100 hover:scale-125 z-10 drop-shadow-md cursor-pointer"
                   aria-label="Previous image"
                 >
                   <ChevronLeft size={30} />
@@ -169,7 +137,7 @@ export function ProductGallery({
                     e.stopPropagation();
                     handleNext();
                   }}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-[#3E040E]/60 hover:text-[#3E040E] transition-all opacity-0 group-hover:opacity-100 hover:scale-125 z-10 drop-shadow-md"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-[#3E040E]/60 hover:text-[#3E040E] transition-all opacity-0 group-hover:opacity-100 hover:scale-125 z-10 drop-shadow-md cursor-pointer"
                   aria-label="Next image"
                 >
                   <ChevronRight size={30} />
@@ -209,7 +177,7 @@ export function ProductGallery({
                   {productName}
                 </h3>
                 <p className="text-[11px] text-white/60 uppercase tracking-widest font-montserrat">
-                  High-Resolution Zari Inspection · Angle {selectedIndex + 1} of {safeImages.length}
+                  Angle {selectedIndex + 1} of {safeImages.length}
                 </p>
               </div>
 
@@ -217,7 +185,7 @@ export function ProductGallery({
               <div className="flex items-center gap-2 sm:gap-3">
                 <button
                   onClick={() => setLightboxZoom((z) => Math.max(1, z - 0.5))}
-                  className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                  className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
                   title="Zoom Out"
                 >
                   <ZoomOut size={18} />
@@ -227,14 +195,14 @@ export function ProductGallery({
                 </span>
                 <button
                   onClick={() => setLightboxZoom((z) => Math.min(3.5, z + 0.5))}
-                  className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                  className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
                   title="Zoom In"
                 >
                   <ZoomIn size={18} />
                 </button>
                 <button
                   onClick={() => setLightboxZoom(1)}
-                  className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                  className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
                   title="Reset Zoom"
                 >
                   <RotateCcw size={18} />
@@ -244,7 +212,7 @@ export function ProductGallery({
                     setIsLightboxOpen(false);
                     setLightboxZoom(1);
                   }}
-                  className="p-2 rounded-full bg-white/20 hover:bg-[#3E040E] text-white transition-colors ml-2"
+                  className="p-2 rounded-full bg-white/20 hover:bg-[#3E040E] text-white transition-colors ml-2 cursor-pointer"
                   title="Close (Esc)"
                 >
                   <X size={20} />
@@ -284,7 +252,7 @@ export function ProductGallery({
                       handlePrev();
                       setLightboxZoom(1);
                     }}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/15 hover:bg-white/30 text-white transition-colors backdrop-blur-md"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/15 hover:bg-white/30 text-white transition-colors backdrop-blur-md cursor-pointer"
                     aria-label="Previous image"
                   >
                     <ChevronLeft size={28} />
@@ -295,7 +263,7 @@ export function ProductGallery({
                       handleNext();
                       setLightboxZoom(1);
                     }}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/15 hover:bg-white/30 text-white transition-colors backdrop-blur-md"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/15 hover:bg-white/30 text-white transition-colors backdrop-blur-md cursor-pointer"
                     aria-label="Next image"
                   >
                     <ChevronRight size={28} />
@@ -316,7 +284,7 @@ export function ProductGallery({
                     setSelectedIndex(idx);
                     setLightboxZoom(1);
                   }}
-                  className={`relative w-14 h-18 rounded-lg overflow-hidden border-2 transition-all ${
+                  className={`relative w-14 h-18 rounded-lg overflow-hidden border-2 transition-all cursor-pointer ${
                     selectedIndex === idx
                       ? "border-[#D9B26D] scale-110 shadow-lg"
                       : "border-white/20 opacity-50 hover:opacity-100"

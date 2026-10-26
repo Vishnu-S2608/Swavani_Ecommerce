@@ -77,7 +77,7 @@ export default async function ProductPage({
     .filter(
       (p) =>
         p.id !== product.id &&
-        (p.category === product.category || p.occasion === product.occasion)
+        (p.category === product.category || p.fabric === product.fabric)
     )
     .slice(0, 4);
 

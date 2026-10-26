@@ -3,11 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Heart, Truck, RotateCcw, Shield, Minus, Plus, MessageCircle } from "lucide-react";
+import { Truck, RotateCcw, Shield, Minus, Plus, MessageCircle } from "lucide-react";
 import { Product, WHATSAPP_NUMBER } from "@/lib/data";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductGallery } from "@/components/ProductGallery";
-import { useWishlist } from "@/hooks/useWishlist";
 
 interface ProductDetailClientProps {
   product: Product;
@@ -15,10 +14,8 @@ interface ProductDetailClientProps {
 }
 
 export function ProductDetailClient({ product, related }: ProductDetailClientProps) {
-  const { isWishlisted, toggleWishlist, mounted } = useWishlist();
   const [qty, setQty] = useState(1);
 
-  const wishlisted = mounted && isWishlisted(product.id);
   const maxStock = product.stock > 0 ? product.stock : 10;
 
   const galleryImages =
@@ -100,19 +97,6 @@ Please confirm availability and share payment/delivery details. Thank you!`;
                     </span>
                   )}
                 </div>
-
-                <button
-                  onClick={() => toggleWishlist(product.id, product.name)}
-                  className="p-2 transition-colors hover:text-[#96742A] cursor-pointer"
-                  aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
-                >
-                  <Heart
-                    size={22}
-                    className={`transition-colors duration-300 ${
-                      wishlisted ? "fill-[#3E040E] text-[#3E040E]" : "text-[#382E2E]/50"
-                    }`}
-                  />
-                </button>
               </div>
 
               <h1 className="font-cinzel text-3xl lg:text-4xl font-semibold text-[#3E040E] leading-tight mb-2 uppercase tracking-wide">
@@ -151,51 +135,6 @@ Please confirm availability and share payment/delivery details. Thank you!`;
               <p className="font-cormorant text-xl text-[#382E2E]/90 leading-relaxed mb-8 italic">
                 &ldquo;{product.description}&rdquo;
               </p>
-
-              {/* Specifications Grid */}
-              <div className="bg-[#EBDCC5]/30 rounded-2xl p-6 border border-[#96742A]/20 mb-8">
-                <h3 className="font-cinzel text-xs font-bold uppercase tracking-[0.2em] text-[#3E040E] mb-4">
-                  Artisan Specifications
-                </h3>
-                <div className="grid grid-cols-2 gap-y-4 gap-x-6 text-xs">
-                  <div>
-                    <span className="text-[9px] font-bold text-[#382E2E]/50 uppercase tracking-[0.2em] block mb-1">
-                      Weave
-                    </span>
-                    <span className="font-semibold text-[#3E040E]">{product.details?.weave || "Handloom Silk"}</span>
-                  </div>
-                  <div>
-                    <span className="text-[9px] font-bold text-[#382E2E]/50 uppercase tracking-[0.2em] block mb-1">
-                      Zari Details
-                    </span>
-                    <span className="font-semibold text-[#3E040E]">{product.details?.zari || "Tested Gold Zari"}</span>
-                  </div>
-                  <div>
-                    <span className="text-[9px] font-bold text-[#382E2E]/50 uppercase tracking-[0.2em] block mb-1">
-                      Dimensions
-                    </span>
-                    <span className="font-semibold text-[#3E040E]">{product.details?.length || "5.5 metres"}</span>
-                  </div>
-                  <div>
-                    <span className="text-[9px] font-bold text-[#382E2E]/50 uppercase tracking-[0.2em] block mb-1">
-                      Blouse Piece
-                    </span>
-                    <span className="font-semibold text-[#3E040E]">{product.details?.blouse || "0.8m Included"}</span>
-                  </div>
-                  <div>
-                    <span className="text-[9px] font-bold text-[#382E2E]/50 uppercase tracking-[0.2em] block mb-1">
-                      Origin Looms
-                    </span>
-                    <span className="font-semibold text-[#3E040E]">{product.details?.origin || "Tamil Nadu, India"}</span>
-                  </div>
-                  <div>
-                    <span className="text-[9px] font-bold text-[#382E2E]/50 uppercase tracking-[0.2em] block mb-1">
-                      Certification
-                    </span>
-                    <span className="font-semibold text-[#3E040E]">{product.details?.certification || "Silk Mark"}</span>
-                  </div>
-                </div>
-              </div>
 
               {/* Quantity capped to available stock */}
               <div className="mb-8">
