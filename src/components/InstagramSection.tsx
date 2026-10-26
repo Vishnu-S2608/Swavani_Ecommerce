@@ -1,16 +1,17 @@
 "use client";
 import React, { useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { WHATSAPP_NUMBER } from "@/lib/data";
 
 const galleryImages = [
-  { src: "/products/1/DSC03770.jpg", alt: "Kanchivaram Royal Amethyst Soft Silk Saree", span: "row-span-2" },
-  { src: "/products/11/DSC03853.jpg", alt: "Royal Sapphire Kanchivaram Silk Saree", span: "" },
-  { src: "/products/2/DSC03775.jpg", alt: "Vermilion Radiance Kanchivaram Soft Silk Saree", span: "" },
-  { src: "/products/5/DSC03798.jpg", alt: "Marigold Kanchivaram Soft Silk Saree", span: "row-span-2" },
-  { src: "/products/15/DSC03892.jpg", alt: "Royal Peacock Emerald Kanchivaram Silk Saree", span: "" },
-  { src: "/products/21/DSC03947.jpg", alt: "Midnight Sapphire Silk Saree with Antique Gold Buttas", span: "" },
+  { src: "/products/1/DSC03770.jpg", alt: "Kanchivaram Royal Amethyst Soft Silk Saree", span: "row-span-2", href: "/product/p1" },
+  { src: "/products/11/DSC03853.jpg", alt: "Royal Sapphire Kanchivaram Silk Saree", span: "", href: "/product/p11" },
+  { src: "/products/2/DSC03775.jpg", alt: "Vermilion Radiance Kanchivaram Soft Silk Saree", span: "", href: "/product/p2" },
+  { src: "/products/5/DSC03798.jpg", alt: "Marigold Kanchivaram Soft Silk Saree", span: "row-span-2", href: "/product/p5" },
+  { src: "/products/15/DSC03892.jpg", alt: "Royal Peacock Emerald Kanchivaram Silk Saree", span: "", href: "/product/p15" },
+  { src: "/products/21/DSC03947.jpg", alt: "Midnight Sapphire Silk Saree with Antique Gold Buttas", span: "", href: "/product/p21" },
 ];
 
 export function InstagramSection() {
@@ -94,7 +95,7 @@ export function InstagramSection() {
             {galleryImages.map((img, i) => (
               <motion.div
                 key={i}
-                className={`relative overflow-hidden group cursor-pointer ${img.span}`}
+                className={`relative overflow-hidden group ${img.span}`}
                 initial={{ opacity: 0, scale: 0.94, y: 24 }}
                 animate={galleryInView ? { opacity: 1, scale: 1, y: 0 } : {}}
                 transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1], delay: i * 0.08 }}
@@ -104,40 +105,20 @@ export function InstagramSection() {
                   border: "1px solid rgba(184,146,90,.25)",
                 }}
               >
-                <Image
-                  src={img.src}
-                  alt={img.alt}
-                  fill
-                  sizes="(max-width: 768px) 50vw, 25vw"
-                  className="object-cover"
-                  style={{ objectPosition: "center 20%", transition: "transform 0.7s ease" }}
-                />
-                <motion.div
-                  className="absolute inset-0 flex items-center justify-center"
-                  initial={{ opacity: 0 }}
-                  whileHover={{ opacity: 1 }}
-                  transition={{ duration: 0.3 }}
-                  style={{ background: "rgba(58,6,21,.55)" }}
+                <Link
+                  href={img.href}
+                  className="block w-full h-full relative cursor-pointer"
+                  aria-label={img.alt}
                 >
-                  <motion.span
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    whileHover={{ scale: 1, opacity: 1 }}
-                    transition={{ duration: 0.25, delay: 0.05 }}
-                    style={{
-                      fontFamily: "var(--font-montserrat), sans-serif",
-                      fontSize: "10px",
-                      letterSpacing: ".22em",
-                      textTransform: "uppercase",
-                      color: "#D9B26D",
-                      fontWeight: 600,
-                      border: "1px solid rgba(217,178,109,.5)",
-                      padding: "8px 18px",
-                      background: "rgba(58,6,21,.5)",
-                    }}
-                  >
-                    View →
-                  </motion.span>
-                </motion.div>
+                  <Image
+                    src={img.src}
+                    alt={img.alt}
+                    fill
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    style={{ objectPosition: "center 20%" }}
+                  />
+                </Link>
               </motion.div>
             ))}
           </div>

@@ -11,7 +11,7 @@ const collections = [
     subtitle: "Pure Mulberry Silk",
     description: "Temple-border zari work, rich colour block weave — the queen of Indian silks. Each piece is a lifetime heirloom.",
     image: "/products/1/DSC03770.jpg",
-    href: "/collections?category=silk",
+    href: "/product/p1",
     accent: "#0F5C63",
     badge: "GI Certified",
   },
@@ -21,7 +21,7 @@ const collections = [
     subtitle: "Imperial Heritage",
     description: "Opulent pure silk weaves in peacock and royal jewel tones. Handcrafted on traditional looms.",
     image: "/products/11/DSC03853.jpg",
-    href: "/collections?category=silk",
+    href: "/product/p11",
     accent: "#2B2F6B",
     badge: "Royal Heritage",
   },
@@ -31,7 +31,7 @@ const collections = [
     subtitle: "Heritage South Silk",
     description: "South Indian Pattu with rich geometric motifs, temple borders, and featherlight drape.",
     image: "/products/15/DSC03892.jpg",
-    href: "/collections?category=handloom",
+    href: "/product/p15",
     accent: "#D98324",
     badge: "Handloom Mark",
   },
@@ -41,7 +41,7 @@ const collections = [
     subtitle: "Sacred Ceremony Heirlooms",
     description: "Bespoke bridal silks — from auspicious marigold korvai silks to regal temple zari weaves.",
     image: "/products/5/DSC03798.jpg",
-    href: "/collections?category=bridal",
+    href: "/product/p5",
     accent: "#C24B6B",
     badge: "Bespoke",
   },
@@ -187,7 +187,7 @@ function CollectionCard({ col, idx }: { col: typeof collections[0]; idx: number 
       initial={{ opacity: 0, y: 60 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1], delay: idx * 0.13 }}
-      className="group relative overflow-hidden cursor-pointer"
+      className="group relative overflow-hidden"
       style={{
         background: "#FBF5EA",
         border: "1px solid rgba(184,146,90,.3)",
@@ -195,90 +195,64 @@ function CollectionCard({ col, idx }: { col: typeof collections[0]; idx: number 
       }}
       whileHover={{ y: -6, boxShadow: "0 24px 60px rgba(58,6,21,.18)" }}
     >
-      {/* Image */}
-      <div ref={imgRef} className="relative overflow-hidden" style={{ height: "320px" }}>
-        <motion.div style={{ y: imgY, height: "110%", position: "relative", top: "-5%" }}>
-          <Image
-            src={col.image}
-            alt={col.name}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-            className="object-cover"
-            style={{ objectPosition: "center 20%" }}
-          />
-        </motion.div>
-        {/* Arch-mask overlay on hover */}
-        <div
-          className="absolute inset-0 pointer-events-none transition-opacity duration-500 group-hover:opacity-100 opacity-0"
-          style={{ background: "linear-gradient(to top, rgba(58,6,21,.65) 0%, rgba(58,6,21,.15) 60%, transparent 100%)" }}
-        />
+      <Link href={col.href} className="block w-full h-full text-inherit no-underline cursor-pointer">
+        {/* Image */}
+        <div ref={imgRef} className="relative overflow-hidden" style={{ height: "320px" }}>
+          <motion.div style={{ y: imgY, height: "110%", position: "relative", top: "-5%" }}>
+            <Image
+              src={col.image}
+              alt={col.name}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+              className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              style={{ objectPosition: "center 20%" }}
+            />
+          </motion.div>
+        </div>
 
-        {/* Hover CTA */}
-        <motion.div
-          className="absolute inset-x-4 bottom-4 z-10"
-          initial={{ opacity: 0, y: 12 }}
-          whileHover={{ opacity: 1, y: 0 }}
-        >
-          <Link
-            href={col.href}
-            className="flex items-center justify-center gap-2 py-3"
+        {/* Card body */}
+        <div className="p-5">
+          <div className="mb-1 h-px" style={{ background: `linear-gradient(90deg, ${col.accent}, transparent)` }} />
+          <p
             style={{
-              background: "rgba(58,6,21,.92)",
-              border: "1px solid rgba(217,178,109,.5)",
               fontFamily: "var(--font-montserrat), sans-serif",
-              fontSize: "10px",
-              letterSpacing: ".18em",
+              fontSize: "9px",
+              letterSpacing: ".22em",
               textTransform: "uppercase",
-              color: "#D9B26D",
-              textDecoration: "none",
+              color: col.accent,
+              fontWeight: 600,
+              marginBottom: "4px",
+              marginTop: "10px",
             }}
           >
-            Explore {col.name} →
-          </Link>
-        </motion.div>
-      </div>
-
-      {/* Card body */}
-      <div className="p-5">
-        <div className="mb-1 h-px" style={{ background: `linear-gradient(90deg, ${col.accent}, transparent)` }} />
-        <p
-          style={{
-            fontFamily: "var(--font-montserrat), sans-serif",
-            fontSize: "9px",
-            letterSpacing: ".22em",
-            textTransform: "uppercase",
-            color: col.accent,
-            fontWeight: 600,
-            marginBottom: "4px",
-            marginTop: "10px",
-          }}
-        >
-          {col.subtitle}
-        </p>
-        <h3
-          style={{
-            fontFamily: "var(--font-cinzel), Georgia, serif",
-            fontSize: "18px",
-            letterSpacing: ".08em",
-            textTransform: "uppercase",
-            color: "#3A0615",
-            fontWeight: 600,
-            marginBottom: "8px",
-          }}
-        >
-          {col.name}
-        </h3>
-        <p
-          style={{
-            fontFamily: "var(--font-cormorant), Georgia, serif",
-            fontSize: "14px",
-            lineHeight: 1.6,
-            color: "#3A2A26",
-          }}
-        >
-          {col.description}
-        </p>
-      </div>
+            {col.subtitle}
+          </p>
+          <h3
+            className="group-hover:text-[#96742A] transition-colors"
+            style={{
+              fontFamily: "var(--font-cinzel), Georgia, serif",
+              fontSize: "18px",
+              letterSpacing: ".08em",
+              textTransform: "uppercase",
+              color: "#3A0615",
+              fontWeight: 600,
+              marginBottom: "8px",
+            }}
+          >
+            {col.name}
+          </h3>
+          <p
+            style={{
+              fontFamily: "var(--font-cormorant), Georgia, serif",
+              fontSize: "14px",
+              lineHeight: 1.6,
+              color: "#3A2A26",
+            }}
+          >
+            {col.description}
+          </p>
+        </div>
+      </Link>
     </motion.div>
   );
 }
