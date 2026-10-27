@@ -129,12 +129,14 @@ export function BrandShowcase() {
         transition={{ duration: 0.7, delay: 0.8 }}
       >
         <motion.a
-          href="https://www.swavani.in"
-          className="font-montserrat text-[9px] md:text-[11px] uppercase tracking-[0.6em] text-[#FBF9F6] transition-colors drop-shadow-md font-semibold"
-          whileHover={{ color: "#D9B26D", letterSpacing: "0.7em" }}
+          href="https://houseofswavani.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-montserrat text-[9px] md:text-[11px] uppercase tracking-[0.4em] text-[#FBF9F6] transition-colors drop-shadow-md font-semibold"
+          whileHover={{ color: "#D9B26D", letterSpacing: "0.5em" }}
           transition={{ duration: 0.3 }}
         >
-          W W W . S W A V A N I . I N
+          houseofswavani.com
         </motion.a>
       </motion.div>
     </section>
