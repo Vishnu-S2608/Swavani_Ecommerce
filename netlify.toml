@@ -1,6 +1,0 @@
-[build]
-  command = "npm run build"
-
-[build.environment]
-  # Tell Netlify Secrets Scanner to allow NEXT_PUBLIC_SITE_URL in client bundles
-  SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_SITE_URL"
