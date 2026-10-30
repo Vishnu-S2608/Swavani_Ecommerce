@@ -28,19 +28,34 @@ export async function generateMetadata({
     };
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://swavanistore.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.houseofswavani.com";
+  const productUrl = `${siteUrl}/product/${product.id}`;
+  const imageUrl = product.image.startsWith("http") ? product.image : `${siteUrl}${product.image}`;
 
   return {
     title: `${product.name} — House of Swavani`,
-    description: product.description || product.subtitle,
+    description: `${product.description} Handcrafted authentic ${product.fabric} saree. Silk Mark certified with pure zari detailing.`,
+    keywords: [
+      product.name,
+      product.fabric,
+      product.category,
+      "House of Swavani",
+      "Silk Mark certified saree",
+      "authentic Indian handloom",
+      "buy silk saree online",
+      "pure zari border",
+    ],
+    alternates: {
+      canonical: productUrl,
+    },
     openGraph: {
       title: `${product.name} | House of Swavani`,
       description: product.subtitle,
-      url: `${siteUrl}/product/${product.id}`,
+      url: productUrl,
       siteName: "House of Swavani",
       images: [
         {
-          url: product.image,
+          url: imageUrl,
           width: 800,
           height: 1200,
           alt: product.name,
@@ -51,7 +66,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: product.name,
       description: product.subtitle,
-      images: [product.image],
+      images: [imageUrl],
     },
   };
 }
@@ -73,6 +88,10 @@ export default async function ProductPage({
     notFound();
   }
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.houseofswavani.com";
+  const productUrl = `${siteUrl}/product/${product.id}`;
+  const imageUrl = product.image.startsWith("http") ? product.image : `${siteUrl}${product.image}`;
+
   const related = products
     .filter(
       (p) =>
@@ -81,5 +100,42 @@ export default async function ProductPage({
     )
     .slice(0, 4);
 
-  return <ProductDetailClient product={product} related={related} />;
+  const productJsonLd = {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    name: product.name,
+    image: [imageUrl],
+    description: product.description || product.subtitle,
+    sku: `SWAVANI-${product.id.toUpperCase()}`,
+    mpn: product.id,
+    brand: {
+      "@type": "Brand",
+      name: "House of Swavani",
+    },
+    offers: {
+      "@type": "Offer",
+      url: productUrl,
+      priceCurrency: "INR",
+      price: product.price,
+      priceValidUntil: "2027-12-31",
+      itemCondition: "https://schema.org/NewCondition",
+      availability: "https://schema.org/InStock",
+      seller: {
+        "@type": "Organization",
+        name: "House of Swavani",
+      },
+    },
+    category: product.category,
+    material: product.fabric,
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
+      <ProductDetailClient product={product} related={related} />
+    </>
+  );
 }

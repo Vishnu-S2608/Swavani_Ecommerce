@@ -2,7 +2,7 @@ import { MetadataRoute } from "next";
 import { products } from "@/lib/data";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://swavanistore.com";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.houseofswavani.com";
 
   const staticRoutes = [
     {
