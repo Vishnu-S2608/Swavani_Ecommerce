@@ -144,11 +144,11 @@ export function MahiraHeroBanner() {
         <MahiraNavbarOverlay />
 
         {/* ─── Hero text block — positioned lower-left, matching video ─── */}
-        <div className="flex-1 flex items-end pb-16 sm:pb-20 md:pb-24">
-          <div className="w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 flex items-end justify-between">
+        <div className="flex-1 flex items-end pb-14 sm:pb-20 md:pb-24">
+          <div className="w-full max-w-[1440px] mx-auto px-5 sm:px-10 lg:px-16 flex items-end justify-between">
 
             {/* Left: main text content */}
-            <div className="max-w-[520px] space-y-4 md:space-y-5">
+            <div className="max-w-full sm:max-w-[520px] space-y-3 md:space-y-5">
 
               {/* Eyebrow + rule */}
               <motion.div
@@ -358,8 +358,8 @@ function MahiraNavbarOverlay() {
   return (
     <>
     <nav
-      className="relative flex items-center justify-between px-6 sm:px-10 lg:px-16 py-0 shrink-0"
-      style={{ height: '96px' }}
+      className="relative flex items-center justify-between px-4 sm:px-10 lg:px-16 py-0 shrink-0"
+      style={{ height: 'clamp(64px, 7vw, 96px)' }}
       aria-label="Main navigation"
     >
       {/* ── LEFT SECTION (Mobile Menu) ── */}

@@ -35,25 +35,25 @@ ${form.message}`;
   ];
 
   return (
-    <div className="min-h-screen bg-[#F4E8D4] pt-24 pb-16">
+    <div className="min-h-screen bg-[#F4E8D4] pt-20 sm:pt-28 pb-12 sm:pb-16 font-montserrat">
       {/* Header */}
-      <div className="py-16 text-center">
+      <div className="py-8 sm:py-16 text-center px-4">
         <motion.p
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-          className="font-montserrat text-sm font-semibold tracking-[0.25em] text-[#96742A] uppercase mb-4"
+          className="font-montserrat text-xs sm:text-sm font-semibold tracking-[0.25em] text-[#96742A] uppercase mb-2 sm:mb-4"
         >
           Get In Touch
         </motion.p>
         <motion.h1
           initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
-          className="font-cinzel text-5xl md:text-6xl font-semibold text-[#3E040E]"
+          className="font-cinzel text-3xl sm:text-5xl md:text-6xl font-semibold text-[#3E040E]"
         >
           Visit Us
         </motion.h1>
       </div>
 
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="grid lg:grid-cols-2 gap-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="grid lg:grid-cols-2 gap-8 sm:gap-12">
           {/* Contact Info */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -87,7 +87,7 @@ ${form.message}`;
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
-            className="bg-[#FBF9F6] rounded-3xl p-8 md:p-12 shadow-2xl border border-[#96742A]/20"
+            className="bg-[#FBF9F6] rounded-3xl p-5 sm:p-8 md:p-12 shadow-2xl border border-[#96742A]/20"
           >
             {sent ? (
               <motion.div

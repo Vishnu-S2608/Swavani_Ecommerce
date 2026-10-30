@@ -118,14 +118,14 @@ export function EditorialStory() {
 
             {/* Floating quote card with animation */}
             <motion.div
-              className="absolute -bottom-6 -right-4 sm:right-8 max-w-[240px]"
+              className="absolute -bottom-6 right-2 sm:right-4 max-w-[200px] sm:max-w-[240px]"
               initial={{ opacity: 0, y: 30, scale: 0.95 }}
               animate={leftInView ? { opacity: 1, y: 0, scale: 1 } : {}}
               transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.4 }}
               style={{
                 background: "linear-gradient(135deg, #3A0615, #5C0F27)",
                 border: "1px solid rgba(217,178,109,.4)",
-                padding: "20px 22px",
+                padding: "16px 18px",
                 boxShadow: "0 16px 48px rgba(58,6,21,.5)",
               }}
             >

@@ -108,15 +108,15 @@ export default function AboutPage() {
           <div className="absolute inset-0 bg-gradient-to-r from-[#0F1A13]/80 via-transparent to-[#0F1A13]/80" />
         </div>
 
-        <div className="relative z-10 max-w-4xl mx-auto px-6 py-32 text-center">
+        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 py-20 sm:py-32 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#96742A]/20 border border-[#96742A]/40 mb-6"
+            className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-[#96742A]/20 border border-[#96742A]/40 mb-4 sm:mb-6"
           >
             <Compass size={14} className="text-[#D9B26D]" />
-            <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#D9B26D]">
+            <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] sm:tracking-[0.25em] text-[#D9B26D]">
               Heritage · Patronage · Pure Handloom
             </span>
           </motion.div>
@@ -125,7 +125,7 @@ export default function AboutPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="font-cinzel text-4xl sm:text-6xl md:text-7xl font-semibold text-[#F4E8D4] leading-tight tracking-wide mb-6 uppercase"
+            className="font-cinzel text-3xl sm:text-6xl md:text-7xl font-semibold text-[#F4E8D4] leading-tight tracking-wide mb-4 sm:mb-6 uppercase"
           >
             The House of Swavani
           </motion.h1>
@@ -134,7 +134,7 @@ export default function AboutPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.35 }}
-            className="font-cormorant text-2xl sm:text-3xl italic text-[#D9B26D] max-w-2xl mx-auto leading-relaxed"
+            className="font-cormorant text-xl sm:text-3xl italic text-[#D9B26D] max-w-2xl mx-auto leading-relaxed"
           >
             &ldquo;A saree is not merely six yards of woven silk — it is a living heirloom of memory, tradition, and devotion.&rdquo;
           </motion.p>
@@ -142,8 +142,8 @@ export default function AboutPage() {
       </section>
 
       {/* ── Brand Genesis & Story ── */}
-      <section className="py-24 lg:py-32 bg-[#FBF9F6]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+      <section className="py-16 sm:py-24 lg:py-32 bg-[#FBF9F6]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
           <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
             {/* Left: Overlapping Editorial Images */}
             <div className="lg:col-span-6 relative">
@@ -199,22 +199,22 @@ export default function AboutPage() {
               </div>
 
               {/* Stats Grid */}
-              <div className="grid grid-cols-3 gap-4 pt-6 border-t border-[#96742A]/20">
-                <div className="p-4 rounded-xl bg-[#EBDCC5]/30 border border-[#96742A]/20 text-center">
-                  <p className="font-cinzel text-2xl sm:text-3xl font-bold text-[#3E040E]">100%</p>
-                  <p className="text-[10px] font-semibold text-[#96742A] uppercase tracking-wider mt-1">
+              <div className="grid grid-cols-3 gap-2 sm:gap-4 pt-6 border-t border-[#96742A]/20">
+                <div className="p-2 sm:p-4 rounded-xl bg-[#EBDCC5]/30 border border-[#96742A]/20 text-center">
+                  <p className="font-cinzel text-lg sm:text-2xl md:text-3xl font-bold text-[#3E040E]">100%</p>
+                  <p className="text-[8px] sm:text-[10px] font-semibold text-[#96742A] uppercase tracking-wider mt-1">
                     Silk Mark Certified
                   </p>
                 </div>
-                <div className="p-4 rounded-xl bg-[#EBDCC5]/30 border border-[#96742A]/20 text-center">
-                  <p className="font-cinzel text-2xl sm:text-3xl font-bold text-[#3E040E]">0%</p>
-                  <p className="text-[10px] font-semibold text-[#96742A] uppercase tracking-wider mt-1">
+                <div className="p-2 sm:p-4 rounded-xl bg-[#EBDCC5]/30 border border-[#96742A]/20 text-center">
+                  <p className="font-cinzel text-lg sm:text-2xl md:text-3xl font-bold text-[#3E040E]">0%</p>
+                  <p className="text-[8px] sm:text-[10px] font-semibold text-[#96742A] uppercase tracking-wider mt-1">
                     Machine Replicated
                   </p>
                 </div>
-                <div className="p-4 rounded-xl bg-[#EBDCC5]/30 border border-[#96742A]/20 text-center">
-                  <p className="font-cinzel text-2xl sm:text-3xl font-bold text-[#3E040E]">Direct</p>
-                  <p className="text-[10px] font-semibold text-[#96742A] uppercase tracking-wider mt-1">
+                <div className="p-2 sm:p-4 rounded-xl bg-[#EBDCC5]/30 border border-[#96742A]/20 text-center">
+                  <p className="font-cinzel text-lg sm:text-2xl md:text-3xl font-bold text-[#3E040E]">Direct</p>
+                  <p className="text-[8px] sm:text-[10px] font-semibold text-[#96742A] uppercase tracking-wider mt-1">
                     Loom Patronage
                   </p>
                 </div>

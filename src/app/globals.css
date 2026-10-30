@@ -460,3 +460,34 @@ body::-webkit-scrollbar {
   animation: lotus-bloom .9s cubic-bezier(.2,.9,.3,1.2) 1s forwards;
 }
 .em-dots { opacity: 0; animation: fade-in .6s ease 1.3s forwards; }
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE RESPONSIVE OVERRIDES
+   ═══════════════════════════════════════════════════════════ */
+
+/* Smooth touch scrolling on iOS */
+html {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Mobile body: prevent accidental horizontal scroll */
+body {
+  overflow-x: hidden;
+}
+
+/* Better touch targets on mobile */
+@media (max-width: 640px) {
+  .btn-silk,
+  .btn-zari {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    font-size: 10px;
+  }
+
+  /* Premium logo smaller on mobile navbar */
+  .premium-logo-container {
+    width: clamp(140px, 42vw, 200px);
+  }
+}

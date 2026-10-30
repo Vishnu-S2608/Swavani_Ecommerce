@@ -51,10 +51,10 @@ Please confirm availability and share payment/delivery details. Thank you!`;
   };
 
   return (
-    <div className="min-h-screen bg-[#FBF9F6] pt-24 lg:pt-28 pb-20 font-montserrat text-[#382E2E]">
+    <div className="min-h-screen bg-[#FBF9F6] pt-20 sm:pt-24 lg:pt-28 pb-20 font-montserrat text-[#382E2E]">
       {/* Breadcrumb */}
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-3">
-        <div className="flex items-center gap-2 text-[10px] font-semibold tracking-[0.2em] uppercase text-[#382E2E]/50">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 py-3">
+        <div className="flex items-center gap-1.5 text-[10px] font-semibold tracking-[0.15em] uppercase text-[#382E2E]/50 overflow-hidden">
           <Link href="/" className="hover:text-[#96742A] transition-colors">
             Home
           </Link>
@@ -67,7 +67,7 @@ Please confirm availability and share payment/delivery details. Thank you!`;
         </div>
       </div>
 
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 pt-2">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 pt-2">
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-14 relative items-start">
           {/* Left: Interactive Viewport-Fitted Gallery */}
           <div className="w-full lg:w-[54%]">
@@ -223,16 +223,16 @@ Please confirm availability and share payment/delivery details. Thank you!`;
 
         {/* Related Sarees */}
         {related.length > 0 && (
-          <div className="mt-28 pt-16 border-t border-[#96742A]/20">
-            <div className="text-center mb-12">
+          <div className="mt-16 sm:mt-28 pt-10 sm:pt-16 border-t border-[#96742A]/20">
+            <div className="text-center mb-8 sm:mb-12">
               <p className="font-montserrat text-xs font-semibold tracking-[0.25em] text-[#96742A] uppercase mb-2">
                 Handcrafted Pairings
               </p>
-              <h2 className="font-cinzel text-3xl font-semibold text-[#3E040E] uppercase tracking-wider">
+              <h2 className="font-cinzel text-2xl sm:text-3xl font-semibold text-[#3E040E] uppercase tracking-wider">
                 Complementary Weaves
               </h2>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
               {related.map((p, i) => (
                 <ProductCard key={p.id} product={p} index={i} />
               ))}

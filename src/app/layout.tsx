@@ -68,7 +68,7 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
       </head>
       <body
-        style={{ background: '#111a14', color: '#F4E8D4', margin: 0, padding: 0 }}
+        style={{ background: '#F4E8D4', color: '#382E2E', margin: 0, padding: 0 }}
         className="antialiased font-montserrat"
       >
         <Toaster

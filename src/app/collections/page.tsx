@@ -178,7 +178,7 @@ function CollectionsContent() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F4E8D4] pt-32 pb-20 font-montserrat">
+    <div className="min-h-screen w-full bg-[#F4E8D4] pt-20 sm:pt-28 lg:pt-32 pb-20 font-montserrat overflow-x-hidden">
       {/* Mobile Filter Drawer */}
       <AnimatePresence>
         {filterOpen && (
@@ -224,25 +224,25 @@ function CollectionsContent() {
       </AnimatePresence>
 
       {/* Page Header */}
-      <div className="py-12 border-b border-[#96742A]/20 bg-[#EBDCC5]/40">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <p className="font-montserrat text-xs font-semibold tracking-[0.25em] text-[#96742A] uppercase mb-3">
+      <div className="py-8 sm:py-12 border-b border-[#96742A]/20 bg-[#EBDCC5]/40 w-full overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
+          <p className="font-montserrat text-[10px] sm:text-xs font-semibold tracking-[0.2em] sm:tracking-[0.25em] text-[#96742A] uppercase mb-2 sm:mb-3">
             Handcrafted Loom Heritage
           </p>
-          <h1 className="font-cinzel text-4xl md:text-5xl font-semibold text-[#3E040E] mb-3 uppercase tracking-wider">
+          <h1 className="font-cinzel text-xl sm:text-3xl md:text-5xl font-semibold text-[#3E040E] mb-2 sm:mb-3 uppercase tracking-wide sm:tracking-wider">
             Our Collections
           </h1>
-          <p className="font-cormorant text-lg text-[#382E2E]/80 italic max-w-md mx-auto">
+          <p className="font-cormorant text-base sm:text-lg text-[#382E2E]/80 italic max-w-md mx-auto px-2">
             {filtered.length} masterwork sarees woven with generational expertise
           </p>
 
           {/* Quick Category Pills */}
-          <div className="flex flex-wrap items-center justify-center gap-2.5 mt-8">
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 mt-5 sm:mt-8 px-1">
             {CATEGORIES.map((c) => (
               <button
                 key={c}
                 onClick={() => setCategory(c)}
-                className={`px-5 py-2 rounded-full text-xs font-montserrat tracking-widest uppercase transition-all cursor-pointer ${
+                className={`px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full text-[11px] sm:text-xs font-montserrat tracking-wider sm:tracking-widest uppercase transition-all cursor-pointer ${
                   category === c
                     ? "bg-[#3E040E] text-[#F4E8D4] shadow-md font-semibold"
                     : "bg-[#FBF9F6]/80 text-[#3E040E] border border-[#96742A]/30 hover:bg-[#3E040E] hover:text-[#F4E8D4]"
@@ -255,22 +255,22 @@ function CollectionsContent() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 mt-10">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 mt-6 sm:mt-10">
         <div className="flex gap-10">
           {/* Main Grid Section */}
-          <div className="flex-1">
+          <div className="flex-1 min-w-0">
             {/* Top Toolbar */}
-            <div className="flex items-center justify-between mb-8 gap-4 flex-wrap bg-[#FBF9F6] p-4 rounded-2xl border border-[#96742A]/20 shadow-sm">
-              <p className="font-montserrat text-xs font-semibold text-[#382E2E]/70 uppercase tracking-widest">
+            <div className="flex items-center justify-between mb-6 sm:mb-8 gap-3 sm:gap-4 flex-wrap bg-[#FBF9F6] p-3 sm:p-4 rounded-2xl border border-[#96742A]/20 shadow-sm">
+              <p className="font-montserrat text-[11px] sm:text-xs font-semibold text-[#382E2E]/70 uppercase tracking-wider sm:tracking-widest">
                 Showing <span className="text-[#3E040E] font-bold">{filtered.length}</span> sarees
                 {category !== "All" && <span className="text-[#96742A] ml-1">in {category}</span>}
               </p>
 
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
                 {/* Mobile Filter Button */}
                 <button
                   onClick={() => setFilterOpen(true)}
-                  className="px-4 py-2 flex items-center gap-2 bg-[#EBDCC5] border border-[#96742A]/30 rounded-full text-xs font-montserrat font-bold text-[#3E040E] uppercase tracking-widest hover:bg-[#D9B26D] transition-all shadow-sm cursor-pointer"
+                  className="px-3 sm:px-4 py-1.5 sm:py-2 flex items-center gap-1.5 sm:gap-2 bg-[#EBDCC5] border border-[#96742A]/30 rounded-full text-[11px] sm:text-xs font-montserrat font-bold text-[#3E040E] uppercase tracking-wider sm:tracking-widest hover:bg-[#D9B26D] transition-all shadow-sm cursor-pointer"
                 >
                   <SlidersHorizontal className="w-3.5 h-3.5" />
                   Filters
@@ -280,7 +280,7 @@ function CollectionsContent() {
                 <select
                   value={sort}
                   onChange={(e) => setSort(e.target.value)}
-                  className="px-4 py-2 bg-white border border-[#96742A]/30 rounded-full text-xs font-montserrat font-bold text-[#3E040E] uppercase tracking-widest focus:outline-none focus:border-[#3E040E] shadow-sm cursor-pointer"
+                  className="px-3 sm:px-4 py-1.5 sm:py-2 bg-white border border-[#96742A]/30 rounded-full text-[11px] sm:text-xs font-montserrat font-bold text-[#3E040E] uppercase tracking-wider sm:tracking-widest focus:outline-none focus:border-[#3E040E] shadow-sm cursor-pointer max-w-[150px] sm:max-w-none text-ellipsis"
                 >
                   {SORT_OPTIONS.map((o) => (
                     <option key={o.value} value={o.value}>
@@ -309,7 +309,7 @@ function CollectionsContent() {
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
                 {filtered.map((product, i) => (
                   <ProductCard key={product.id} product={product} index={i} />
                 ))}

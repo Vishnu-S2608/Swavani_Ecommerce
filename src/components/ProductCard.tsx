@@ -59,21 +59,21 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
         </div>
 
         {/* Product Info */}
-        <div className="p-5 flex flex-col flex-1">
-          <p className="text-[10px] font-montserrat text-[#96742A] font-bold uppercase tracking-[0.2em] mb-1.5">{product.fabric}</p>
-          <h3 className="font-cinzel text-base font-semibold text-[#3E040E] group-hover:text-[#96742A] transition-colors leading-tight mb-1.5 uppercase tracking-wide">
+        <div className="p-3 sm:p-5 flex flex-col flex-1">
+          <p className="text-[9px] sm:text-[10px] font-montserrat text-[#96742A] font-bold uppercase tracking-[0.2em] mb-1">{product.fabric}</p>
+          <h3 className="font-cinzel text-[13px] sm:text-base font-semibold text-[#3E040E] group-hover:text-[#96742A] transition-colors leading-tight mb-1 uppercase tracking-wide line-clamp-2">
             {product.name}
           </h3>
-          <p className="text-xs text-[#382E2E]/70 font-montserrat mb-3 line-clamp-1">{product.subtitle}</p>
+          <p className="text-[10px] sm:text-xs text-[#382E2E]/70 font-montserrat mb-2 line-clamp-1">{product.subtitle}</p>
 
           <div className="mt-auto">
             {/* Price */}
-            <div className="flex items-baseline gap-2 mt-2">
-              <span className="font-cormorant text-xl font-bold text-[#3E040E]">
+            <div className="flex items-baseline gap-1.5 sm:gap-2 mt-1">
+              <span className="font-cormorant text-lg sm:text-xl font-bold text-[#3E040E]">
                 ₹{product.price.toLocaleString("en-IN")}
               </span>
               {product.mrp > product.price && (
-                <span className="text-sm text-[#382E2E]/40 line-through font-montserrat">
+                <span className="text-xs text-[#382E2E]/40 line-through font-montserrat">
                   ₹{product.mrp.toLocaleString("en-IN")}
                 </span>
               )}

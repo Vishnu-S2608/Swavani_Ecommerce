@@ -55,15 +55,14 @@ export function ProductGallery({
     <>
       <div className="w-full flex flex-col-reverse sm:flex-row gap-3 sm:gap-4 lg:sticky lg:top-24 h-fit">
         {/* Thumbnails Strip */}
-        <div className="flex sm:flex-col gap-2.5 overflow-x-auto sm:overflow-y-auto shrink-0 pb-1 sm:pb-0 sm:max-h-[calc(100vh-140px)] sm:max-h-[660px] scrollbar-thin">
+        <div className="flex sm:flex-col gap-2 overflow-x-auto sm:overflow-y-auto shrink-0 pb-1 sm:pb-0 sm:max-h-[660px] scrollbar-thin">
           {safeImages.map((imgSrc, idx) => {
             const isActive = selectedIndex === idx;
             return (
               <button
                 key={idx}
                 onClick={() => setSelectedIndex(idx)}
-                onMouseEnter={() => setSelectedIndex(idx)}
-                className={`group relative w-16 h-20 sm:w-[72px] sm:h-24 rounded-xl overflow-hidden border-2 transition-all duration-300 flex-shrink-0 bg-[#F4E8D4]/40 ${
+                className={`group relative w-14 h-[72px] sm:w-[72px] sm:h-24 rounded-lg sm:rounded-xl overflow-hidden border-2 transition-all duration-300 flex-shrink-0 bg-[#F4E8D4]/40 ${
                   isActive
                     ? "border-[#3E040E] shadow-[0_0_12px_rgba(62,4,14,0.3)] scale-[1.04] ring-2 ring-[#96742A]/40"
                     : "border-[#96742A]/20 opacity-70 hover:opacity-100 hover:border-[#96742A]/60"
@@ -92,7 +91,7 @@ export function ProductGallery({
               setIsLightboxOpen(true);
               setLightboxZoom(1);
             }}
-            className="relative w-full h-[460px] sm:h-[540px] lg:h-[calc(100vh-160px)] lg:max-h-[660px] lg:min-h-[500px] rounded-2xl overflow-hidden shadow-2xl border border-[#96742A]/25 bg-gradient-to-b from-[#FAF8F5] via-[#F4EFEA] to-[#EAE2D5] select-none cursor-pointer group"
+            className="relative w-full h-[380px] sm:h-[500px] lg:h-[calc(100vh-160px)] lg:max-h-[660px] lg:min-h-[500px] rounded-2xl overflow-hidden shadow-2xl border border-[#96742A]/25 bg-gradient-to-b from-[#FAF8F5] via-[#F4EFEA] to-[#EAE2D5] select-none cursor-pointer group"
             title="Click to view full screen"
           >
             {/* The Main Image - Static and Crisp */}
@@ -117,7 +116,7 @@ export function ProductGallery({
               </motion.div>
             </div>
 
-            {/* Subtle Navigation Chevrons on Image Stage */}
+            {/* Navigation Chevrons — always visible on mobile, hover-only on desktop */}
             {safeImages.length > 1 && (
               <>
                 <button
@@ -126,10 +125,10 @@ export function ProductGallery({
                     e.stopPropagation();
                     handlePrev();
                   }}
-                  className="absolute left-2 top-1/2 -translate-y-1/2 p-2 text-[#3E040E]/60 hover:text-[#3E040E] transition-all opacity-0 group-hover:opacity-100 hover:scale-125 z-10 drop-shadow-md cursor-pointer"
+                  className="absolute left-2 top-1/2 -translate-y-1/2 p-2 text-[#3E040E]/70 hover:text-[#3E040E] transition-all opacity-100 sm:opacity-0 sm:group-hover:opacity-100 hover:scale-125 z-10 drop-shadow-md cursor-pointer bg-white/60 sm:bg-transparent rounded-full"
                   aria-label="Previous image"
                 >
-                  <ChevronLeft size={30} />
+                  <ChevronLeft size={24} className="sm:w-8 sm:h-8" />
                 </button>
                 <button
                   type="button"
@@ -137,21 +136,22 @@ export function ProductGallery({
                     e.stopPropagation();
                     handleNext();
                   }}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-[#3E040E]/60 hover:text-[#3E040E] transition-all opacity-0 group-hover:opacity-100 hover:scale-125 z-10 drop-shadow-md cursor-pointer"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-[#3E040E]/70 hover:text-[#3E040E] transition-all opacity-100 sm:opacity-0 sm:group-hover:opacity-100 hover:scale-125 z-10 drop-shadow-md cursor-pointer bg-white/60 sm:bg-transparent rounded-full"
                   aria-label="Next image"
                 >
-                  <ChevronRight size={30} />
+                  <ChevronRight size={24} className="sm:w-8 sm:h-8" />
                 </button>
               </>
             )}
           </div>
 
           {/* Quick Caption Under Image */}
-          <div className="flex items-center justify-between text-[10px] font-semibold uppercase tracking-[0.2em] text-[#382E2E]/60 mt-2 px-1">
-            <span>Angle {selectedIndex + 1} of {safeImages.length}</span>
-            <span className="text-[#96742A] flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#96742A] inline-block animate-pulse" />
-              100% Authentic Handloom Shots
+          <div className="flex items-center justify-between text-[10px] font-semibold uppercase tracking-[0.15em] text-[#382E2E]/60 mt-2 px-1 gap-2">
+            <span className="shrink-0">Angle {selectedIndex + 1} of {safeImages.length}</span>
+            <span className="text-[#96742A] flex items-center gap-1 text-right">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#96742A] inline-block animate-pulse shrink-0" />
+              <span className="hidden sm:inline">100% Authentic Handloom Shots</span>
+              <span className="sm:hidden">Authentic Handloom</span>
             </span>
           </div>
         </div>

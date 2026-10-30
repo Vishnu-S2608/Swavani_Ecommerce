@@ -79,7 +79,7 @@ export function Navbar() {
           }}
         />
 
-        <div className="relative max-w-8xl mx-auto px-5 sm:px-8 lg:px-14 h-24 flex items-center justify-between">
+        <div className="relative max-w-8xl mx-auto px-4 sm:px-8 lg:px-14 h-16 sm:h-20 lg:h-24 flex items-center justify-between">
 
           {/* ── LEFT SECTION (Mobile Menu & Search) ── */}
           <div className="flex items-center gap-3 relative z-10">

@@ -86,25 +86,24 @@ export function InstagramSection() {
           {/* Masonry gallery */}
           <div
             ref={galleryRef}
-            className="grid gap-3"
-            style={{
-              gridTemplateColumns: "repeat(3, 1fr)",
-              gridTemplateRows: "auto",
-            }}
+            className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3"
           >
-            {galleryImages.map((img, i) => (
-              <motion.div
-                key={i}
-                className={`relative overflow-hidden group ${img.span}`}
-                initial={{ opacity: 0, scale: 0.94, y: 24 }}
-                animate={galleryInView ? { opacity: 1, scale: 1, y: 0 } : {}}
-                transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1], delay: i * 0.08 }}
-                whileHover={{ scale: 1.02, zIndex: 10 }}
-                style={{
-                  height: img.span ? "clamp(300px, 40vw, 480px)" : "clamp(140px, 20vw, 230px)",
-                  border: "1px solid rgba(184,146,90,.25)",
-                }}
-              >
+            {/* On mobile: simple 2-col grid, no row-spans. On sm+: 3-col with row-spans */}
+            {galleryImages.map((img, i) => {
+              const spanClass = img.span === "row-span-2" ? "sm:row-span-2" : "";
+              return (
+                <motion.div
+                  key={i}
+                  className={`relative overflow-hidden group ${spanClass}`}
+                  initial={{ opacity: 0, scale: 0.94, y: 24 }}
+                  animate={galleryInView ? { opacity: 1, scale: 1, y: 0 } : {}}
+                  transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1], delay: i * 0.08 }}
+                  whileHover={{ scale: 1.02, zIndex: 10 }}
+                  style={{
+                    height: "clamp(160px, 35vw, 230px)",
+                    border: "1px solid rgba(184,146,90,.25)",
+                  }}
+                >
                 <Link
                   href={img.href}
                   className="block w-full h-full relative cursor-pointer"
@@ -120,7 +119,7 @@ export function InstagramSection() {
                   />
                 </Link>
               </motion.div>
-            ))}
+            );})}
           </div>
         </div>
         <motion.div
@@ -277,7 +276,7 @@ export function InstagramSection() {
           </motion.p>
 
           <motion.div
-            className="flex flex-wrap items-center justify-center gap-5"
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5"
             initial={{ opacity: 0, y: 24 }}
             animate={ctaHeaderInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.5 }}
@@ -286,7 +285,7 @@ export function InstagramSection() {
               href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hello%20Swavani%2C%20I%20would%20like%20to%20enquire%20about%20your%20saree%20collection.`}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-zari flex items-center gap-2"
+              className="btn-zari flex items-center gap-2 w-full sm:w-auto justify-center"
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
             >
@@ -297,7 +296,7 @@ export function InstagramSection() {
             </motion.a>
             <motion.a
               href="/contact"
-              className="btn-silk"
+              className="btn-silk w-full sm:w-auto justify-center"
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
             >
