@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -11,10 +10,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, index = 0 }: ProductCardProps) {
-  const [hovered, setHovered] = useState(false);
-
   const mainImage = product.image || "/products/1/file_00000000bcd08211ab1642cd32b38a86.png";
-  const hoverImage = product.hoverImage || mainImage;
 
   return (
     <motion.div
@@ -23,8 +19,6 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
       transition={{ duration: 0.5, delay: index * 0.1 }}
       viewport={{ once: true, amount: 0.2 }}
       className="group relative bg-[#FBF9F6] overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
     >
       <Link href={`/product/${product.id}`} className="flex flex-col h-full">
         {/* Image container */}
@@ -35,27 +29,10 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
               src={mainImage}
               alt={product.name}
               fill
-              className={`object-cover object-top transition-opacity duration-300 ${hovered ? 'opacity-0' : 'opacity-100'}`}
+              className="object-cover object-top"
               sizes="(max-width: 768px) 50vw, 25vw"
             />
           </div>
-          {/* Hover image - loaded on interaction */}
-          {hovered && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.25 }}
-              className="absolute inset-0"
-            >
-              <Image
-                src={hoverImage}
-                alt={`${product.name} alternate`}
-                fill
-                className="object-cover object-top"
-                sizes="(max-width: 768px) 50vw, 25vw"
-              />
-            </motion.div>
-          )}
         </div>
 
         {/* Product Info */}
