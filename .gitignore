@@ -43,4 +43,6 @@ next-env.d.ts
 
 # local downloads / user files
 /Downloads/
-Final Out-20261025T062258Z-1-001/
+Final Out*/
+*.pdf
+AGENTS.md

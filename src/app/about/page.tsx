@@ -72,21 +72,21 @@ export default function AboutPage() {
       title: "Kanchipuram, Tamil Nadu",
       tagline: "The Sacred Temple Looms",
       desc: "Renowned for heavy contrast borders, ceremonial petni weaves, and regal architectural motifs.",
-      image: "/products/1/DSC03770.jpg",
+      image: "/products/1/file_00000000bcd08211ab1642cd32b38a86.png",
       badge: "Pure Soft Silk",
     },
     {
       title: "Heritage Soft Silks",
       tagline: "Contemporary Featherlight Drape",
       desc: "Crafted for effortless elegance, offering the richness of pure silk with modern day-long comfort.",
-      image: "/products/5/DSC03798.jpg",
+      image: "/products/5/file_00000000e3f882118ec0f619fb161912.png",
       badge: "Bridal & Festive",
     },
     {
       title: "Imperial Jewel Weaves",
       tagline: "Deep Jewel Tones & Antique Zari",
       desc: "Rich midnight blues, royal purples, and emerald greens kissed by antique gold buttas.",
-      image: "/products/11/DSC03853.jpg",
+      image: "/products/11/file_00000000824c8211a5a4c1cec4b45f37.png",
       badge: "Artisan Heirloom",
     },
   ];
@@ -149,7 +149,7 @@ export default function AboutPage() {
             <div className="lg:col-span-6 relative">
               <div className="relative w-full aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl border border-[#96742A]/20 bg-[#EBDCC5]/30">
                 <Image
-                  src="/products/15/DSC03892.jpg"
+                  src="/products/15/Emerald Silk Saree with Golden Zari.png"
                   alt="Swavani Master Handloom Silk"
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
@@ -160,7 +160,7 @@ export default function AboutPage() {
               {/* Inset floating detail image */}
               <div className="hidden sm:block absolute -bottom-8 -right-8 w-56 aspect-[3/4] rounded-xl overflow-hidden shadow-2xl border-4 border-white bg-white">
                 <Image
-                  src="/products/1/DSC03770.jpg"
+                  src="/products/1/file_00000000bcd08211ab1642cd32b38a86.png"
                   alt="Intricate Zari Pallu Detail"
                   fill
                   sizes="224px"

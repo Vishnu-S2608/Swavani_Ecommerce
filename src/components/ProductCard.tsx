@@ -13,7 +13,7 @@ interface ProductCardProps {
 export function ProductCard({ product, index = 0 }: ProductCardProps) {
   const [hovered, setHovered] = useState(false);
 
-  const mainImage = product.image || "/products/1/DSC03770.jpg";
+  const mainImage = product.image || "/products/1/file_00000000bcd08211ab1642cd32b38a86.png";
   const hoverImage = product.hoverImage || mainImage;
 
   return (

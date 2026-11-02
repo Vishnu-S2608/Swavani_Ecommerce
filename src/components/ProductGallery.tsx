@@ -25,7 +25,7 @@ export function ProductGallery({
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [lightboxZoom, setLightboxZoom] = useState(1);
 
-  const safeImages = images && images.length > 0 ? images : ["/products/1/DSC03770.jpg"];
+  const safeImages = images && images.length > 0 ? images : ["/products/1/file_00000000bcd08211ab1642cd32b38a86.png"];
   const currentImage = safeImages[selectedIndex] || safeImages[0];
 
   // Navigation handlers

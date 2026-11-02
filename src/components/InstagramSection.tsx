@@ -6,12 +6,12 @@ import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { WHATSAPP_NUMBER } from "@/lib/data";
 
 const galleryImages = [
-  { src: "/products/1/DSC03770.jpg", alt: "Kanchivaram Royal Amethyst Soft Silk Saree", span: "row-span-2", href: "/product/p1" },
-  { src: "/products/11/DSC03853.jpg", alt: "Royal Sapphire Kanchivaram Silk Saree", span: "", href: "/product/p11" },
-  { src: "/products/2/DSC03775.jpg", alt: "Vermilion Radiance Kanchivaram Soft Silk Saree", span: "", href: "/product/p2" },
-  { src: "/products/5/DSC03798.jpg", alt: "Marigold Kanchivaram Soft Silk Saree", span: "row-span-2", href: "/product/p5" },
-  { src: "/products/15/DSC03892.jpg", alt: "Royal Peacock Emerald Kanchivaram Silk Saree", span: "", href: "/product/p15" },
-  { src: "/products/21/DSC03947.jpg", alt: "Midnight Sapphire Silk Saree with Antique Gold Buttas", span: "", href: "/product/p21" },
+  { src: "/products/1/file_00000000bcd08211ab1642cd32b38a86.png", alt: "Kanchivaram Royal Amethyst Soft Silk Saree", span: "row-span-2", href: "/product/p1" },
+  { src: "/products/11/file_00000000824c8211a5a4c1cec4b45f37.png", alt: "Royal Sapphire Kanchivaram Silk Saree", span: "", href: "/product/p11" },
+  { src: "/products/2/file_00000000f11882119d97898f674bb467.png", alt: "Vermilion Radiance Kanchivaram Soft Silk Saree", span: "", href: "/product/p2" },
+  { src: "/products/5/file_00000000e3f882118ec0f619fb161912.png", alt: "Marigold Kanchivaram Soft Silk Saree", span: "row-span-2", href: "/product/p5" },
+  { src: "/products/15/Emerald Silk Saree with Golden Zari.png", alt: "Royal Peacock Emerald Kanchivaram Silk Saree", span: "", href: "/product/p15" },
+  { src: "/products/21/Royal Blue Silk Saree Still Life.png", alt: "Midnight Sapphire Silk Saree with Antique Gold Buttas", span: "", href: "/product/p21" },
 ];
 
 export function InstagramSection() {
